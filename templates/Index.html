@@ -1,0 +1,651 @@
+
+{% extends "Base.html" %}
+{% block content %}
+	{% if events == '' or events.length == 0 %}
+		<div class="text-center"><h4>No data</h4></div>
+	{% else %}
+	<button class="btn btn-danger" id="btnDeleteGroup" onclick="delete_group()" hidden>Delete</button>	
+	<table id="eventTable" class="table table-striped" data-pagination="true" data-search="true" data-advanced-search="true">
+  		<thead>
+    			<tr>
+					<!---Checkbox------>
+      				<th scope="col"></th>
+					<!---Acknowledge--->
+					<th scope="col"></th>
+					<!---Name---------->
+      				<th scope="col" >Name</th>
+					<!---Execute------->
+      				<th scope="col">Execute</th>
+				<th scope="col" class="text-center"></th>
+    			</tr>
+  		</thead>
+  		<tbody>
+			{% for event in events %}
+    			<tr>
+					<!---Check is admin or check is owner--->
+					{% if user.isAdmin == true or event.owner == user.username %} 
+						{% if event.type != "Prayer" %}
+							<td class="col-sm-1"><input id="eventId" name="eventId" type="checkbox" value='{{event.id}}' onchange="check()"></td>
+						{% else %}
+							<td class="col-sm-1"><input id="eventId" name="eventId" type="checkbox" value='{{event.id}}' onchange="check()" disabled></td>
+						{% endif %}
+					{% else %}
+						<td class="col-sm-1"><input id="eventId" name="eventId" type="checkbox" value='{{event.id}}' onchange="check()" disabled></td>
+					{% endif %}
+					<td class="col-sm-1">
+						{% if event.acknowledge %}
+							<i class="fa fa-check-circle" aria-hidden="true" style="color:green"></i>
+						{% endif %}
+					</td>
+					</td>
+      				<td class="col-sm-6">{{event.name}}</td>
+					<td class="col-sm-3">{{event.execute}}</td>
+					<td class="col-sm-1">
+						<div class="dropdown ">
+							<button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<svg width="12" height="14" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+									<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+								</svg>
+							</button>
+							<ul class="dropdown-menu align-items-center">
+								<li>
+									<a class="dropdown-item te" href="/detail?id={{event.id}}"><i class="fas fa-info-circle" aria-hidden="true"></i> Detail</a>
+								</li>
+								<li><hr class="dropdown-divider border-top border-secondary"></li>
+								{% if user.isAdmin == true or event.owner == user.username %}
+									{% if event.type != 'Prayer' %} 
+									<li>
+										<a class="dropdown-item" onclick="deleteItem('{{event.id}}')"><i class="fas fa-trash"></i> Delete</a>
+									</li>
+									{% endif %}
+								{% endif %}
+							</ul>
+						</div>
+					</td>
+					<!-- <td class="text-center"><a class="fa fa-trash btn-danger" onclick="deleteItem('{{event.id}}')"></a></td> -->
+    			</tr>
+			{% endfor %}
+    	</tbody>
+	</table>
+	{% endif %}
+	<!-- The Add Modal -->
+	<div class="modal" id="newItemAdd">
+  	   <div class="modal-dialog">
+    	    <div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">New Item</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form action="/" method="post" onsubmit="return Validate()">
+					
+						<!--input for name-->
+						<div class="input-group">
+							<label for="ename" class="input-group-text">Name</label>
+							<input type="text" class="form-control" id="ename" maxlength="40" name="ename" placeholder="Enter event name">
+						</div>
+						<!--feedback for name-->
+						<div id="nameFeedback" class="text-danger"></div>
+						
+						<!--input for text-->
+						<div class="input-group mt-3">
+						  <label for="etext" class="input-group-text">Text</label>
+						  <textarea type="text" class="form-control" rows='5' id="etext" name="etext" placeholder="Enter event text"></textarea>
+						</div>
+						<!--feedback for text-->
+						<div id="textFeedback" class="text-danger"></div>
+						
+						<!--input for type and repeate-->
+						<div class="input-group mt-3">
+							<label class="input-group-text" for="type">Type</label>
+							<select class="form-select" id="type" name="type">
+								<option value="" >Choose..</option>
+							</select>
+							<label class="input-group-text" for="repeat">Repeat</label>
+							<select class="form-select" id="repeat" name="repeat" onchange="repeatSelect(this.value)">
+								<option value="">Choose..</option>
+							</select>
+						</div>
+						<!--feedback for repeat-->
+						<div id="repeatFeedback" class="text-danger"></div>
+						
+						<!--input for once-->
+						<div class="input-group date mt-3" id="once" style="display: none;">
+							<label class="input-group-text" for="datetimepicker">Execute</label>
+							<input class="form-control text-center" id="datetimepicker" name="datetimepicker" autocomplete='on' type="datetime-local" step="any" style="width:80%;"></input >
+						</div> 
+						
+						<!--input for allday-->
+						<div class="input-group date mt-3" id="allday" style="display: none;">
+							<label class="input-group-text" for="datepicker">Execute</label>
+							<input class="form-control text-center" id="datepicker" name="datepicker"  type="date" step="any" style="width:80%;"></input >
+						</div> 
+						
+						<!--input for time-->
+						<div class="input-group date mt-3" id="time" style="display: none;">
+							<label class="input-group-text" for="timepicker">Time</label>
+							<input class="form-control text-center" id="timepicker" name="timepicker" autocomplete='on' type="time" step="any" pattern="(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)" style="width:80%;"></input>
+						</div>
+						
+						<!--input for weekday-->
+						<div class="input-group mt-3" id="daily" style="display: none;">
+							<label class="input-group-text">Weekday</label>
+							<div class=" form-control">
+								<div class="form-check">
+									<input class="form-check-input " name="weekday" type="checkbox" value="Monday" id="Monday" >
+									<label class="form-check-label" for="Monday">Monday</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="weekday" type="checkbox" value="Tuesday" id="Tuesday" >
+									<label class="form-check-label" for="Tuesday">Tuesday</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="weekday" type="checkbox" value="Wednesday" id="Wednesday" >
+									<label class="form-check-label" for="Wednesday">Wednesday</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="weekday" type="checkbox" value="Thursday" id="Thursday" >
+									<label class="form-check-label" for="Thursday">Thursday</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="weekday" type="checkbox" value="Friday" id="Friday" >
+									<label class="form-check-label" for="Friday">Friday</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="weekday" type="checkbox" value="Saturday" id="Saturday" >
+									<label class="form-check-label" for="Saturday">Saturday</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="weekday" type="checkbox" value="Sunday" id="Sunday" >
+									<label class="form-check-label" for="Sunday">Sunday</label>
+								</div>
+							</div>
+						</div>
+						<!--feedback for weekday-->
+						<div id="weekdayFeedback" class="text-danger"></div>
+						
+						<!--input for month-->
+						<div class="input-group mt-3" id="monthly" style="display: none;">
+							<label for="emonth" class="input-group-text">Month</label>
+							<select class="form-select" id="emonth" name="emonth" onchange="monthSelect(this.value)">
+								<option value='0'>Choose..</option>
+								<option value='1'>January</option>
+								<option value='2'>February</option>
+								<option value='3'>March</option>
+								<option value='4'>April</option>
+								<option value='5'>May</option>
+								<option value='6'>June</option>
+								<option value='7'>July</option>
+								<option value='8'>August</option>
+								<option value='9'>September</option>
+								<option value='10'>October</option>
+								<option value='11'>November</option>
+								<option value='12'>December</option>
+							</select>
+						</div>
+						
+						<!--input for day-->
+						<div class="input-group mt-3" id="day" style="display: none;">
+							<label for="eday" class="input-group-text" >Day</label>
+							<select class="form-select" id="eday" name="eday">
+								<option value='0'>Select month first</option>
+							</select>
+						</div>
+						
+						</br>
+						
+						<!--notice-->
+						<div class="input-group mt-3 border border-1b-2 text-center" id="notice" style="display: none;">
+							<p style="width:100%"><strong><i class="fa fa-info-circle" aria-hidden="true"></i> Note: </strong></br><span id="nota"></span></p>						
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary btn-custom" value="submit">Add</button>
+							<button type="button" class="btn btn-danger btn-custom" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		function deleteItem(id){
+			if(confirm("Are you confirm to delete?")){
+				$.ajax({
+					url:"/?id=" + id,
+					type: "DELETE",
+					success:function(json){
+						location.replace("/");
+					},
+					error:function(error){
+						alert(JSON.stringify(error.message));
+					}  
+				});
+			}	
+		}
+		function repeatSelect(value){
+			var onece = document.getElementById("once");
+			var time = document.getElementById("time");
+			var allday = document.getElementById("allday");
+			var daily = document.getElementById("daily");
+			var day = document.getElementById("day");
+			var monthly = document.getElementById("monthly");
+			var nota = document.getElementById("nota");
+			var notice = document.getElementById("notice");
+			allday .style.display = "none";
+			time.style.display = "none";
+			daily.style.display = "none";
+			onece.style.display = "none";
+			day.style.display = "none";
+			monthly.style.display = "none";
+			notice.style.display = "none";
+			<!-- onece -->
+			if( value == 1) {
+				if (onece.style.display === "none") {
+					onece.style.display = "flex";
+				}
+				if (notice.style.display === "none") {
+					notice.style.display = "flex";
+					nota.innerHTML = "This event will execute only one time."
+				}
+			}
+			<!-- allday -->
+			if( value == 2) {
+			
+				if (allday.style.display === "none") {
+					allday.style.display = "flex";
+				}
+				if (notice.style.display === "none") {
+					notice.style.display = "flex";
+					nota.innerHTML = "This event will execute every hours on that date."
+				}
+			}
+			<!-- daily -->
+			if( value == 3) {
+				if (daily.style.display === "none") {
+					daily.style.display = "flex";
+				}
+				if (time.style.display === "none") {
+					time.style.display = "flex";
+				}
+				if (notice.style.display === "none") {
+					notice.style.display = "flex";
+					nota.innerHTML = "This event will be held on every weekday and time that has been set."
+				}
+				
+			}
+			<!-- monthly -->
+			if( value == 4) {
+				var today = new Date();
+				if (day.style.display === "none") {
+					day.style.display = "flex";
+				}
+				var selectday = document.getElementById("eday");
+				selectday.options.length = 0;
+				for (let i = 0; i < 31; i++) {
+					var option = document.createElement("option");
+					option.text =  i + 1;
+					option.value = i + 1;
+					selectday.add(option);
+				}
+				if (notice.style.display === "none") {
+					notice.style.display = "flex";
+					nota.innerHTML = "This event will be held every month on the day that has been set and every hour."
+				}
+				selectday.value = today.getDate();
+			}
+			<!-- yearly -->
+			if( value == 5) {
+				if (monthly.style.display === "none") {
+					monthly.style.display = "flex";
+				}
+				if (day.style.display === "none") {
+					day.style.display = "flex";
+				}
+				if (notice.style.display === "none") {
+					notice.style.display = "flex";
+					nota.innerHTML = "This event will be held on every year on month and day that has been set."
+				}
+			}
+		}
+		function monthSelect(value){
+				var today = new Date();
+				var lastDayOfMonth  = getDaysInMonth(value,today.getFullYear());
+				var selectday = document.getElementById("eday");
+				selectday.options.length = 0;
+				for (let i = 0; i < lastDayOfMonth; i++) {
+					var option = document.createElement("option");
+					option.text =  i + 1;
+					option.value = i + 1;
+					selectday.add(option);
+				}
+				selectday.value = today.getDate();
+			
+		}
+		function getDaysInMonth(m, y) {
+				lastday = new Date(y, m, 0).getDate();
+				return new Date(y, m, 0).getDate();
+		}
+		function getTypenRepeat(){
+			$.getJSON("/getrepeat",function(data,status){
+				if(status == 'success')
+				{
+					var select = document.getElementById("repeat");
+					select.options.length = 0;
+					var option = document.createElement("option");
+					option.text =  "Choose..";
+					option.value = "";
+					select.add(option);
+					try
+					{
+						for(let t = 0; t < data.data.length; t++)
+						{
+							var option = document.createElement("option");
+							option.text =  data.data[t].name;
+							option.value = data.data[t].id;
+							select.add(option);
+						}
+					}
+					catch(error){
+						alert(error.toString());
+					}
+				}
+				else{
+					alert(data.message);
+				}
+			})
+		}
+		function getTypenType(){
+			$.getJSON("/gettype",function(data,status){
+				if(status == 'success')
+				{
+					var select = document.getElementById("type");
+					select.options.length = 0;
+					var option = document.createElement("option");
+					option.text =  "Choose..";
+					option.value = "";
+					select.add(option);
+					try
+					{
+						for(let t = 0; t < data.data.length; t++)
+						{
+							var option = document.createElement("option");
+							if (data.data[t].id != 2){
+								option.text =  data.data[t].name;
+								option.value = data.data[t].id;
+								select.add(option);
+							}
+						}
+						select.value = "1";
+						<!-- select.disabled = true; -->
+					}
+					catch(error){
+						alert(error.toString());
+					}
+				}
+				else {
+					alert(data.message);
+				}
+			})
+		}
+		function ValidateRegister(){
+			if(document.getElementById("password").value === document.getElementById("re-password").value){
+				document.getElementById('passwordFeedback').innerHTML = '';
+				document.getElementById('re-passwordFeedback').innerHTML = '';
+				return true;
+			}
+			document.getElementById('passwordFeedback').innerHTML = 'password not match';
+			document.getElementById('re-passwordFeedback').innerHTML = 'password not match';
+			return false;
+		
+		}
+		function validatePassword() {
+			var p = document.getElementById('password').value,
+			errors = [];
+			if (p.length < 8) {
+				errors.push("Your password must be at least 8 characters"); 
+			}
+			if (p.search(/[a-z]/i) < 0) {
+				errors.push("Your password must contain at least one letter.");
+			}
+			if (p.search(/[0-9]/) < 0) {
+				errors.push("Your password must contain at least one digit."); 
+			}
+			if (errors.length > 0) {
+				document.getElementById('passwordFeedback').innerHTML = errors.join("\n");
+				return false;
+			}
+			return true;
+		}
+		function changePassword(){
+			var current_password = document.getElementById("oldPassword").value;
+			var new_password = document.getElementById("password").value;
+			var confirm_password = document.getElementById("re-password").value;
+			
+			if(validatePassword()){
+				if( new_password == confirm_password){
+				
+					const payload = {'password' : current_password,'new-password' : new_password};
+					$.ajax({
+						url:"/changepassword",
+						type: "POST",
+						data: JSON.stringify(payload),
+						contentType: "application/json; charset=utf-8",
+						traditional: true,
+						success:function(json){
+						
+							current_password = '';
+							new_password = '';
+							confirm_password = '';
+							
+							$("#account").modal("hide");
+							alert(JSON.stringify(json.message));
+						},
+						error:function(error){
+							const msg = error.responseJSON.message
+							document.getElementById('oldPasswordFeedback').innerHTML = msg;
+							document.getElementById('passwordFeedback').innerHTML = '';
+							document.getElementById('re-passwordFeedback').innerHTML = '';
+						}  
+					});
+					
+				}else{
+					document.getElementById('oldPasswordFeedback').innerHTML = '';
+					document.getElementById('passwordFeedback').innerHTML = 'password not match';
+					document.getElementById('re-passwordFeedback').innerHTML = 'Confirm password not match';
+				}
+			}
+			
+		}
+		function Validate() {
+			<!--name-->
+			if(document.getElementById('ename').value == "")
+			{
+				document.getElementById('nameFeedback').innerHTML = 'Pleace enter event name.';
+				return false;
+			}
+			document.getElementById('nameFeedback').innerHTML = '';
+			
+			<!--text-->
+			if(document.getElementById('etext').value == "")
+			{
+				document.getElementById('textFeedback').innerHTML = 'Pleace enter event text.';
+				return false;
+			}
+			document.getElementById('textFeedback').innerHTML = '';
+			
+			<!--type-->
+			if(document.getElementById('type').value == "")
+			{
+				document.getElementById('repeatFeedback').innerHTML = 'Pleace select type field.';
+				return false;
+			}
+			document.getElementById('repeatFeedback').innerHTML = '';
+		
+			<!--repeate-->
+			if(document.getElementById('repeat').value == "")
+			{
+				document.getElementById('repeatFeedback').innerHTML = 'Pleace select repeat field.';
+				return false;
+			}
+			document.getElementById('repeatFeedback').innerHTML = '';
+			
+			<!--weekday-->
+			if(document.getElementById("repeat").value == 3) 
+			{
+				var checkboxes = document.getElementsByName('weekday');
+				var isChecked = false;
+				for (var i = 0; i < checkboxes.length; i++) {
+					if (checkboxes[i].checked) {
+						isChecked = true;
+						break;
+					}
+				}
+				if (!isChecked) {
+					document.getElementById('weekdayFeedback').innerHTML = 'Please select at least one weekday.';
+					return false;
+				}
+			}
+			document.getElementById('weekdayFeedback').innerHTML = '';
+
+			return true;
+		}
+		function delete_group(){
+			$("input:checkbox[name=eventId]:checked").each(function(){
+				$.ajax({
+					url:"/?id=" + $(this).val(),
+					type: "DELETE",
+					success:function(json){
+						location.replace("/");
+					},
+					error:function(error){
+						alert(JSON.stringify(error.error.message));
+					}  
+				});
+			});
+		}
+		function check(){
+			var isChecked = false;
+				$("input:checkbox[name=eventId]:checked").each(function(){
+					isChecked = true;
+				});
+			btnDeleteGroup.hidden = !isChecked;
+		}
+		window.addEventListener("load", function(){ 			
+			<!-- $('#eventTable').DataTable(); -->
+			var now = new Date();
+			var utcString = now.toISOString().substring(0,19);
+			var year = now.getFullYear();
+			var month = now.getMonth() + 1;
+			var day = now.getDate();
+			var hour = now.getHours();
+			var minute = now.getMinutes();
+			var second = now.getSeconds();
+			var localDate = (day < 10 ? "0" + day.toString() : day) + "/" + (month < 10 ? "0" + month.toString() : month) + "/" + year;
+			var localDatetime = year + "-" +
+							  (month < 10 ? "0" + month.toString() : month) + "-" +
+							  (day < 10 ? "0" + day.toString() : day) + "T" +
+							  (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+							  (minute < 10 ? "0" + minute.toString() : minute) +
+							  utcString.substring(16,19);
+			var localTime = (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+							(minute < 10 ? "0" + minute.toString() : minute);
+							 
+			var dtpic1 = document.getElementById("datetimepicker");
+			dtpic1.value = localDatetime;
+			var tpic1 = document.getElementById("timepicker");
+			tpic1.value = localTime;
+			var mon = document.getElementById("emonth");
+			mon.value = month;
+			monthSelect(month);
+						
+			getTypenType();
+			getTypenRepeat();
+			
+			var today = new Date().toISOString().slice(0, 16);
+			document.getElementsByName("datetimepicker")[0].min = today;
+			
+			var thisdate = new Date().toISOString().split('T')[0];
+			document.getElementById("datepicker").setAttribute('min', thisdate);
+			document.getElementById("datepicker").setAttribute('value', thisdate);
+			
+			$('#{{menu}}').addClass("active");
+
+		});
+		function account(type){
+			if(type == "account"){
+				document.getElementById("accountTitle").innerHTML = "Account";
+			}else{
+				document.getElementById("accountTitle").innerHTML = "Register";
+			}
+			$("#account").modal("show");
+		}
+		$(document).ready(function(){
+			$(function() {
+				$('#eventTable').bootstrapTable()
+			})
+			$("#btnAccount").click(function(){
+				$("#account").modal("toggle");
+				document.getElementById("accountTitle").innerHTML = "Account";
+				document.getElementById("frmPassword").hidden = true;
+				document.getElementById("frmRePassword").hidden = true;
+				document.getElementById("username").readOnly  = true;
+				document.getElementById("email").readOnly  = true
+				document.getElementById("createdBy").hidden = false;
+				document.getElementById("createdDate").hidden = false;
+				document.getElementById("frmCreatedBy").hidden = false;
+				document.getElementById("frmCreatedDate").hidden = false;
+				document.getElementById("btnSave").hidden = true
+				document.getElementById("btnOk").hidden = true;
+				document.getElementById("username").value = '{{user.username}}';
+				document.getElementById("email").value = '{{user.email}}';
+				document.getElementById("frmUsername").hidden  = false;
+				document.getElementById("frmEmail").hidden  = false;
+				document.getElementById("frmOldPassword").hidden  = true;
+			});
+			$("#btnRegister").click(function(){
+				$("#account").modal("toggle");
+				document.getElementById("accountTitle").innerHTML = "Register";
+				document.getElementById("frmPassword").hidden = false;
+				document.getElementById("frmRePassword").hidden = false;
+				document.getElementById("username").readOnly  = false;
+				document.getElementById("email").readOnly  = false;
+				document.getElementById("createdBy").hidden = true;
+				document.getElementById("createdDate").hidden = true;
+				document.getElementById("frmCreatedBy").hidden = true;
+				document.getElementById("frmCreatedDate").hidden = true;
+				document.getElementById("btnSave").hidden = false;
+				document.getElementById("btnOk").hidden = true;
+				document.getElementById("username").value = '';
+				document.getElementById("email").value = '';
+				document.getElementById("frmUsername").hidden  = false;
+				document.getElementById("frmEmail").hidden  = false;
+				document.getElementById("frmOldPassword").hidden  = true;
+			});
+				$("#btnChangePassword").click(function(){
+				$("#account").modal("toggle");
+				document.getElementById("accountTitle").innerHTML = "Change Password";
+				document.getElementById("frmPassword").hidden = false;
+				document.getElementById("frmRePassword").hidden = false;
+				document.getElementById("frmUsername").hidden  = true;
+				document.getElementById("frmEmail").hidden  = true;
+				document.getElementById("createdBy").hidden = true;
+				document.getElementById("createdDate").hidden = true;
+				document.getElementById("frmCreatedBy").hidden = true;
+				document.getElementById("frmCreatedDate").hidden = true;
+				document.getElementById("btnSave").hidden = true;
+				document.getElementById("btnOk").hidden = false;
+				document.getElementById("username").value = '';
+				document.getElementById("email").value = '';
+				document.getElementById("frmOldPassword").hidden  = false;
+
+			});
+		});
+	</script>
+{% endblock %}
