@@ -3,8 +3,13 @@ import config
 import requests, json # type: ignore
 import logging
 from datetime import datetime, date, timedelta
+import redis
 
 endpoint = os.environ['API_ENDPOINT']
+redis_host = os.environ['REDIS_HOST']
+redis_port = os.environ['REDIS_PORT']
+
+redis_client = redis.Redis(host=redis_host, port=redis_port, db=0)
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -13,9 +18,15 @@ def refresh_token(publicId):
 	if response.status_code == 200:
 		data = response.json()
 		token = data['token']
-		return token
+		redis_client.set(str(publicId),token)
+		data = redis_client.get(str(publicId))
+		return data
 
 	return None
+
+def get_token(publicId):
+	data = redis_client.get(str(publicId))
+	return data
 
 def executeTranslate(e):
 	try:

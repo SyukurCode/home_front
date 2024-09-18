@@ -14,5 +14,21 @@ services:
         - POSTGRES_HOST=192.168.0.88
         - POSTGRES_PORT=5432
         - POSTGRES_DB=homeapi
+        - REDIS_HOST=redis
+        - REDIS_PORT=6379
     ports:
         - '5003:5000'
+    depends_on:
+        - redis
+
+  redis:
+    image: redis:7.4.0-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./cache:/data
+    environment:
+      - REDIS_PASSWORD=syukur123***
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16  

@@ -40,40 +40,41 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def index():
-        descriptions = []
-        token = common.refresh_token(current_user.publicId)
-        try:
-                response = requests.get(f'{endpoint}/api/event/user',headers={"x-access-tokens": token})
-        except Exception as e:
-                logging.debug("Exception")
-                return render_template("Index.html",events="",user="",menu="own")
+	descriptions = []
+	token = common.get_token(current_user.publicId)
+	try:
+		response = requests.get(f'{endpoint}/api/event/user',headers={"x-access-tokens": token})
+	except Exception as e:
+		logging.debug("Exception")
+		return render_template("Index.html",events="",user="",menu="own")
 
-        if response.status_code == 200:
-                data = response.json()
-                event = data['data']
-                for e in event:
-                        description = common.executeTranslate(e)
-                        descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-                                                "execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
-                eve = json.loads('{}')
-                eve.update({"data":descriptions})
-                events = eve["data"]
-                #logging.debug(f"User:{current_user.username}")
-                return render_template("Index.html",events=events,user=current_user,menu="own")
+	if response.status_code == 200:
+		data = response.json()
+		event = data['data']
+		for e in event:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+                                 "execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
+		eve = json.loads('{}')
+		eve.update({"data":descriptions})
+		events = eve["data"]
+        #logging.debug(f"User:{current_user.username}")
+		return render_template("Index.html",events=events,user=current_user,menu="own")
+		
+	if response.status_code == 404:
+		return render_template("Index.html",events='',user=current_user,menu="own")
 
-        if response.status_code == 404:
-                return render_template("Index.html",events='',user=current_user,menu="own")
-
-        if response.status_code == 403 or response.status_code == 400:
-                return render_template("Login.html",error="Wrong username or password")
-
-        return render_template("Index.html",events='',user=current_user,menu="own")
+	if response.status_code == 403 or response.status_code == 400:
+		token = common.refresh_token(current_user.publicId)
+		return redirect("/")
+	
+	return render_template("Index.html",events='',user=current_user,menu="own")
 
 @app.route('/all')
 @login_required
 def all():
 	descriptions = []
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	try:
 		response = requests.get(f'{endpoint}/api/event',headers={"x-access-tokens": token})
 	except Exception as e:
@@ -97,7 +98,8 @@ def all():
 		return render_template("Index.html",events='',user=current_user,menu="all")
 
 	if response.status_code == 403 or response.status_code == 400:
-		return render_template("Login.html",error="Wrong username or password")
+		token = common.refresh_token(current_user.publicId)
+		return redirect("/all")
 
 	return render_template("Index.html",events='',user=current_user,menu="all")
 
@@ -105,7 +107,7 @@ def all():
 @login_required
 def detail():
 	id = request.args.get('id')
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 
 	response = requests.get(f'{endpoint}/api/event/id?id={id}', headers={"x-access-tokens": token})
 	if response.status_code == 200:
@@ -128,12 +130,13 @@ def detail():
 			type='',repeat='',created_by='',error=data['message'])
 
 	if response.status_code == 403 or response.status_code == 400:
-		return redirect("/login")
+			token = common.refresh_token(current_user.publicId)
+			return redirect("/detail")
 
 	return redirect("/")
 
 def get_user(id):
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	response = requests.get(f'{endpoint}/api/users?id={id}', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
@@ -148,7 +151,7 @@ def get_user(id):
 @login_required
 def todayEvent():
 	descriptions = []
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	weekdayName = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	today = datetime.now()
 	weekday = weekdayName[today.weekday()]
@@ -209,12 +212,13 @@ def todayEvent():
 	if response.status_code == 404:
 		return render_template("Index.html",events='',user=current_user,menu="today")
 	if response.status_code == 403 or response.status_code == 400:
-		return redirect("/login")
+		token = common.refresh_token(current_user.publicId)
+		return redirect("/today")
 
 @app.route('/update',methods=['POST'])
 @login_required
 def update():
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	user = get_login_user()
 	id = request.form.get('id')
 	name = request.form.get('name')
@@ -294,7 +298,7 @@ def addItem():
 @app.route('/', methods=['DELETE'] )
 @login_required
 def deleteItem():
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	user = get_login_user()
 	try:
 		delete_id = request.args.get('id')
@@ -361,7 +365,7 @@ def add_yearly(name,text,type,repeat,day,month):
 	store_event(name,text,type,repeat,0,execute)
 
 def store_event(name,text,type,repeat,parent,execute):
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	#--start send data to store--
 
 	url = f'{endpoint}/api/event'
@@ -403,7 +407,7 @@ def store_event(name,text,type,repeat,parent,execute):
 	return None
 
 def get_login_user():
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	response = requests.post(f'{endpoint}/api/user_info', headers={"x-access-tokens": token})
 	data = response.json()
 	if response.status_code == 200:
@@ -418,7 +422,7 @@ def get_login_user():
 @app.route('/account', methods=['POST'])
 @login_required
 def add_user():
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	username = request.form.get("username")
 	email = request.form.get("email")
 	password = request.form.get("password")
@@ -454,7 +458,7 @@ def change_password():
 @app.route('/gettype', methods=['GET'] )
 @login_required
 def get_type():
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	response = requests.get(f'{endpoint}/api/event/type', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
@@ -463,7 +467,7 @@ def get_type():
 	return None
 @app.route('/getrepeat', methods=['GET'] )
 def get_repeat():
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.publicId)
 	response = requests.get(f'{endpoint}/api/event/repeat', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
