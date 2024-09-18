@@ -252,11 +252,14 @@ def login():
 	if request.method == 'POST':
 		username = request.form.get('username')
 		password = request.form.get('password')
+		isRemember = request.form.get('remember_me')
 		user = User.query.filter_by(username=username).first()
 		if user and bcrypt.check_password_hash(user.password, password):
-			login_user(user)
+			if isRemember:
+				login_user(user, remember=True, duration=timedelta(days=30))
+			else:
+				login_user(user)
 			return redirect('/')
-
 		return render_template("Login.html",error='Invalid username or password')
 
 @app.route('/logout')

@@ -11,11 +11,12 @@
 		<!------ Include the above in your HEAD tag ---------->
 	<head>
 	<body>
-	<div class="wrapper fadeInDown">
+	<div class="wrapper fadeInDown p-300">
 		<div id="formContent">
 			<!-- Tabs Titles -->
 			</hr>
 			<!-- Icon -->
+			<img src="/static/img/home.png" width="100" height="100" style="padding: 10px" alt="home">
 			<div class="fadeIn first">
 				<h1 class="p-3">Login</h1>
 				<!--feedback for name-->
@@ -25,7 +26,11 @@
 			<!-- Login Form -->
 			<form action="/login" method="post" >
 				<input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
-				<input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+				<input type="password" id="password" class="fadeIn third" name="password" placeholder="password" >
+				<label class="fadeIn fourth" for="remember_me">
+					remember me
+					<input class="fadeIn fourth" type="checkbox" value="" name="remember_me" id="remember_me">
+				</label> <br><br>
 				<input type="submit" class="fadeIn fourth" value="Log In">
 			</form>
 
@@ -39,6 +44,5 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<script type="text/javascript">
-
 	</script>
 </body>
