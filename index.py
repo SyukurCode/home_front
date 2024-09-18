@@ -11,7 +11,10 @@ import requests, json # type: ignore
 import logging
 import config
 
-endpoint = os.environ['API_ENDPOINT']
+api_host = os.environ['API_HOST']
+api_port = os.environ['API_PORT']
+endpoint = "http://{}:{}".format(api_host,api_port)
+
 #session = requests.Session()
 
 logging.basicConfig(level=logging.DEBUG)
