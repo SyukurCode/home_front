@@ -15,7 +15,7 @@ api_host = os.environ['API_HOST']
 api_port = os.environ['API_PORT']
 endpoint = "http://{}:{}".format(api_host,api_port)
 
-#session = requests.Session()
+session = requests.Session()
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -46,10 +46,11 @@ def load_user(user_id):
 def index():
 	descriptions = []
 	token = common.get_token(current_user.publicId)
+	logger.debug(f'Token:{token}')
 	try:
 		response = requests.get(f'{endpoint}/api/event/user',headers={"x-access-tokens": token})
 	except Exception as e:
-		logging.debug("Exception")
+		logger.debug("Exception")
 		return render_template("Index.html",events="",user="",menu="own")
 
 	if response.status_code == 200:
@@ -323,7 +324,7 @@ def deleteItem():
 def add_once(name,text,type,repeat,datetimepicker):
 	#2024-03-19T20:38:43
 	#strDateTime = parse(datetimepicker)
-	#logging.debug(type(strDateTime).toString())
+	#logger.debug(type(strDateTime).toString())
 	#format = '%Y-%m-%d %H:%M:%S'
 	#dt = datetime.strptime(strDateTime,format)
 	dt = parse(datetimepicker)

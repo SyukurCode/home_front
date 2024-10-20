@@ -11,8 +11,11 @@ redis_host = os.environ['REDIS_HOST']
 redis_port = os.environ['REDIS_PORT']
 
 redis_client = redis.Redis(host=redis_host, port=redis_port, db=0)
+endpoint = os.environ['API_HOST']
+api_port = os.environ['API_PORT']
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 def refresh_token(publicId):
 	response = requests.post(f'http://{endpoint}:{api_port}/api/generate', json={'publicId':str(publicId)})
@@ -22,7 +25,6 @@ def refresh_token(publicId):
 		redis_client.set(str(publicId),token)
 		data = redis_client.get(str(publicId))
 		return data
-
 	return None
 
 def get_token(publicId):
