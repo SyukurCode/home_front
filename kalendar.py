@@ -1,14 +1,14 @@
 from flask import Blueprint, Flask, request, jsonify, current_app, render_template
 from flask_login import current_user,LoginManager,login_user,logout_user,login_required
 from models import db,User
-from datetime import datetime, date
+from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
 import os
 import common
 import requests, json # type: ignore
 import logging
-import config
+
 
 api_host = os.environ['API_HOST']
 api_port = os.environ['API_PORT']
@@ -24,7 +24,7 @@ def index():
 @kalendar.route('/calendar/api/all',methods=['GET'])
 def allevent():
 	allEvents = []
-	token = common.refresh_token(current_user.publicId)
+	token = common.get_token(current_user.username,current_user.publicId)
 
 	try:
 		response = requests.get(f'{endpoint}/api/event',headers={"x-access-tokens": token})
@@ -112,5 +112,5 @@ def allevent():
 				}
 			allEvents.append(current_event)
 		return allEvents
-
 	return None
+    

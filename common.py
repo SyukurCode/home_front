@@ -17,19 +17,26 @@ api_port = os.environ['API_PORT']
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-def refresh_token(publicId):
-	response = requests.post(f'http://{endpoint}:{api_port}/api/generate', json={'publicId':str(publicId)})
+def refresh_token(username,publicId):
+	password = redis_client.get(str(publicId))
+	response = requests.post(f'http://{endpoint}:{api_port}/api/login', auth = (username, password))
 	if response.status_code == 200:
 		data = response.json()
 		token = data['token']
-		redis_client.set(str(publicId),token)
-		data = redis_client.get(str(publicId))
+		redis_client.set(username,token)
+		data = redis_client.get(username)
 		return data
 	return None
 
-def get_token(publicId):
-	data = redis_client.get(str(publicId))
+def get_token(username,publicId):
+	data = redis_client.get(username)
+	if not data:
+		data = refresh_token(username=username,publicId=publicId)
 	return data
+
+def clean_up(username,publicId):
+	redis_client.delete(username)
+	redis_client.delete(str(publicId))
 
 def executeTranslate(e):
 	try:
