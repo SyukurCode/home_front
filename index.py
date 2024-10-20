@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_login import current_user,LoginManager,login_user,logout_user,login_required
 from models import db,User
-from datetime import datetime, date
+from datetime import datetime, timedelta
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
 import os
@@ -18,6 +18,7 @@ endpoint = "http://{}:{}".format(api_host,api_port)
 #session = requests.Session()
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '195de30e06e4040837afd882b4966398'
@@ -61,7 +62,7 @@ def index():
 		eve = json.loads('{}')
 		eve.update({"data":descriptions})
 		events = eve["data"]
-        #logging.debug(f"User:{current_user.username}")
+        #logger.debug(f"User:{current_user.username}")
 		return render_template("Index.html",events=events,user=current_user,menu="own")
 		
 	if response.status_code == 404:
@@ -81,7 +82,7 @@ def all():
 	try:
 		response = requests.get(f'{endpoint}/api/event',headers={"x-access-tokens": token})
 	except Exception as e:
-		logging.debug("Exception")
+		logger.debug("Exception")
 		return render_template("Index.html",events="",user="",menu="all")
 
 	if response.status_code == 200:
@@ -94,7 +95,7 @@ def all():
 		eve = json.loads('{}')
 		eve.update({"data":descriptions})
 		events = eve["data"]
-		logging.debug(f"User:{current_user.username}")
+		logger.debug(f"User:{current_user.username}")
 		return render_template("Index.html",events=events,user=current_user,menu="all")
 
 	if response.status_code == 404:
@@ -143,7 +144,7 @@ def get_user(id):
 	response = requests.get(f'{endpoint}/api/users?id={id}', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
-		#logging.debug(str(data))
+		#logger.debug(str(data))
 		return data
 	if response.status_code == 403 or response.status_code == 400:
 		return redirect("/login")
@@ -167,7 +168,7 @@ def todayEvent():
 			try:
 				ex = json.loads(e["execute"])
 			except Exception as e:
-				logging.debug(f'Error: {e}')
+				logger.debug(f'Error: {e}')
 				continue
 
 			if e["repeat"] == 'Once' \
@@ -207,7 +208,7 @@ def todayEvent():
 				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
 							"execute":description,"acknowledge":e["acknowledge"], \
 							"owner":e["created_by"],"type":e["type"]})
-			#logging.debug(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
+			#logger.debug(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
 			eve = json.loads('{}')
 			eve.update({"data":descriptions})
 			events = eve["data"]
@@ -246,7 +247,7 @@ def login():
 	if request.method == 'GET':
 		if current_user.is_authenticated:
 			return redirect("/")
-			logging.debug("login!")
+			logger.debug("login!")
 		return render_template("Login.html",error='')
 
 	if request.method == 'POST':
@@ -281,7 +282,7 @@ def addItem():
 	datetimepicker = request.form.get('datetimepicker')
 	timepicker = request.form.get('timepicker')
 	weekday = request.form.getlist('weekday')
-	logging.debug(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
+	logger.debug(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
 			+ f'DPicker:{datepicker}\nDTPicker:{datetimepicker}\nTPicker:{timepicker}\nWeekday:{weekday}')
 
 	if repeat == '1':
@@ -328,30 +329,30 @@ def add_once(name,text,type,repeat,datetimepicker):
 	dt = parse(datetimepicker)
 	execute = '{"date":{"day":' + str(dt.day) + ',"month":' + str(dt.month) + ',"year":' + str(dt.year) + '}' \
 			+ ',"time":{"hour":' + str(dt.hour) + ',"minute":' + str(dt.minute) + ',"second":' + str(dt.second) + '}}'
-	logging.debug(execute)
+	logger.debug(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_allday(name,text,type,repeat,datepicker):
 	#2024-04-06
 	#strDateTime = parse(datepicker)
-	#logging.debug(strDateTime)
+	#logger.debug(strDateTime)
 	#format = '%Y-%m-%d %H:%M:%S'
 	d = parse(datepicker)
 	execute = '{"date":{"day":' + str(d.day) + ',"month":' + str(d.month) + ',"year":' + str(d.year) + '}}'
-	logging.debug(execute)
+	logger.debug(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_daily(name,text,type,repeat,timepicker,weekday):
 	#13:44:06
 	#strDateTime = parse(timepicker)
-	#logging.debug(strDateTime)
+	#logger.debug(strDateTime)
 	isFirst = True
 	parent = 0
 	#format = '%Y-%m-%d %H:%M:%S'
 	t = parse(timepicker)
 	for w in weekday:
 		execute = '{"date":{"weekday":"' + w + '"},"time":{"hour":' + str(t.hour) + ',"minute":' + str(t.minute) + ',"second":' + str(t.second) + '}}'
-		logging.debug(execute)
+		logger.debug(execute)
 		if isFirst:
 			isFirst = False
 			parent = store_event(name,text,type,repeat,0,execute)
@@ -359,15 +360,15 @@ def add_daily(name,text,type,repeat,timepicker,weekday):
 			if not parent == 0:
 				store_event(name,text,type,repeat,parent,execute)
 			else:
-				logging.debug("daily store fail")
+				logger.debug("daily store fail")
 def add_monthly(name,text,type,repeat,day):
 	execute = '{"date":{"day":' + day + '}}'
-	logging.debug(execute)
+	logger.debug(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_yearly(name,text,type,repeat,day,month):
 	execute = '{"date":{"day":' + day + ',"month":' + month + '}}'
-	logging.debug(execute)
+	logger.debug(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def store_event(name,text,type,repeat,parent,execute):
@@ -394,7 +395,7 @@ def store_event(name,text,type,repeat,parent,execute):
 					json={"id":id,"parent": id}, headers={"x-access-tokens": token})
 			update_data = update.json()
 			if update.status_code == 202:
-				logging.debug("event store success")
+				logger.debug("event store success")
 				return update_data['data']['id']
 
 			else:
@@ -402,10 +403,10 @@ def store_event(name,text,type,repeat,parent,execute):
 
 				if 'error' in update_data:
 					message  += ', ' +  update_data['error']
-				logging.debug(f'event update fail error:{message}')
+				logger.debug(f'event update fail error:{message}')
 
 	else:
-		logging.debug("event store request fail")
+		logger.debug("event store request fail")
 
 	if response.status_code == 403 or response.status_code == 400:
 		return redirect("/login")
@@ -422,7 +423,7 @@ def get_login_user():
 	if response.status_code ==  403 or response.status_code ==  400:
 		return redirect("/login")
 
-	logging.debug(f'response{response.status_code}')
+	logger.debug(f'response{response.status_code}')
 	return None
 
 @app.route('/account', methods=['POST'])
@@ -432,13 +433,13 @@ def add_user():
 	username = request.form.get("username")
 	email = request.form.get("email")
 	password = request.form.get("password")
-	logging.debug(f'Username: {username}, Email: {email}, Password: {password}')
+	logger.debug(f'Username: {username}, Email: {email}, Password: {password}')
 	response = requests.post(f'{endpoint}/api/users', \
 				json={"username": username,"password": password,"email": email, 'isAdmin': False}, headers={"x-access-tokens": token})
 	if response.status_code == 201:
 		data = response.json()
 	else:
-		logging.debug("Fail to add user")
+		logger.debug("Fail to add user")
 
 	return redirect("/")
 

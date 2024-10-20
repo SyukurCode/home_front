@@ -75,6 +75,11 @@
 				</div>
 				<div class="col-md-12 bg-light text-center">
 					<button id="btnSave" class="btn btn-primary" type="submit" value="submit" hidden>Save</button>
+					{% if type == 'Prayer' %} 
+						<button id="btnDelete" class="btn btn-danger" type="button" onclick="deleteItem('{{event.id}}')" hidden>Delete</button>
+					{% else %}
+						<button id="btnDelete" class="btn btn-danger" type="button" onclick="deleteItem('{{event.id}}')">Delete</button>
+					{% endif %}
 					<button class="btn btn-secondary" type="button" onclick="history.back()">Back</button>
 				</div>
 			</form>
@@ -86,8 +91,25 @@
 		<script type="text/javascript">
 			function editEnable(){
 				var btnSave = document.getElementById("btnSave");
+				var btnDelete = document.getElementById("btnDelete");
 				btnSave.hidden = false;
+				btnDelete.hidden = true;
+				
 			}
+			function deleteItem(id){
+			if(confirm("Are you confirm to delete?")){
+				$.ajax({
+					url:"/?id=" + id,
+					type: "DELETE",
+					success:function(json){
+						location.replace("/");
+					},
+					error:function(error){
+						alert(JSON.stringify(error.message));
+					}  
+				});
+			}	
+		}
 		</script>
 	</body>
 </html>
