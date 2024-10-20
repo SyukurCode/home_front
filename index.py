@@ -11,10 +11,6 @@ import requests, json # type: ignore
 import logging
 import config
 
-api_host = os.environ['API_HOST']
-api_port = os.environ['API_PORT']
-endpoint = "http://{}:{}".format(api_host,api_port)
-
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -34,6 +30,8 @@ login_manager.login_view = 'login'
 # register Blueprint
 from kalendar import kalendar as kalendar_blueprint
 app.register_blueprint(kalendar_blueprint)
+from papar import papar as papar_blueprint
+app.register_blueprint(papar_blueprint)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -46,7 +44,7 @@ def index():
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
 	logger.debug(f'Token:{token}')
 	try:
-		response = requests.get(f'{endpoint}/api/event/user',headers={"x-access-tokens": token})
+		response = requests.get(f'{config.api_endpoint}/api/event/user',headers={"x-access-tokens": token})
 	except Exception as e:
 		logger.debug("Exception")
 		return render_template("Index.html",events="",user="",menu="own")
@@ -79,7 +77,7 @@ def all():
 	descriptions = []
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
 	try:
-		response = requests.get(f'{endpoint}/api/event',headers={"x-access-tokens": token})
+		response = requests.get(f'{config.api_endpoint}/api/event',headers={"x-access-tokens": token})
 	except Exception as e:
 		logger.debug("Exception")
 		return render_template("Index.html",events="",user="",menu="all")
@@ -112,7 +110,7 @@ def detail():
 	id = request.args.get('id')
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
 
-	response = requests.get(f'{endpoint}/api/event/id?id={id}', headers={"x-access-tokens": token})
+	response = requests.get(f'{config.api_endpoint}/api/event/id?id={id}', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
 		event = data["data"]
@@ -140,7 +138,7 @@ def detail():
 
 def get_user(id):
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.get(f'{endpoint}/api/users?id={id}', headers={"x-access-tokens": token})
+	response = requests.get(f'{config.api_endpoint}/api/users?id={id}', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
 		#logger.debug(str(data))
@@ -158,7 +156,7 @@ def todayEvent():
 	weekdayName = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	today = datetime.now()
 	weekday = weekdayName[today.weekday()]
-	response = requests.get(f'{endpoint}/api/event', headers={"x-access-tokens": token})
+	response = requests.get(f'{config.api_endpoint}/api/event', headers={"x-access-tokens": token})
 
 	if response.status_code == 200:
 		data = response.json()
@@ -235,7 +233,7 @@ def update():
         #acknowledge = request.form.get('acknowledge')
 	#created_by = request.form.get('created_by')
 	#----Update change---#
-	response = requests.put(f'{endpoint}/api/event', \
+	response = requests.put(f'{config.api_endpoint}/api/event', \
                                 json={"id": int(id), "name": name,"text": text, \
                                 "type": int(type),"repeat": int(repeat), \
                                 "parent": int(parent),"execute": execute }, headers={"x-access-tokens": token})
@@ -312,7 +310,7 @@ def deleteItem():
 	except Exception as e:
 		return jsonify({'error':str(e),'message':'Incorect value'}), 400
 
-	response = requests.delete(f'{endpoint}/api/event?id={delete_id}', headers={"x-access-tokens": token})
+	response = requests.delete(f'{config.api_endpoint}/api/event?id={delete_id}', headers={"x-access-tokens": token})
 	if response.status_code == 202:
 		data = response.json()
 		return jsonify({'message': delete_id +' was deleted'}), 202
@@ -375,7 +373,7 @@ def store_event(name,text,type,repeat,parent,execute):
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
 	#--start send data to store--
 
-	url = f'{endpoint}/api/event'
+	url = f'{config.api_endpoint}/api/event'
 
 	headers={'Content-Type' : 'application/json', \
                  'x-access-tokens' : token }
@@ -391,7 +389,7 @@ def store_event(name,text,type,repeat,parent,execute):
 		#--update parent if not have parent--
 
 		if data["data"]["parent"] == 0:
-			update = requests.put(f'{endpoint}/api/event/parent', \
+			update = requests.put(f'{config.api_endpoint}/api/event/parent', \
 					json={"id":id,"parent": id}, headers={"x-access-tokens": token})
 			update_data = update.json()
 			if update.status_code == 202:
@@ -415,7 +413,7 @@ def store_event(name,text,type,repeat,parent,execute):
 
 def get_login_user():
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.post(f'{endpoint}/api/user_info', headers={"x-access-tokens": token})
+	response = requests.post(f'{config.api_endpoint}/api/user_info', headers={"x-access-tokens": token})
 	data = response.json()
 	if response.status_code == 200:
 		user = data['data']
@@ -434,7 +432,7 @@ def add_user():
 	email = request.form.get("email")
 	password = request.form.get("password")
 	logger.debug(f'Username: {username}, Email: {email}, Password: {password}')
-	response = requests.post(f'{endpoint}/api/users', \
+	response = requests.post(f'{config.api_endpoint}/api/users', \
 				json={"username": username,"password": password,"email": email, 'isAdmin': False}, headers={"x-access-tokens": token})
 	if response.status_code == 201:
 		data = response.json()
@@ -466,7 +464,7 @@ def change_password():
 @login_required
 def get_type():
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.get(f'{endpoint}/api/event/type', headers={"x-access-tokens": token})
+	response = requests.get(f'{config.api_endpoint}/api/event/type', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
 		return data
@@ -475,7 +473,7 @@ def get_type():
 @app.route('/getrepeat', methods=['GET'] )
 def get_repeat():
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.get(f'{endpoint}/api/event/repeat', headers={"x-access-tokens": token})
+	response = requests.get(f'{config.api_endpoint}/api/event/repeat', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
 		return data

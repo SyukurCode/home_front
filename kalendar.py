@@ -1,5 +1,5 @@
-from flask import Blueprint, Flask, request, jsonify, current_app, render_template
-from flask_login import current_user,LoginManager,login_user,logout_user,login_required
+from flask import Blueprint, request, current_app, render_template
+from flask_login import current_user,login_required
 from models import db,User
 from datetime import datetime
 from flask_bcrypt import Bcrypt
