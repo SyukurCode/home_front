@@ -9,9 +9,10 @@ papar = Blueprint('papar', __name__)
 def index():
     state = request.args.get('state')
     device = request.args.get('device')
-    response = requests.get(f'{config.api_endpoint}/smarthome/{device}?state={state}')
+    response = requests.get(f'{config.api_endpoint}/api/smarthome/{device}?state={state}')
     if response.status_code == 200:
-        status = response["status"]
-        current = response["Date and Time"]
+        data = response.json()
+        status = data["status"]
+        current = data["Date and Time"]
         return render_template("Papar.html",status=status.upper(),device=device,current=current)
     
