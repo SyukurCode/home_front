@@ -1,4 +1,4 @@
-import os
+from flask import jsonify 
 import config
 import requests, json # type: ignore
 import logging
@@ -20,13 +20,25 @@ def refresh_token(username,publicId):
 		redis_client.set(username,token)
 		data = redis_client.get(username)
 		return data
+	else:
+		logger.error("Fail to connect api")
 	return None
 
 def get_token(username,publicId):
 	data = redis_client.get(username)
-	if not data:
-		data = refresh_token(username=username,publicId=publicId)
-	return data
+	token = handle_token(token=data,username=username,publicId=publicId)
+	if not token:
+		token = refresh_token(username=username,publicId=publicId)
+	return token
+
+def handle_token(token,username,publicId):
+	response = requests.get(f'{config.api_endpoint}/api/user_info',headers={"x-access-tokens": token})
+	if response.status_code == 403:
+		data = response.json()
+		if data['error'] == 'Signature has expired':
+			newToken = refresh_token(username=username,publicId=publicId)
+			return newToken
+	return token
 
 def clean_up(username,publicId):
 	redis_client.delete(username)

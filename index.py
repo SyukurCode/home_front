@@ -47,7 +47,7 @@ def index():
 	except Exception as e:
 		logger.debug("Exception")
 		return render_template("Index.html",events="",user="",menu="own")
-
+	
 	if response.status_code == 200:
 		data = response.json()
 		event = data['data']
@@ -236,6 +236,10 @@ def update():
                                 json={"id": int(id), "name": name,"text": text, \
                                 "type": int(type),"repeat": int(repeat), \
                                 "parent": int(parent),"execute": execute }, headers={"x-access-tokens": token})
+	if response.status_code == 200:
+		logger.info("update success")
+	else:
+		logger.error("Update failed")
 	return redirect("/")
 
 @app.route('/login',methods=['GET', 'POST'])
