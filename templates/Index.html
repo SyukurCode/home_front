@@ -93,7 +93,7 @@
 						<!--input for type and repeate-->
 						<div class="input-group mt-3">
 							<label class="input-group-text" for="type">Type</label>
-							<select class="form-select" id="type" name="type">
+							<select class="form-select" id="type" name="type" onchange="typeSelect(this.value)">
 								<option value="" >Choose..</option>
 							</select>
 							<label class="input-group-text" for="repeat">Repeat</label>
@@ -105,12 +105,22 @@
 						<div id="repeatFeedback" class="text-danger"></div>
 						
 						<!--input for text-->
-						<div class="input-group mt-3">
+						<div class="input-group mt-3" id="wish">
 						  <label for="etext" class="input-group-text">Text</label>
 						  <textarea type="text" class="form-control" rows='5' id="etext" name="etext" placeholder="Enter event text"></textarea>
 						</div>
 						<!--feedback for text-->
 						<div id="textFeedback" class="text-danger"></div>
+
+						<!--input for media-->
+						<div class="input-group mt-3" id="play" style="display: none;">
+							<label for="etext" class="input-group-text">Media</label>
+							<select class="form-select" id="media" name="media">
+								<option value="">Choose..</option>
+							</select>
+						  </div>
+						  <!--feedback for text-->
+						  <div id="mediaFeedback" class="text-danger"></div>
 						
 						<!--input for once-->
 						<div class="input-group date mt-3" id="once" style="display: none;">
@@ -229,6 +239,12 @@
 				});
 			}	
 		}
+		function typeSelect(value){
+			document.getElementById("wish").style.display =  "none";
+			document.getElementById("play").style.display =  "none";
+			if(value == 1)document.getElementById("wish").style.display = "flex";
+			if(value == 3)document.getElementById("play").style.display = "flex";
+		}
 		function repeatSelect(value){
 			var onece = document.getElementById("once");
 			var time = document.getElementById("time");
@@ -331,6 +347,35 @@
 		function getDaysInMonth(m, y) {
 				lastday = new Date(y, m, 0).getDate();
 				return new Date(y, m, 0).getDate();
+		}
+		function getMedia(){
+			$.getJSON("/getmedia",function(data,status){
+				if(status == 'success')
+				{
+					var select = document.getElementById("media");
+					var option = document.createElement("option");
+					select.options.length = 0;
+					option.text =  "Choose";
+					option.value = "";
+					select.add(option);
+					try{
+						data.forEach((obj) => {
+    						Object.entries(obj).forEach(([key, value]) => {
+								const option = document.createElement("option");
+								option.text = key
+								option.value = value
+								select.add(option)
+    						});
+						});
+					}
+					catch(error){
+						alert(error.toString);
+					}
+				}
+			}).fail(function(jqxhr, textStatus, error) {
+    			// Error remove play option
+				$("#type option[value='3']").remove();
+			});
 		}
 		function getTypenRepeat(){
 			$.getJSON("/getrepeat",function(data,status){
@@ -473,12 +518,20 @@
 			document.getElementById('nameFeedback').innerHTML = '';
 			
 			// <!--text-->
-			if(document.getElementById('etext').value == "")
+			if(document.getElementById('type').value == 1 && document.getElementById('etext').value == "")
 			{
 				document.getElementById('textFeedback').innerHTML = 'Pleace enter event text.';
 				return false;
 			}
 			document.getElementById('textFeedback').innerHTML = '';
+
+			// <!--media-->
+			if(document.getElementById('type').value == 3 && document.getElementById('media').value == "")
+			{
+				document.getElementById('mediaFeedback').innerHTML = 'Pleace select media.';
+				return false;
+			}
+			document.getElementById('mediaFeedback').innerHTML = '';
 			
 			// <!--type-->
 			if(document.getElementById('type').value == "")
@@ -567,6 +620,7 @@
 						
 			getTypenType();
 			getTypenRepeat();
+			getMedia();
 			
 			var today = new Date().toISOString().slice(0, 16);
 			document.getElementsByName("datetimepicker")[0].min = today;

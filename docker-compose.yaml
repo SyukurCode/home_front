@@ -10,6 +10,8 @@ services:
     environment:
         - API_HOST=192.168.0.88
         - API_PORT=5002
+        - SPOKE_HOST=192.168.0.121
+        - SPOKE_PORT=3000
         - POSTGRES_USER=admin
         - POSTGRES_PASSWORD=syukur123***
         - POSTGRES_HOST=192.168.0.88
@@ -31,4 +33,3 @@ services:
       - REDIS_PASSWORD=syukur123***
       - REDIS_PORT=6379
       - REDIS_DATABASES=16  
-

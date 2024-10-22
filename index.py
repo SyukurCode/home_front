@@ -42,7 +42,6 @@ def load_user(user_id):
 def index():
 	descriptions = []
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
-	logger.debug(f'Token:{token}')
 	try:
 		response = requests.get(f'{config.api_endpoint}/api/event/user',headers={"x-access-tokens": token})
 	except Exception as e:
@@ -116,12 +115,12 @@ def detail():
 		event = data["data"]
 		createdBy = event["created_by"]
 		for t in get_type()["data"]:
-			if t["id"] == event["type"]:
+			if t["name"] == event["type"]:
 				type = t["name"]
 		for r in get_repeat()["data"]:
-			if r["id"] == event["repeat"]:
+			if r["name"] == event["repeat"]:
 				repeat = r["name"]
-		created_by = get_user(createdBy)["data"]["username"]
+		created_by = createdBy
 		description = common.executeTranslate(event)
 		return render_template("Detail.html",event=event,execute=description, \
 			type=type,repeat=repeat,created_by=created_by,error='')
@@ -271,18 +270,18 @@ def logout():
 def addItem():
 	name = request.form.get('ename')
 	text = request.form.get('etext')
+	media = request.form.get('media')
 	type = request.form.get('type')
 	repeat = request.form.get('repeat')
-	#parent = request.form.get('parent')
 	month = request.form.get('emonth')
 	day = request.form.get('eday')
 	datepicker = request.form.get('datepicker')
 	datetimepicker = request.form.get('datetimepicker')
 	timepicker = request.form.get('timepicker')
 	weekday = request.form.getlist('weekday')
-	logger.debug(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
-			+ f'DPicker:{datepicker}\nDTPicker:{datetimepicker}\nTPicker:{timepicker}\nWeekday:{weekday}')
-
+	# logger.debug(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
+	# 		+ f'DPicker:{datepicker}\nDTPicker:{datetimepicker}\nTPicker:{timepicker}\nWeekday:{weekday}')
+	if type == '3': text = media
 	if repeat == '1':
 		add_once(name,text,type,repeat,datetimepicker)
 
@@ -317,7 +316,6 @@ def deleteItem():
 
 	return jsonify({'message': 'Fail to delete'}), 400
 
-
 def add_once(name,text,type,repeat,datetimepicker):
 	#2024-03-19T20:38:43
 	#strDateTime = parse(datetimepicker)
@@ -327,7 +325,7 @@ def add_once(name,text,type,repeat,datetimepicker):
 	dt = parse(datetimepicker)
 	execute = '{"date":{"day":' + str(dt.day) + ',"month":' + str(dt.month) + ',"year":' + str(dt.year) + '}' \
 			+ ',"time":{"hour":' + str(dt.hour) + ',"minute":' + str(dt.minute) + ',"second":' + str(dt.second) + '}}'
-	logger.debug(execute)
+	# logger.debug(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_allday(name,text,type,repeat,datepicker):
@@ -468,17 +466,26 @@ def get_type():
 	if response.status_code == 200:
 		data = response.json()
 		return data
-
-	return None
+	return jsonify({"message":"fail connect to api service"}), 500
 @app.route('/getrepeat', methods=['GET'] )
+@login_required
 def get_repeat():
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
 	response = requests.get(f'{config.api_endpoint}/api/event/repeat', headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		data = response.json()
 		return data
+	return jsonify({"message":"fail connect to api service"}), 500
 
-	return None
+@app.route('/getmedia', methods=['GET'] )
+@login_required
+def get_media():
+	response = requests.get(f'{config.spoke_endpoint}/audio_list')
+	if response.status_code == 200:
+		data = response.json()
+		return data
+	return jsonify({"message":"fail connect to spoke service"}), 500
+
 if __name__ == '__main__':
 	from waitress import serve # type: ignore
 	serve(app, host="0.0.0.0", port=5000)
