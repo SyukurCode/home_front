@@ -5,21 +5,15 @@ import logging
 from datetime import datetime, date, timedelta
 import redis
 
-endpoint = os.environ['API_HOST']
-api_port = os.environ['API_PORT']
-redis_host = os.environ['REDIS_HOST']
-redis_port = os.environ['REDIS_PORT']
 
-redis_client = redis.Redis(host=redis_host, port=redis_port, db=0)
-endpoint = os.environ['API_HOST']
-api_port = os.environ['API_PORT']
+redis_client = redis.Redis(host=config.redis_host, port=config.redis_port, db=0)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 def refresh_token(username,publicId):
 	password = redis_client.get(str(publicId))
-	response = requests.post(f'http://{endpoint}:{api_port}/api/login', auth = (username, password))
+	response = requests.post(f'{config.api_endpoint}/api/login', auth = (username, password))
 	if response.status_code == 200:
 		data = response.json()
 		token = data['token']

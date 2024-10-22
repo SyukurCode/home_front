@@ -21,3 +21,7 @@ spoke_host = os.getenv('SPOKE_HOST','192.168.0.121')
 spoke_port = os.getenv('SPOKE_PORT',3000)
 
 spoke_endpoint = f"http://{spoke_host}:{spoke_port}"
+
+# RADIS
+redis_host = os.environ['REDIS_HOST']
+redis_port = os.environ['REDIS_PORT']
