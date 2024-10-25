@@ -42,10 +42,12 @@ def load_user(user_id):
 def index():
 	descriptions = []
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
+	if not token:
+		return redirect("/logout")
 	try:
 		response = requests.get(f'{config.api_endpoint}/api/event/user',headers={"x-access-tokens": token})
 	except Exception as e:
-		logger.debug("Exception")
+		logger.error(f"Error {str(e)}")
 		return render_template("Index.html",events="",user="",menu="own")
 	
 	if response.status_code == 200:

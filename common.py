@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 
 def refresh_token(username,publicId):
 	password = redis_client.get(str(publicId))
+	if not password:
+		logger.error("password is empty")
 	response = requests.post(f'{config.api_endpoint}/api/login', auth = (username, password))
 	if response.status_code == 200:
 		data = response.json()
@@ -21,11 +23,14 @@ def refresh_token(username,publicId):
 		data = redis_client.get(username)
 		return data
 	else:
-		logger.error("Fail to connect api")
+		logger.error(f"Fail to login {username} to api")
 	return None
 
 def get_token(username,publicId):
 	data = redis_client.get(username)
+	if not data:
+		logger.error("uername is empty")
+		return None
 	token = handle_token(token=data,username=username,publicId=publicId)
 	if not token:
 		token = refresh_token(username=username,publicId=publicId)
