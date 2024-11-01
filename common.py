@@ -1,4 +1,5 @@
-from flask import jsonify 
+from flask import jsonify
+from flask_login import current_user
 import config
 import requests, json # type: ignore
 import logging
@@ -162,17 +163,25 @@ def get_next_weekday(weekday_name):
     return next_weekday_date
 
 def get_type_id(name: str):
-	data = requests.get("http://localhost:5000/gettype()")
-	all_data = data["data"]
-	for d in all_data:
-		if d["name"] == name :
-			return d['id']
+	token = get_token(username=current_user.username,publicId=current_user.publicId)
+	response = requests.get(f'{config.api_endpoint}/api/event/type', headers={"x-access-tokens": token})
+	if response.status_code == 200:
+		all_data = response.json()
+		for d in all_data["data"]:
+			if d['name'] == name :
+				return d['id']
+		logger.error(f"Name of type {name} not found")
+	logger.error(f"request no success")
 	return None
 
 def get_repeat_id(name: str):
-	data = requests.get("http://localhost:5000/getrepeat()")
-	all_data = data["data"]
-	for d in all_data:
-		if d["name"] == name :
-			return d['id']
+	token = get_token(username=current_user.username,publicId=current_user.publicId)
+	response = requests.get(f'{config.api_endpoint}/api/event/repeat', headers={"x-access-tokens": token})
+	if response.status_code == 200:
+		all_data = response.json()
+		for d in all_data["data"]:
+			if d['name'] == name :
+				return d['id']
+		logger.error(f"Name of repeat {name} not found")
+	logger.error(f"request no success")
 	return None
