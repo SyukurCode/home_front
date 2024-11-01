@@ -30,7 +30,6 @@ def get_token(username,publicId):
 	data = redis_client.get(username)
 	if not data:
 		logger.error("uername is empty")
-		return None
 	token = handle_token(token=data,username=username,publicId=publicId)
 	if not token:
 		token = refresh_token(username=username,publicId=publicId)
@@ -52,8 +51,8 @@ def clean_up(username,publicId):
 def executeTranslate(e):
 	try:
 		ex = json.loads(e['execute'])
-	except Exception as e:
-		return "Wrong format"
+	except Exception as er:
+		logger.error(f"Wrong format {str(er)}")
 	if e["repeat"] == 'Once' or e["repeat"] == 1:
 		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
 		ampm = "AM"
@@ -104,6 +103,28 @@ def executeTranslate(e):
 
 	return description
 
+def check_due(event):
+	execute = json.loads(event['execute'])
+	if event["repeat"] == "Once":
+		if event["type"] == "Wish" or event["type"] == "Play":
+			hour = execute["time"]["hour"]
+			minute = execute["time"]["minute"]
+		else:
+			time = datetime.strptime(execute["time"],'%H:%M')
+			hour = time.hour
+			minute = time.minute
+	elif event["repeat"] == "Allday":
+		hour = 0
+		minute = 0
+	else:
+		return json.dumps({'isDue': False,'minutes': 0})
+    
+	event_datetime = datetime(year=execute["date"]["year"],month=execute["date"]["month"],day=execute["date"]["day"],hour=hour,minute=minute,second=0)
+	time_diff = event_datetime - datetime.now()
+	minutes = time_diff.total_seconds() / 60 
+	if minutes < 1.0 :
+		return json.dumps({'isDue': True,'minutes': abs(int(minutes))})
+	return json.dumps({'isDue': False,'minutes': abs(int(minutes))})
 
 def get_next_weekday(weekday_name):
     # Dictionary to map weekday names to their respective numbers
@@ -139,3 +160,19 @@ def get_next_weekday(weekday_name):
     next_weekday_date = today + timedelta(days=days_ahead)
 
     return next_weekday_date
+
+def get_type_id(name: str):
+	data = requests.get("http://localhost:5000/gettype()")
+	all_data = data["data"]
+	for d in all_data:
+		if d["name"] == name :
+			return d['id']
+	return None
+
+def get_repeat_id(name: str):
+	data = requests.get("http://localhost:5000/getrepeat()")
+	all_data = data["data"]
+	for d in all_data:
+		if d["name"] == name :
+			return d['id']
+	return None

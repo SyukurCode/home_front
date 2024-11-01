@@ -32,4 +32,4 @@ services:
     environment:
       - REDIS_PASSWORD=syukur123***
       - REDIS_PORT=6379
-      - REDIS_DATABASES=16  
+      - REDIS_DATABASES=16

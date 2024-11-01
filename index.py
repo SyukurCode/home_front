@@ -41,6 +41,7 @@ def load_user(user_id):
 @login_required
 def index():
 	descriptions = []
+	due_items = []
 	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
 	if not token:
 		return redirect("/logout")
@@ -48,7 +49,7 @@ def index():
 		response = requests.get(f'{config.api_endpoint}/api/event/user',headers={"x-access-tokens": token})
 	except Exception as e:
 		logger.error(f"Error {str(e)}")
-		return render_template("Index.html",events="",user="",menu="own")
+		return render_template("Index.html",events="",events_due="",user="",menu="own")
 	
 	if response.status_code == 200:
 		data = response.json()
@@ -57,20 +58,20 @@ def index():
 			description = common.executeTranslate(e)
 			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
                                  "execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
+			event_due = json.loads(common.check_due(e))
+			if event_due['isDue']:
+				due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['minutes']})
 		eve = json.loads('{}')
 		eve.update({"data":descriptions})
 		events = eve["data"]
+		events_due = json.dumps(due_items)
         #logger.debug(f"User:{current_user.username}")
-		return render_template("Index.html",events=events,user=current_user,menu="own")
+		return render_template("Index.html",events=events,events_due=events_due,user=current_user,menu="own")
 		
 	if response.status_code == 404:
-		return render_template("Index.html",events='',user=current_user,menu="own")
+		return render_template("Index.html",events='',events_due="",user=current_user,menu="own")
 
-	if response.status_code == 403 or response.status_code == 400:
-		token = common.refresh_token(username=current_user.username,publicId=current_user.publicId)
-		return redirect("/")
-	
-	return render_template("Index.html",events='',user=current_user,menu="own")
+	return render_template("Index.html",events='',events_due="",user=current_user,menu="own")
 
 @app.route('/all')
 @login_required
@@ -81,7 +82,7 @@ def all():
 		response = requests.get(f'{config.api_endpoint}/api/event',headers={"x-access-tokens": token})
 	except Exception as e:
 		logger.debug("Exception")
-		return render_template("Index.html",events="",user="",menu="all")
+		return render_template("Index.html",events="",events_due="",user="",menu="all")
 
 	if response.status_code == 200:
 		data = response.json()
@@ -94,16 +95,12 @@ def all():
 		eve.update({"data":descriptions})
 		events = eve["data"]
 		logger.debug(f"User:{current_user.username}")
-		return render_template("Index.html",events=events,user=current_user,menu="all")
+		return render_template("Index.html",events=events,events_due="",user=current_user,menu="all")
 
 	if response.status_code == 404:
-		return render_template("Index.html",events='',user=current_user,menu="all")
+		return render_template("Index.html",events='',events_due="",user=current_user,menu="all")
 
-	if response.status_code == 403 or response.status_code == 400:
-		token = common.refresh_token(username=current_user.username,publicId=current_user.publicId)
-		return redirect("/all")
-
-	return render_template("Index.html",events='',user=current_user,menu="all")
+	return render_template("Index.html",events='',events_due="",user=current_user,menu="all")
 
 @app.route('/detail')
 @login_required
@@ -131,23 +128,7 @@ def detail():
 		return render_template("Detail.html",event=event,execute=description, \
 			type='',repeat='',created_by='',error=data['message'])
 
-	if response.status_code == 403 or response.status_code == 400:
-			token = common.refresh_token(username=current_user.username,publicId=current_user.publicId)
-			return redirect("/detail")
-
 	return redirect("/")
-
-def get_user(id):
-	token = common.get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.get(f'{config.api_endpoint}/api/users?id={id}', headers={"x-access-tokens": token})
-	if response.status_code == 200:
-		data = response.json()
-		#logger.debug(str(data))
-		return data
-	if response.status_code == 403 or response.status_code == 400:
-		return redirect("/login")
-
-	return None
 
 @app.route('/today')
 @login_required
@@ -210,12 +191,10 @@ def todayEvent():
 			eve = json.loads('{}')
 			eve.update({"data":descriptions})
 			events = eve["data"]
-		return render_template("Index.html",events=events,user=current_user,menu="today")
+		return render_template("Index.html",events=events,events_due="",user=current_user,menu="today")
 	if response.status_code == 404:
-		return render_template("Index.html",events='',user=current_user,menu="today")
-	if response.status_code == 403 or response.status_code == 400:
-		token = common.refresh_token(username=current_user.username,publicId=current_user.publicId)
-		return redirect("/today")
+		return render_template("Index.html",events='',events_due="",user=current_user,menu="today")
+	return redirect("/")
 
 @app.route('/update',methods=['POST'])
 @login_required
@@ -229,14 +208,12 @@ def update():
 	repeat = request.form.get('repeat')
 	execute = request.form.get('execute')
 	parent = request.form.get('parent')
-	#created_date = request.form.get('created_date')
-        #acknowledge_date = request.form.get('acknowledge_date')
-        #acknowledge = request.form.get('acknowledge')
-	#created_by = request.form.get('created_by')
+	int_type = common.get_type_id(type)
+	int_repeat = common.get_repeat_id(repeat)
 	#----Update change---#
 	response = requests.put(f'{config.api_endpoint}/api/event', \
                                 json={"id": int(id), "name": name,"text": text, \
-                                "type": int(type),"repeat": int(repeat), \
+                                "type": int_type,"repeat": int_repeat, \
                                 "parent": int(parent),"execute": execute }, headers={"x-access-tokens": token})
 	if response.status_code == 200:
 		logger.info("update success")
@@ -255,7 +232,10 @@ def login():
 		username = request.form.get('username')
 		password = request.form.get('password')
 		isRemember = request.form.get('remember_me')
-		user = User.query.filter_by(username=username).first()
+		try:
+			user = User.query.filter_by(username=username).first()
+		except Exception as e:
+			logger.error(f"Error: {str(e)}")
 		if user and bcrypt.check_password_hash(user.password, password):
 			if isRemember:
 				login_user(user, remember=True, duration=timedelta(days=30))
