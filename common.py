@@ -54,6 +54,8 @@ def executeTranslate(e):
 		ex = json.loads(e['execute'])
 	except Exception as er:
 		logger.error(f"Wrong format {str(er)}")
+		logger.info(f"execute:{e}")
+
 	if e["repeat"] == 'Once' or e["repeat"] == 1:
 		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
 		ampm = "AM"
