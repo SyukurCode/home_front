@@ -1,7 +1,10 @@
 from flask import Blueprint, request, current_app, render_template
 from flask_login import current_user,login_required
 from datetime import datetime, timezone
-import requests, json, config # type: ignore
+import requests, json, config, logging # type: ignore
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 papar = Blueprint('papar', __name__)
 
@@ -15,6 +18,7 @@ def index():
         data = response.json()
         status = data["status"]
         current = data["Date and Time"]
+        logging.info(f"request from:{request.remote_addr}")
         return render_template("Papar.html",status=status.upper(),device=device,current=current)
     return ({"Message":"Api fail to response"})
     
