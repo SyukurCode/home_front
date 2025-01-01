@@ -7,8 +7,11 @@ from dateutil.parser import parse # type: ignore
 import os
 import common
 import requests, json # type: ignore
-import logging
 
+import logwriter,os
+
+current_directory = os.getcwd()
+logger = logwriter.writer(current_directory + "/logs/","gui",__name__)
 
 api_host = os.environ['API_HOST']
 api_port = os.environ['API_PORT']
@@ -18,18 +21,20 @@ kalendar = Blueprint('kalendar', __name__)
 @login_required
 @kalendar.route('/calendar', methods=['GET'])
 def index():
+	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 	return render_template("Calendar.html")
 
 
 @kalendar.route('/calendar/api/all',methods=['GET'])
 def allevent():
+	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 	allEvents = []
 	token = common.get_token(current_user.username,current_user.publicId)
 
 	try:
 		response = requests.get(f'{endpoint}/api/event',headers={"x-access-tokens": token})
 	except Exception as e:
-		logging.debug("Exception")
+		logger.logs("Exception:{}".format(str(e)))
 		return None
 
 	if response.status_code == 200:
@@ -43,7 +48,7 @@ def allevent():
 			try:
 				dateTimeJson = json.loads(event['execute'])
 			except Exception as e:
-				logging.debug("Wrong format")
+				logger.logs("Wrong format")
 
 
 			if event['repeat'] == 'Once' or event['repeat'] == 1:
