@@ -5,14 +5,14 @@ from models import db,User
 from datetime import datetime, timedelta
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
-import os
 import common
 import requests, json # type: ignore
-import logging
 import config
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+import logwriter,os
+
+current_directory = os.getcwd()
+logger = logwriter.writer(current_directory + "/logs/","api",__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '195de30e06e4040837afd882b4966398'
@@ -48,7 +48,7 @@ def index():
 	try:
 		response = requests.get(f'{config.api_endpoint}/api/event/user',headers={"x-access-tokens": token})
 	except Exception as e:
-		logger.error(f"Error {str(e)}")
+		logger.logs(f"Error {str(e)}")
 		return render_template("Index.html",events="",events_due="",user="",menu="own")
 	
 	if response.status_code == 200:
@@ -65,7 +65,7 @@ def index():
 		eve.update({"data":descriptions})
 		events = eve["data"]
 		events_due = json.dumps(due_items)
-        #logger.debug(f"User:{current_user.username}")
+        #logger.logs(f"User:{current_user.username}")
 		return render_template("Index.html",events=events,events_due=events_due,user=current_user,menu="own")
 		
 	if response.status_code == 404:
@@ -81,7 +81,7 @@ def all():
 	try:
 		response = requests.get(f'{config.api_endpoint}/api/event',headers={"x-access-tokens": token})
 	except Exception as e:
-		logger.debug("Exception")
+		logger.logs("Exception")
 		return render_template("Index.html",events="",events_due="",user="",menu="all")
 
 	if response.status_code == 200:
@@ -94,7 +94,7 @@ def all():
 		eve = json.loads('{}')
 		eve.update({"data":descriptions})
 		events = eve["data"]
-		logger.debug(f"User:{current_user.username}")
+		logger.logs(f"User:{current_user.username}")
 		return render_template("Index.html",events=events,events_due="",user=current_user,menu="all")
 
 	if response.status_code == 404:
@@ -147,7 +147,7 @@ def todayEvent():
 			try:
 				ex = json.loads(e["execute"])
 			except Exception as e:
-				logger.debug(f'Error: {e}')
+				logger.logs(f'Error: {e}')
 				continue
 
 			if e["repeat"] == 'Once' \
@@ -187,7 +187,7 @@ def todayEvent():
 				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
 							"execute":description,"acknowledge":e["acknowledge"], \
 							"owner":e["created_by"],"type":e["type"]})
-			#logger.debug(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
+			#logger.logs(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
 			eve = json.loads('{}')
 			eve.update({"data":descriptions})
 			events = eve["data"]
@@ -216,9 +216,9 @@ def update():
                                 "type": int_type,"repeat": int_repeat, \
                                 "parent": int(parent),"execute": execute }, headers={"x-access-tokens": token})
 	if response.status_code == 200:
-		logger.info("update success")
+		logger.logs("update success")
 	else:
-		logger.error("Update failed")
+		logger.logs("Update failed")
 	return redirect("/")
 
 @app.route('/login',methods=['GET', 'POST'])
@@ -235,7 +235,7 @@ def login():
 		try:
 			user = User.query.filter_by(username=username).first()
 		except Exception as e:
-			logger.error(f"Error: {str(e)}")
+			logger.logs(f"Error: {str(e)}")
 		if user and bcrypt.check_password_hash(user.password, password):
 			if isRemember:
 				login_user(user, remember=True, duration=timedelta(days=30))
@@ -265,7 +265,7 @@ def addItem():
 	datetimepicker = request.form.get('datetimepicker')
 	timepicker = request.form.get('timepicker')
 	weekday = request.form.getlist('weekday')
-	# logger.debug(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
+	# logger.logs(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
 	# 		+ f'DPicker:{datepicker}\nDTPicker:{datetimepicker}\nTPicker:{timepicker}\nWeekday:{weekday}')
 	if type == '3': text = media
 	if repeat == '1':
@@ -305,36 +305,36 @@ def deleteItem():
 def add_once(name,text,type,repeat,datetimepicker):
 	#2024-03-19T20:38:43
 	#strDateTime = parse(datetimepicker)
-	#logger.debug(type(strDateTime).toString())
+	#logger.logs(type(strDateTime).toString())
 	#format = '%Y-%m-%d %H:%M:%S'
 	#dt = datetime.strptime(strDateTime,format)
 	dt = parse(datetimepicker)
 	execute = '{"date":{"day":' + str(dt.day) + ',"month":' + str(dt.month) + ',"year":' + str(dt.year) + '}' \
 			+ ',"time":{"hour":' + str(dt.hour) + ',"minute":' + str(dt.minute) + ',"second":' + str(dt.second) + '}}'
-	# logger.debug(execute)
+	# logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_allday(name,text,type,repeat,datepicker):
 	#2024-04-06
 	#strDateTime = parse(datepicker)
-	#logger.debug(strDateTime)
+	#logger.logs(strDateTime)
 	#format = '%Y-%m-%d %H:%M:%S'
 	d = parse(datepicker)
 	execute = '{"date":{"day":' + str(d.day) + ',"month":' + str(d.month) + ',"year":' + str(d.year) + '}}'
-	logger.debug(execute)
+	logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_daily(name,text,type,repeat,timepicker,weekday):
 	#13:44:06
 	#strDateTime = parse(timepicker)
-	#logger.debug(strDateTime)
+	#logger.logs(strDateTime)
 	isFirst = True
 	parent = 0
 	#format = '%Y-%m-%d %H:%M:%S'
 	t = parse(timepicker)
 	for w in weekday:
 		execute = '{"date":{"weekday":"' + w + '"},"time":{"hour":' + str(t.hour) + ',"minute":' + str(t.minute) + ',"second":' + str(t.second) + '}}'
-		logger.debug(execute)
+		logger.logs(execute)
 		if isFirst:
 			isFirst = False
 			parent = store_event(name,text,type,repeat,0,execute)
@@ -342,15 +342,15 @@ def add_daily(name,text,type,repeat,timepicker,weekday):
 			if not parent == 0:
 				store_event(name,text,type,repeat,parent,execute)
 			else:
-				logger.debug("daily store fail")
+				logger.logs("daily store fail")
 def add_monthly(name,text,type,repeat,day):
 	execute = '{"date":{"day":' + day + '}}'
-	logger.debug(execute)
+	logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_yearly(name,text,type,repeat,day,month):
 	execute = '{"date":{"day":' + day + ',"month":' + month + '}}'
-	logger.debug(execute)
+	logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def store_event(name,text,type,repeat,parent,execute):
@@ -377,7 +377,7 @@ def store_event(name,text,type,repeat,parent,execute):
 					json={"id":id,"parent": id}, headers={"x-access-tokens": token})
 			update_data = update.json()
 			if update.status_code == 202:
-				logger.debug("event store success")
+				logger.logs("event store success")
 				return update_data['data']['id']
 
 			else:
@@ -385,10 +385,10 @@ def store_event(name,text,type,repeat,parent,execute):
 
 				if 'error' in update_data:
 					message  += ', ' +  update_data['error']
-				logger.debug(f'event update fail error:{message}')
+				logger.logs(f'event update fail error:{message}')
 
 	else:
-		logger.debug("event store request fail")
+		logger.logs("event store request fail")
 
 	if response.status_code == 403 or response.status_code == 400:
 		return redirect("/login")
@@ -405,7 +405,7 @@ def get_login_user():
 	if response.status_code ==  403 or response.status_code ==  400:
 		return redirect("/login")
 
-	logger.debug(f'response{response.status_code}')
+	logger.logs(f'response{response.status_code}')
 	return None
 
 @app.route('/account', methods=['POST'])
@@ -415,13 +415,13 @@ def add_user():
 	username = request.form.get("username")
 	email = request.form.get("email")
 	password = request.form.get("password")
-	logger.debug(f'Username: {username}, Email: {email}, Password: {password}')
+	logger.logs(f'Username: {username}, Email: {email}, Password: {password}')
 	response = requests.post(f'{config.api_endpoint}/api/users', \
 				json={"username": username,"password": password,"email": email, 'isAdmin': False}, headers={"x-access-tokens": token})
 	if response.status_code == 201:
 		data = response.json()
 	else:
-		logger.debug("Fail to add user")
+		logger.logs("Fail to add user")
 
 	return redirect("/")
 

@@ -19,6 +19,8 @@ services:
         - POSTGRES_DB=homeapi
         - REDIS_HOST=redis
         - REDIS_PORT=6379
+    volumes:
+        - ./log:/app/logs
     ports:
         - '5003:5000'
     depends_on:
