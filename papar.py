@@ -5,7 +5,7 @@ import requests, json, config, logging # type: ignore
 import logwriter,os
 
 current_directory = os.getcwd()
-logger = logwriter.writer(current_directory + "/logs/","api",__name__)
+logger = logwriter.writer(current_directory + "/logs/","gui",__name__)
 
 papar = Blueprint('papar', __name__)
 

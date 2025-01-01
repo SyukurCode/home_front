@@ -12,7 +12,7 @@ import config
 import logwriter,os
 
 current_directory = os.getcwd()
-logger = logwriter.writer(current_directory + "/logs/","api",__name__)
+logger = logwriter.writer(current_directory + "/logs/","gui",__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '195de30e06e4040837afd882b4966398'
