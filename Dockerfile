@@ -13,4 +13,5 @@ RUN touch /app/logs/gui.log
 
 COPY . .
 
-CMD [ "python3", "index.py"]
+#CMD [ "python3", "index.py"]
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "index:app"]

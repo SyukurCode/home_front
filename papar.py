@@ -1,7 +1,7 @@
 from flask import Blueprint, request, current_app, render_template
 from flask_login import current_user,login_required
 from datetime import datetime, timezone
-import requests, json, config, logging # type: ignore
+import requests, json, config # type: ignore
 import logwriter,os
 
 current_directory = os.getcwd()
@@ -11,7 +11,7 @@ papar = Blueprint('papar', __name__)
 
 @papar.route('/papar', methods=['GET'])
 def index():
-    logger.logs("from:{},url:{}".format(request.host,request.url))
+    logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
     state = request.args.get('state')
     device = request.args.get('device')
     token = get_token("admin","syukur123***")
@@ -20,7 +20,6 @@ def index():
         data = response.json()
         status = data["status"]
         current = data["Date and Time"]
-        logging.info(f"request from:{request.remote_addr}")
         return render_template("Papar.html",status=status.upper(),device=device,current=current)
     return ({"Message":"Api fail to response"})
     
