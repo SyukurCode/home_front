@@ -44,5 +44,31 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<script type="text/javascript">
+		async function login(username, password) {
+		const tokenUrl = 'http://192.168.0.100/api/login';
+		const response = await fetch(tokenUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: new URLSearchParams({
+				grant_type: 'password',
+				username: username,
+				username: username,
+				password: password,
+				// client_id: 'YOUR_CLIENT_ID',
+				// client_secret: 'YOUR_CLIENT_SECRET' // optional
+			})
+		});
+
+		if (response.ok) {
+			const data = await response.json();
+			localStorage.setItem('access_token', data.access_token);
+			console.log('Login successful:', data);
+		} else {
+			const error = await response.json();
+			console.error('Login failed:', error);
+		}
+		}
 	</script>
 </body>
