@@ -1,0 +1,44 @@
+01-06-2025 09:22:41 AM:index - Login success Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzM2MTU3MTYxfQ.zmD-hYjLTLQ4Ku3leAfUsvVWdDeHJ9tWO6InRfqbXFA
+01-06-2025 10:58:22 AM:index - {'detail': 'Signature has expired'}
+01-06-2025 10:58:22 AM:index - {'detail': 'Signature has expired'}
+01-06-2025 10:58:32 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 10:58:32 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 10:58:38 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 10:58:38 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 10:59:39 AM:index - User:admin
+01-06-2025 10:59:46 AM:index - User:admin
+01-06-2025 10:59:55 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 10:59:55 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 10:59:58 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 10:59:58 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 11:10:20 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 11:10:20 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 11:10:23 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 11:10:23 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 11:19:23 AM:index - {'detail': 'Method Not Allowed'}
+01-06-2025 11:40:37 AM:index - {'detail': 'Event not found'}
+01-06-2025 11:42:42 AM:index - {'detail': 'Event not found'}
+01-06-2025 11:43:07 AM:index - event store success
+01-06-2025 11:46:31 AM:index - event store success
+01-06-2025 11:55:01 AM:index - {'detail': 'Method Not Allowed'}
+01-06-2025 11:55:04 AM:index - {'detail': 'Method Not Allowed'}
+01-06-2025 11:57:37 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar
+01-06-2025 11:57:37 AM:kalendar - from:172.21.0.1,url:http://localhost:5003/calendar/api/all
+01-06-2025 11:58:00 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+01-06-2025 11:58:02 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+01-06-2025 11:58:04 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+01-06-2025 11:58:05 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Monday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store success
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Tuesday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store request fail
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Wednesday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store request fail
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Thursday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store request fail
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Friday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store request fail
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Saturday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store request fail
+01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Sunday"},"time":{"hour":20,"minute":8,"second":0}}
+01-06-2025 12:08:43 PM:index - event store request fail
