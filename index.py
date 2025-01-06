@@ -55,12 +55,16 @@ def index():
 		data = response.json()
 		event = data['data']
 		for e in event:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-                                 "execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
-			event_due = json.loads(common.check_due(e))
-			if event_due['isDue']:
-				due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['minutes']})
+			try:
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+									"execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
+				event_due = json.loads(common.check_due(e))
+				if event_due['isDue']:
+					due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['minutes']})
+			except Exception as e:
+				logger.logs("broken data at {}".format(e["id"]))
+				pass
 		eve = json.loads('{}')
 		eve.update({"data":descriptions})
 		events = eve["data"]
