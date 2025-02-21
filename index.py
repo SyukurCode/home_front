@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, request, redirect, jsonify, session
-# from flask_login import LoginManager,login_user,logout_user,login_required
 from models import db,User
 from datetime import datetime, timedelta
 from flask_bcrypt import Bcrypt
@@ -23,9 +22,6 @@ db.init_app(app)
 
 bcrypt = Bcrypt(app)
 
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = 'login'
 
 # register Blueprint
 from kalendar import kalendar as kalendar_blueprint
@@ -33,9 +29,6 @@ app.register_blueprint(kalendar_blueprint)
 from papar import papar as papar_blueprint
 app.register_blueprint(papar_blueprint)
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.filter_by(id=user_id).first()
 
 @app.route('/')
 def index():
@@ -122,6 +115,10 @@ def detail():
 		logger.logs(data)
 		session.clear()
 		return render_template("Login.html",error=data['detail'])
+	
+	if response.status_code == 204:
+		return render_template("Detail.html",event='',execute='', \
+		type='',repeat='',created_by='',error=data['detail'])
 	
 	event = data["data"]
 	createdBy = event["created_by"]

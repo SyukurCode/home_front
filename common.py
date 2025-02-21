@@ -60,7 +60,7 @@ def executeTranslate(e):
 		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
 		ampm = "AM"
 		if e["type"] == "Prayer" or e["type"] == 2:
-			time = datetime.strptime(ex["time"],'%H:%M')
+			time = datetime.strptime(ex["time"],'%HH:%MM')
 			Hour12 = time.hour
 			Minute = f'{time.minute}'
 			if time.minute < 10:
