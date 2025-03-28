@@ -65,8 +65,15 @@ def index():
 	eve.update({"data":descriptions})
 	events = eve["data"]
 	events_due = json.dumps(due_items)
-	#logger.logs(f"User:{current_user.username}")
-	return render_template("Index.html",events=events,events_due=events_due,user=current_user,menu="own")
+	
+	viewdata = {
+		"events" : events,
+		"events_due" : events_due,
+		"user" : current_user,
+		"menu" : "own"
+	}
+
+	return render_template("Index.html",**viewdata)
 
 @app.route('/all')
 def all():
@@ -96,12 +103,20 @@ def all():
 	eve.update({"data":descriptions})
 	events = eve["data"]
 	logger.logs(f"User:{current_user}")
-	return render_template("Index.html",events=events,events_due="",user=current_user,menu="all")
+
+	viewdata = {
+		"events" : events,
+		"events_due" : "",
+		"user" : current_user,
+		"menu" : "all"
+	}
+	return render_template("Index.html",**viewdata)
 
 @app.route('/detail')
 def detail():
 	id = request.args.get('id')
 	token = session.get("Token")
+	current_user = session.get("User")
 
 	if not token:
 		return redirect("/logout")
@@ -130,8 +145,18 @@ def detail():
 			repeat = r["name"]
 	created_by = createdBy
 	description = common.executeTranslate(event)
-	return render_template("Detail.html",event=event,execute=description, \
-		type=type,repeat=repeat,created_by=created_by,error='')
+
+	viewdata = {
+		"event" : event,
+		"execute" : description,
+		"type" : type,
+		"repeat" : repeat,
+		"created_by" : created_by,
+		"error" : "",
+		"user" : current_user
+	}
+
+	return render_template("Detail.html", **viewdata)
 
 
 @app.route('/today')
@@ -207,6 +232,15 @@ def todayEvent():
 		eve = json.loads('{}')
 		eve.update({"data":descriptions})
 		events = eve["data"]
+
+		viewdata = {
+		"events" : events,
+		"events_due" : "",
+		"user" : current_user,
+		"menu" : "today"
+	}
+
+	return render_template("Index.html",**viewdata)
 	return render_template("Index.html",events=events,events_due="",user=current_user,menu="today")
 
 @app.route('/update',methods=['POST'])
@@ -227,20 +261,23 @@ def update():
 	int_type = common.get_type_id(type)
 	int_repeat = common.get_repeat_id(repeat)
 	#----Update change---#
-	response = requests.put(f'{config.api_endpoint}/api/event', \
-                                json={"id": int(id), "name": name,"text": text, \
-                                "type": int_type,"repeat": int_repeat, \
-                                "parent": int(parent),"execute": execute },
-								headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-	data = response.json()
+	try:
+		response = requests.put(f'{config.api_endpoint}/api/event', \
+									json={"id": int(id), "name": name,"text": text, \
+									"type": int_type,"repeat": int_repeat, \
+									"parent": int(parent),"execute": execute },
+									headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
+		data = response.json()
 
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
-	
-	return redirect("/")
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
+		
+		return redirect("/")
+	except requests.exceptions.RequestException as e:
+		raise SystemExit(e)
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
@@ -261,24 +298,27 @@ def login():
 			'password': password
 		}
 
-		response = requests.post(f'{config.api_endpoint}/api/login',
-						headers={"Content-Type":"application/x-www-form-urlencoded"},
-						data=payload)
-		
-		data = response.json()
-
-		if response.status_code != 200:
-			logger.logs(data)
-			return render_template("Login.html",error='Invalid username or password')
-		
-		token = data['access_token']
-		session['Token'] = token
-		user = get_login_user()
+		try:
+			response = requests.post(f'{config.api_endpoint}/api/login',
+							headers={"Content-Type":"application/x-www-form-urlencoded"},
+							data=payload)
 			
-		session['User'] = user
-		return redirect("/")
-		# return render_template("Login.html",error='Invalid username or password')
+			data = response.json()
 
+			if response.status_code != 200:
+				logger.logs(data)
+				return render_template("Login.html",error='Invalid username or password')
+			
+			token = data['access_token']
+			session['Token'] = token
+			user = get_login_user()
+				
+			session['User'] = user
+			return redirect("/")
+
+		except requests.exceptions.RequestException as e:
+			raise SystemExit(e)
+		
 @app.route('/logout')
 def logout():
 	# common.clean_up(current_user.username,current_user.publicId)
@@ -558,6 +598,6 @@ def get_media():
 	return jsonify({"message":"fail connect to spoke service"}), 500
 
 if __name__ == '__main__':
-	from waitress import serve # type: ignore
-	serve(app, host="0.0.0.0", port=5000)
-        #app.run(host='0.0.0.0', port =5000, debug=False)
+	# from waitress import serve # type: ignore
+	# serve(app, host="0.0.0.0", port=5000)
+	app.run(host='0.0.0.0', port =5000, debug=True)

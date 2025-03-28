@@ -1,53 +1,30 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+{% extends "layout.html" %}
+{% block content %}
+<link href='/static/fullcalendar/packages/core/main.css' rel='stylesheet' />
+<link href='/static/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <div>
+        <h3 class="fw-bold mb-3">Calendar</h3>
+        <h6 class="op-7 mb-2">All event calendar</h6>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+        <a id="btnBack" href="javascript:history.back()" class="btn btn-label-info btn-round me-2">Back</a>
+    </div>
+</div>
+<div class="row">
+    <div class='container-fluid'>
+        <div id='calendar'></div>
+    </div>
+</div>
 
-    
-    <link rel="stylesheet" href="/static/calendar/fonts/icomoon/style.css">
-  
-    <link href='/static/fullcalendar/packages/core/main.css' rel='stylesheet' />
-    <link href='/static/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
-    
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/calendar/css/bootstrap.min.css">
-    
-    <!-- Style -->
-    <link rel="stylesheet" href="/static/calendar/css/style.css">
+<script src='/static/fullcalendar/packages/core/main.js'></script>
+<script src='/static/fullcalendar/packages/interaction/main.js'></script>
+<script src='/static/fullcalendar/packages/daygrid/main.js'></script>
+<script src='/static/fullcalendar/packages/timegrid/main.js'></script>
+<script src='/static/fullcalendar/packages/list/main.js'></script>
 
-    <title>Calendar</title>
-  </head>
-  <body>
-  
-
-  <div id='calendar-container'>
-    <div id='calendar'></div>
-	<div class="col-md-12 bg-light text-center">
-		<button class="btn btn-secondary" type="button" onclick="history.back()">Back</button>
-	</div>
-  </div>
-    
-    
-
-    <script src="/static/calendar/js/jquery-3.3.1.min.js"></script>
-    <script src="/static/calendar/js/popper.min.js"></script>
-    <script src="/static/calendar/js/bootstrap.min.js"></script>
-
-    <script src='/static/fullcalendar/packages/core/main.js'></script>
-    <script src='/static/fullcalendar/packages/interaction/main.js'></script>
-    <script src='/static/fullcalendar/packages/daygrid/main.js'></script>
-    <script src='/static/fullcalendar/packages/timegrid/main.js'></script>
-    <script src='/static/fullcalendar/packages/list/main.js'></script>
-
-    
-
-    <script>
+<script>
 	let today = new Date();
 	let dd = today.getDate();
 	let mm = today.getMonth() + 1;
@@ -59,12 +36,12 @@
 		mm = '0' + mm;
 	}
 	var thisday = yyyy + '-' + mm + '-' + dd;
-	console.log(thisday);
+	// console.log(thisday);
     document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
 		$.getJSON("/calendar/api/all", function (data, status) {
 			if (status == 'success') {
-				console.log(data);
+				// console.log(data);
 				var calendar = new FullCalendar.Calendar(calendarEl, {
 					plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
 					height: 'parent',
@@ -84,9 +61,5 @@
 			}
 		})
 	});
-
     </script>
-
-    <script src="/static/calendar/js/main.js"></script>
-  </body>
-</html>
+{% endblock %}

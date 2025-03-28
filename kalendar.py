@@ -4,17 +4,13 @@ from models import db,User
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
-import os
+import os,config
 import requests, json # type: ignore
 
 import logwriter,os
 
 current_directory = os.getcwd()
 logger = logwriter.writer(current_directory + "/logs/","gui",__name__)
-
-api_host = os.environ['API_HOST']
-api_port = os.environ['API_PORT']
-endpoint = "http://{}:{}".format(api_host,api_port)
 
 kalendar = Blueprint('kalendar', __name__)
 @login_required
@@ -26,7 +22,12 @@ def index():
 		return redirect("/logout")
 	
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
-	return render_template("Calendar.html")
+
+	viewdata = {
+		"user" : current_user
+	}
+
+	return render_template("Calendar.html", **viewdata)
 
 
 @kalendar.route('/calendar/api/all',methods=['GET'])
@@ -39,7 +40,7 @@ def allevent():
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 	allEvents = []
 
-	response = requests.get(f'{endpoint}/api/event',
+	response = requests.get(f'{config.api_endpoint}/api/event',
 						headers={"accept": "application/json",
 							"Authorization":f"Bearer {token}"})
 	

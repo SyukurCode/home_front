@@ -42,3 +42,149 @@
 01-06-2025 12:08:43 PM:index - event store request fail
 01-06-2025 12:08:43 PM:index - {"date":{"weekday":"Sunday"},"time":{"hour":20,"minute":8,"second":0}}
 01-06-2025 12:08:43 PM:index - event store request fail
+03-26-2025 06:58:38 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-26-2025 06:58:38 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-26-2025 06:58:42 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-26-2025 06:58:42 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-26-2025 07:41:09 AM:index - {'detail': 'Signature has expired'}
+03-26-2025 08:12:54 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 01:01:33 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 02:19:23 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 02:50:03 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 03:18:04 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+03-27-2025 03:25:27 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 03:41:24 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+03-27-2025 04:02:58 AM:__main__ - {'detail': 'Signature has expired'}
+03-27-2025 04:34:45 AM:__main__ - {'detail': 'Signature has expired'}
+03-27-2025 05:06:55 AM:__main__ - {'detail': 'Signature has expired'}
+03-27-2025 05:25:09 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 05:25:09 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 05:37:20 AM:__main__ - {'detail': 'Signature has expired'}
+03-27-2025 06:09:42 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 06:10:07 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:10:07 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:11:58 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:11:58 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:24:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:24:05 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:24:46 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:25:07 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:36 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:37 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:27:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:27:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:27:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:40 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:27:40 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:40 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:27:41 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:42 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:27:55 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:27:55 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:28:30 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:29:33 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:29:37 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:29:50 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:30:54 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:30:56 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:31:00 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:31:00 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:31:45 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:32:22 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:33:35 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:33:42 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:33:48 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:35:54 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:38:24 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:38:28 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:38:28 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:39:08 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:39:11 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:40:29 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 06:40:34 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:55:52 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:56:00 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:56:00 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:57:22 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:57:23 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:59:54 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 06:59:56 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 06:59:57 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:00:05 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:00:05 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:03:32 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:03:33 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:03:44 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:03:44 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:05:06 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:05:06 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:06:59 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:06:59 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:07:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:07:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:10:27 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:12:06 AM:index - {'detail': 'Signature has expired'}
+03-27-2025 07:37:08 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:37:22 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+03-27-2025 07:38:52 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:38:58 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:41:54 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:42:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:42:04 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:43:23 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:43:27 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:43:28 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:43:34 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:45:18 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:45:22 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:47:13 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:47:16 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:47:17 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:47:24 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:48:53 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:48:53 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:48:56 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:48:56 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:50:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:50:02 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:50:37 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:50:37 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:51:21 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:51:22 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:52:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:52:39 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:55:17 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:55:18 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:55:18 AM:kalendar - {'detail': 'Signature has expired'}
+03-27-2025 07:55:31 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:55:32 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:59:28 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:59:29 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:59:32 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:59:33 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 07:59:54 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 07:59:54 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:01:57 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:01:57 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:03:08 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:03:08 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:04:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:04:02 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:05:00 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:05:01 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:08:25 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:08:26 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:08:57 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:08:57 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:09:18 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:09:18 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:13:21 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:13:22 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:14:18 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:14:18 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:15:37 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar
+03-27-2025 08:15:37 AM:kalendar - from:172.18.0.1,url:http://localhost:5003/calendar/api/all
+03-27-2025 08:23:19 AM:index - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+03-27-2025 08:30:06 AM:index - {'detail': 'Signature has expired'}

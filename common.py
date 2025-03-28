@@ -1,53 +1,39 @@
-from flask import jsonify
 from flask_login import current_user
 import config
 import requests, json # type: ignore
 import logging
 from datetime import datetime, date, timedelta
-import redis
+# import redis
 
 
-redis_client = redis.Redis(host=config.redis_host, port=config.redis_port, db=0)
+# redis_client = redis.Redis(host=config.redis_host, port=config.redis_port, db=0)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-def refresh_token(username,publicId):
-	password = redis_client.get(str(publicId))
-	if not password:
-		logger.error("password is empty")
-	response = requests.post(f'{config.api_endpoint}/api/login', auth = (username, password))
-	if response.status_code == 200:
+def get_token(username,password):
+	payload = {
+			'grant_type': 'password',
+			'username': username,
+			'password': password
+		}
+	try:
+		response = requests.post(f'{config.api_endpoint}/api/login',
+							headers={"Content-Type":"application/x-www-form-urlencoded"},
+							data=payload)
+			
 		data = response.json()
-		token = data['token']
-		redis_client.set(username,token)
-		data = redis_client.get(username)
-		return data
-	else:
-		logger.error(f"Fail to login {username} to api")
-	return None
-
-def get_token(username,publicId):
-	data = redis_client.get(username)
-	if not data:
-		logger.error("uername is empty")
-	token = handle_token(token=data,username=username,publicId=publicId)
-	if not token:
-		token = refresh_token(username=username,publicId=publicId)
+		if response.status_code != 200:
+			logger.logs(data)
+			return None
+			
+		token = data['access_token']
+		
+	except requests.exceptions.RequestException as e:
+			logger.logs(str(e))
+			return None	
+	
 	return token
-
-def handle_token(token,username,publicId):
-	response = requests.get(f'{config.api_endpoint}/api/user_info',headers={"x-access-tokens": token})
-	if response.status_code == 403:
-		data = response.json()
-		if data['error'] == 'Signature has expired':
-			newToken = refresh_token(username=username,publicId=publicId)
-			return newToken
-	return token
-
-def clean_up(username,publicId):
-	redis_client.delete(username)
-	redis_client.delete(str(publicId))
 
 def executeTranslate(e):
 	try:
@@ -60,7 +46,7 @@ def executeTranslate(e):
 		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
 		ampm = "AM"
 		if e["type"] == "Prayer" or e["type"] == 2:
-			time = datetime.strptime(ex["time"],'%HH:%MM')
+			time = datetime.strptime(ex["time"],'%H:%M')
 			Hour12 = time.hour
 			Minute = f'{time.minute}'
 			if time.minute < 10:

@@ -13,5 +13,11 @@ RUN touch /app/logs/gui.log
 
 COPY . .
 
-#CMD [ "python3", "index.py"]
-CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "index:app"]
+# Set environment variable untuk debug mode
+ENV FLASK_APP=index.py
+ENV FLASK_ENV=development  
+
+# Jalankan Flask
+# CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# CMD [ "python3", "index.py"]
+CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:5000", "index:app"]
