@@ -1,47 +1,69 @@
-03-28-2025 11:10:19 AM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 11:10:32 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:13:31 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:13:35 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:15:28 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:15:35 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:19:23 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:19:31 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 11:40:58 AM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 12:10:11 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 12:23:00 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 12:23:49 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 12:24:27 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
-03-28-2025 12:24:28 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
-03-28-2025 12:25:50 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 12:28:18 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 15:07:25 PM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 15:13:42 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-03-28-2025 16:10:43 PM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 18:57:00 PM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 19:53:59 PM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 20:27:24 PM:__main__ - {'detail': 'Signature has expired'}
-03-28-2025 22:42:15 PM:__main__ - {'detail': 'Signature has expired'}
-04-07-2025 09:25:21 AM:__main__ - {'detail': 'Signature has expired'}
-04-07-2025 09:25:21 AM:__main__ - <Response 41 bytes [200 OK]>
-04-07-2025 09:25:30 AM:__main__ - {'detail': 'Signature has expired'}
-04-07-2025 10:05:34 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:05:37 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:11:21 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:14:04 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:15:13 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:17:19 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:20:20 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:24:57 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:25:05 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:28:39 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:36:34 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:47:00 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
-04-07-2025 10:51:09 AM:__main__ - {'detail': 'Signature has expired'}
-04-07-2025 10:51:20 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
-04-07-2025 10:51:22 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
-04-07-2025 10:51:33 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
-04-07-2025 10:51:35 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
-04-07-2025 10:54:47 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
-04-07-2025 10:54:49 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
-04-07-2025 10:55:03 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
-04-07-2025 10:55:05 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:36:18 PM:__main__ - Error parsing date: time data '' does not match format '%d/%m/%y'
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:38:25 PM:__main__ - Error parsing date: time data '' does not match format '%d/%m/%y'
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: unconverted data remains: 25
+04-07-2025 13:40:23 PM:__main__ - Error parsing date: time data '' does not match format '%d/%m/%y'
+04-07-2025 13:50:58 PM:__main__ - Error parsing date: time data '' does not match format '%d/%m/%Y'
+04-07-2025 13:51:36 PM:__main__ - {'detail': 'Signature has expired'}
+04-07-2025 13:51:52 PM:__main__ - Error parsing date: time data '' does not match format '%d/%m/%Y'
+04-07-2025 14:00:05 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-07-2025 14:00:08 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-07-2025 14:01:52 PM:__main__ - event store success
+04-07-2025 14:01:52 PM:__main__ - Event stored: Test, Hari ini Test, 1, 2, 0, {"date":{"day":1,"month":2,"year":2}}
+04-07-2025 14:05:23 PM:__main__ - event store success
+04-07-2025 14:05:23 PM:__main__ - Event stored: Test, Hari ini Test, 1, 2, 0, {"date":{"day":1,"month":2,"year":2026}}

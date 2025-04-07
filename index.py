@@ -26,6 +26,7 @@ app.register_blueprint(kalendar_blueprint)
 from papar import papar as papar_blueprint
 app.register_blueprint(papar_blueprint)
 from maps import maps as maps_blueprint
+import csv
 app.register_blueprint(maps_blueprint)
 
 
@@ -552,15 +553,23 @@ def change_password():
 	except Exception as e:
 		return jsonify({'message':'missing parameter', 'error':str(e)}), 400
 
-	user = User.query.filter_by(id=current_user.id).first()
-
-	if user and bcrypt.check_password_hash(user.password, record['password']):
-		hashed_password = bcrypt.generate_password_hash(record['new-password']).decode('utf-8')
-		user.password = hashed_password
-		db.session.commit()
-
+	isValid = common.get_token(record['username'],record['password'])
+	if not isValid == None:
+		userId = current_user['id']
+		token = session.get("Token")
+		response = requests.put(f'{config.api_endpoint}/api/user/{userId}',
+							json={"password": record['new-password'], \
+							"email": current_user['email'],"isAdmin": current_user['isAdmin']},
+							headers={"accept": "application/json",
+							"Authorization":f"Bearer {token}"})
+		data = response.json()
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
+		# # Update the password in the database
+            
 		return jsonify({'message':'password updated!'}), 202
-
 	return jsonify({'message':'Wrong password!','error': None}), 403
 
 @app.route('/gettype', methods=['GET'] )
@@ -684,6 +693,44 @@ def notification():
 
     except requests.exceptions.RequestException as e:
         return render_template("Login.html", error=str(e))
+
+@app.route('/upload_csv', methods=['POST'])
+def upload_csv():
+	if 'csvFile' not in request.files:
+		return jsonify({'error': 'No file part'}), 400
+
+	file = request.files['csvFile']
+	if file and file.filename.endswith('.csv'):
+		csv_data = []
+		stream = file.stream.read().decode("utf-8").splitlines()
+		reader = csv.reader(stream)
+		next(reader, None)  # Skip the header row
+		for row in reader:
+			csv_data.append(row)
+			try:
+				event_date = datetime.strptime(row[0], '%d/%m/%Y')
+			except ValueError as e:
+				logger.logs(f"Error parsing date: {e}")
+				continue
+			execute = '{"date":{"day":' + str(event_date.day) + ',"month":' + str(event_date.month) + ',"year":' + str(event_date.year) + '}}'	
+			name = row[1]
+			text = row[2]
+			type = 1 #wish
+			repeat = 2 #allday
+			parent = 0 #individual
+			try:
+				store_event(name,text,type,repeat,parent,execute)
+				logger.logs(f"Event stored: {name}, {text}, {type}, {repeat}, {parent}, {execute}")
+			except Exception as e:
+				logger.logs(f"Error storing event: {e}")
+				continue
+	else:
+		return jsonify({'error': 'Invalid file format'}), 400
+	
+	if file.filename == '':
+		return jsonify({'error': 'No selected file'}), 400
+
+	return redirect('/')
 
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore
