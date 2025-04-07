@@ -1,0 +1,100 @@
+<!-- {% extends "layout.html" %} -->
+<!-- <script src="/static/js/main.min.js"></script> -->
+{% block content %}
+<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <div>
+        <h3 class="fw-bold mb-3">Due Events</h3>
+        <h6 class="op-7 mb-2">All executed events</h6>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+        <a id="btnBack" href="javascript:history.back()" class="btn btn-label-info btn-round me-2">Back</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title">List of due events</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="dueEventTable" class="display table table-striped table-hover"> 
+                        <thead>
+                            <tr>
+                                <!---No------>
+                                <th scope="col">No.</th>
+                                <!---Name--->
+                                <th scope="col">Name</th>
+                                <!---Due---------->
+                                <th scope="col">Due date</th>
+                                <!---button------->
+                                <th scope="col" class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <!---No------>
+                                <th scope="col">No.</th>
+                                <!---Name--->
+                                <th scope="col">Name</th>
+                                <!---Due---------->
+                                <th scope="col">Due date</th>
+                                <!---button------->
+                                <th scope="col" class="text-center"></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for event in events %}
+                            <tr>
+                                <td class="col-sm-2">{{loop.index}}</td>
+                                <td class="col-sm-6">{{event.Name}}</td>
+                                <td class="col-sm-3">{{event.Due}}</td>
+                                <td class="col-sm-1">
+                                    <div class="dropdown ">
+                                        <button class="btn" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <svg width="12" height="14" class="bi bi-three-dots-vertical"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                            </svg>
+                                        </button>
+                                        <ul class="dropdown-menu align-items-center">
+                                            <li>
+                                                <a class="dropdown-item te" href="/detail?id={{event.id}}"><i
+                                                        class="fas fa-info-circle" aria-hidden="true"></i> Detail</a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider border-top border-secondary">
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" onclick="deleteItem('{{event.id}}')"><i
+                                                        class="fas fa-trash"></i> Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script src="/static/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/js/notification.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#dueEventTable").DataTable({
+            pageLength: 5,
+        });
+    });
+</script>
+{% endblock %}

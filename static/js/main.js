@@ -29,25 +29,6 @@ function validatePassword() {
     return true;
 }
 
-// function get_login_user() {
-//     $.ajax({
-//         url: "/current_user",  // Endpoint Flask
-//         type: "GET",
-//         contentType: "application/json; charset=utf-8",
-//         success: function(data) {
-//             if (data) {
-//                 document.getElementById("currentUser").innerHTML = data.username
-//                 document.getElementById("profileName").innerHTML = data.username
-//                 document.getElementById("currentEmail").innerHTML = data.email
-//             } else {
-//                 user = null
-//             }
-//         },
-//         error: function(xhr, status, error) {
-//             user = null
-//         }
-//     });
-// }
 function changePassword() {
     var current_password = document.getElementById("oldPassword").value;
     var new_password = document.getElementById("password").value;
@@ -111,6 +92,7 @@ function notification() {
                 document.getElementById("noticount").innerHTML = items.length;
                 document.getElementById("notitotal").innerHTML =  items.length;
                 document.getElementById("notiitems").style.display = "inline";
+                document.getElementById("see-all").style.display = "inline";
                 items.forEach(element => {
                     const notificationItem = `
                         <a href="/detail?id=${element.id}">
@@ -128,6 +110,7 @@ function notification() {
             else{
                 document.getElementById("noticount").style.display = "none";
                 document.getElementById("notiitems").style.display = "none";
+                document.getElementById("see-all").style.display = "none";
             }
             
         },

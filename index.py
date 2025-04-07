@@ -25,6 +25,8 @@ from kalendar import kalendar as kalendar_blueprint
 app.register_blueprint(kalendar_blueprint)
 from papar import papar as papar_blueprint
 app.register_blueprint(papar_blueprint)
+from maps import maps as maps_blueprint
+app.register_blueprint(maps_blueprint)
 
 
 @app.route('/')
@@ -649,6 +651,39 @@ def due_event():
 		logger.logs(str(e))
 		session.clear()
 		return jsonify({"message":str(e)}), 500
+
+@app.route('/notifications', methods=['GET'])
+def notification():
+    token = session.get("Token")
+    current_user = session.get("User")
+
+    if not token:
+        return redirect("/logout")
+    
+    try:
+        response = requests.get(f'{config.api_endpoint}/api/event/user',
+								headers={"accept": "application/json",
+										 "Authorization": f"Bearer {token}"})
+        data = response.json()
+        if response.status_code != 200:
+            logger.logs(data)
+            session.clear()
+            return render_template("Login.html", error=data.get('detail', 'Unknown error'))
+        
+        due_items = []
+        for e in data['data']:
+            event_due = json.loads(common.check_due(e))
+            if event_due['isDue']:
+                due_items.append({"id": e['id'], "Name": e['name'], "Due": event_due['duration']})
+                
+            viewdata = {
+			"events": due_items,
+			"user": current_user
+			}
+        return render_template("Notification.html", **viewdata)
+
+    except requests.exceptions.RequestException as e:
+        return render_template("Login.html", error=str(e))
 
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore

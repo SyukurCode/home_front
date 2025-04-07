@@ -21,3 +21,27 @@
 03-28-2025 19:53:59 PM:__main__ - {'detail': 'Signature has expired'}
 03-28-2025 20:27:24 PM:__main__ - {'detail': 'Signature has expired'}
 03-28-2025 22:42:15 PM:__main__ - {'detail': 'Signature has expired'}
+04-07-2025 09:25:21 AM:__main__ - {'detail': 'Signature has expired'}
+04-07-2025 09:25:21 AM:__main__ - <Response 41 bytes [200 OK]>
+04-07-2025 09:25:30 AM:__main__ - {'detail': 'Signature has expired'}
+04-07-2025 10:05:34 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:05:37 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:11:21 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:14:04 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:15:13 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:17:19 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:20:20 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:24:57 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:25:05 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:28:39 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:36:34 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:47:00 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-07-2025 10:51:09 AM:__main__ - {'detail': 'Signature has expired'}
+04-07-2025 10:51:20 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-07-2025 10:51:22 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-07-2025 10:51:33 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-07-2025 10:51:35 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-07-2025 10:54:47 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-07-2025 10:54:49 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-07-2025 10:55:03 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-07-2025 10:55:05 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
