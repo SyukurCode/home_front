@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, request, redirect, jsonify, session
-from models import db,User
 from datetime import datetime, timedelta
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
@@ -11,14 +10,12 @@ import config
 import logwriter,os
 
 current_directory = os.getcwd()
-logger = logwriter.writer(current_directory + "/logs/","gui",__name__)
+logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '195de30e06e4040837afd882b4966398'
-app.config['SQLALCHEMY_DATABASE_URI'] = config.DATABASE_CONNECTION_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.app_context().push()
-db.init_app(app)
 
 bcrypt = Bcrypt(app)
 
@@ -33,47 +30,45 @@ app.register_blueprint(papar_blueprint)
 @app.route('/')
 def index():
 	descriptions = []
-	due_items = []
 	token = session.get('Token')
 	current_user = session.get('User')
 	if not token:
 		return redirect("/logout")
 	
-	response = requests.get(f'{config.api_endpoint}/api/event/user',
-						headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-	data = response.json()
-	
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
+	try:
+		response = requests.get(f'{config.api_endpoint}/api/event/user',
+							headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
+		data = response.json()
+		
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
 
-	event = data['data']
-	for e in event:
-		try:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-								"execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
-			event_due = json.loads(common.check_due(e))
-			if event_due['isDue']:
-				due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['minutes']})
-		except Exception as e:
-			logger.logs("broken data at {}".format(e["id"]))
-			pass
-	eve = json.loads('{}')
-	eve.update({"data":descriptions})
-	events = eve["data"]
-	events_due = json.dumps(due_items)
-	
-	viewdata = {
-		"events" : events,
-		"events_due" : events_due,
-		"user" : current_user,
-		"menu" : "own"
-	}
+		event = data['data']
+		for e in event:
+			try:
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+									"execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
+			except Exception as e:
+				logger.logs("broken data at {}".format(e["id"]))
+				pass
+		eve = json.loads('{}')
+		eve.update({"data":descriptions})
+		events = eve["data"]
+		# events_due = json.dumps(due_items)
+		
+		viewdata = {
+			"events" : events,
+			"user" : current_user,
+			"menu" : "own"
+		}
 
-	return render_template("Index.html",**viewdata)
+		return render_template("Index.html",**viewdata)
+	except requests.exceptions.RequestException as e:
+		return render_template("Login.html",error=str(e))
 
 @app.route('/all')
 def all():
@@ -84,33 +79,36 @@ def all():
 	if not token:
 		return redirect("/logout")
 
-	response = requests.get(f'{config.api_endpoint}/api/event',
-						  headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-	data = response.json()
+	try:
+		response = requests.get(f'{config.api_endpoint}/api/event',
+							headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
+		data = response.json()
 
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
 
-	event = data['data']
-	for e in event:
-		description = common.executeTranslate(e)
-		descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-					"execute":description,"acknowledge":e["acknowledge"],"owner":e["created_by"],'type':e['type']})
-	eve = json.loads('{}')
-	eve.update({"data":descriptions})
-	events = eve["data"]
-	logger.logs(f"User:{current_user}")
+		event = data['data']
+		for e in event:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+						"execute":description,"acknowledge":e["acknowledge"],"owner":e["created_by"],'type':e['type']})
+		eve = json.loads('{}')
+		eve.update({"data":descriptions})
+		events = eve["data"]
+		logger.logs(f"User:{current_user}")
 
-	viewdata = {
-		"events" : events,
-		"events_due" : "",
-		"user" : current_user,
-		"menu" : "all"
-	}
-	return render_template("Index.html",**viewdata)
+		viewdata = {
+			"events" : events,
+			"user" : current_user,
+			"menu" : "all"
+		}
+		return render_template("Index.html",**viewdata)
+	except requests.exceptions.RequestException as e:
+		return render_template("Login.html",error=str(e))
+
 
 @app.route('/detail')
 def detail():
@@ -121,42 +119,45 @@ def detail():
 	if not token:
 		return redirect("/logout")
 
-	response = requests.get(f'{config.api_endpoint}/api/event/id?id={id}',
-						  headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-	data = response.json()
-	
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
-	
-	if response.status_code == 204:
-		return render_template("Detail.html",event='',execute='', \
-		type='',repeat='',created_by='',error=data['detail'])
-	
-	event = data["data"]
-	createdBy = event["created_by"]
-	for t in get_type()["data"]:
-		if t["name"] == event["type"]:
-			type = t["name"]
-	for r in get_repeat()["data"]:
-		if r["name"] == event["repeat"]:
-			repeat = r["name"]
-	created_by = createdBy
-	description = common.executeTranslate(event)
+	try:
+		response = requests.get(f'{config.api_endpoint}/api/event/id?id={id}',
+							headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
+		data = response.json()
+		
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
+		
+		if response.status_code == 204:
+			return render_template("Detail.html",event='',execute='', \
+			type='',repeat='',created_by='',error=data['detail'])
+		
+		event = data["data"]
+		createdBy = event["created_by"]
+		for t in get_type()["data"]:
+			if t["name"] == event["type"]:
+				type = t["name"]
+		for r in get_repeat()["data"]:
+			if r["name"] == event["repeat"]:
+				repeat = r["name"]
+		created_by = createdBy
+		description = common.executeTranslate(event)
 
-	viewdata = {
-		"event" : event,
-		"execute" : description,
-		"type" : type,
-		"repeat" : repeat,
-		"created_by" : created_by,
-		"error" : "",
-		"user" : current_user
-	}
+		viewdata = {
+			"event" : event,
+			"execute" : description,
+			"type" : type,
+			"repeat" : repeat,
+			"created_by" : created_by,
+			"error" : "",
+			"user" : current_user
+		}
 
-	return render_template("Detail.html", **viewdata)
+		return render_template("Detail.html", **viewdata)
+	except requests.exceptions.RequestException as e:
+		return render_template("Login.html",error=str(e))
 
 
 @app.route('/today')
@@ -171,77 +172,78 @@ def todayEvent():
 	weekdayName = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	today = datetime.now()
 	weekday = weekdayName[today.weekday()]
-	response = requests.get(f'{config.api_endpoint}/api/event',
-						 headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-	
-	data = response.json()
-
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
-	
+	try:
+		response = requests.get(f'{config.api_endpoint}/api/event',
+							headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
 		
-	event = data['data']
-	for e in event:
-		try:
-			ex = json.loads(e["execute"])
-		except Exception as e:
-			logger.logs(f'Error: {e}')
-			continue
+		data = response.json()
 
-		if e["repeat"] == 'Once' \
-			and today.day == ex["date"]["day"] \
-			and today.month == ex["date"]["month"] \
-			and today.year == ex["date"]["year"]:
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
+		
+			
+		event = data['data']
+		for e in event:
+			try:
+				ex = json.loads(e["execute"])
+			except Exception as e:
+				logger.logs(f'Error: {e}')
+				continue
 
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-						"execute":description,"acknowledge":e["acknowledge"], \
-						"owner":e["created_by"],"type":e["type"]})
+			if e["repeat"] == 'Once' \
+				and today.day == ex["date"]["day"] \
+				and today.month == ex["date"]["month"] \
+				and today.year == ex["date"]["year"]:
 
-		if e["repeat"] == 'Allday' \
-			and today.day == ex["date"]["day"] \
-			and today.month == ex["date"]["month"] \
-			and today.year == ex["date"]["year"]:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-												"execute":description,"acknowledge":e["acknowledge"], \
-						"owner":e["created_by"],"type":e["type"]})
-		if e["repeat"] == 'Daily' \
-		and ex["date"]["weekday"] == weekday:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-						"execute":description,"acknowledge":e["acknowledge"], \
-						"owner":e["created_by"],"type":e["type"]})
-		if e["repeat"] == 'Monthly' \
-		and ex["date"]["day"] == today.day:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-						"execute":description,"acknowledge":e["acknowledge"], \
-						"owner":e["created_by"],"type":e["type"]})
-		if e["repeat"] == 'Yearly' \
-		and ex["date"]["day"] == today.day \
-		and ex["date"]["month"] == today.month:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-						"execute":description,"acknowledge":e["acknowledge"], \
-						"owner":e["created_by"],"type":e["type"]})
-		#logger.logs(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
-		eve = json.loads('{}')
-		eve.update({"data":descriptions})
-		events = eve["data"]
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+							"execute":description,"acknowledge":e["acknowledge"], \
+							"owner":e["created_by"],"type":e["type"]})
 
-		viewdata = {
-		"events" : events,
-		"events_due" : "",
-		"user" : current_user,
-		"menu" : "today"
-	}
+			if e["repeat"] == 'Allday' \
+				and today.day == ex["date"]["day"] \
+				and today.month == ex["date"]["month"] \
+				and today.year == ex["date"]["year"]:
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+													"execute":description,"acknowledge":e["acknowledge"], \
+							"owner":e["created_by"],"type":e["type"]})
+			if e["repeat"] == 'Daily' \
+			and ex["date"]["weekday"] == weekday:
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+							"execute":description,"acknowledge":e["acknowledge"], \
+							"owner":e["created_by"],"type":e["type"]})
+			if e["repeat"] == 'Monthly' \
+			and ex["date"]["day"] == today.day:
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+							"execute":description,"acknowledge":e["acknowledge"], \
+							"owner":e["created_by"],"type":e["type"]})
+			if e["repeat"] == 'Yearly' \
+			and ex["date"]["day"] == today.day \
+			and ex["date"]["month"] == today.month:
+				description = common.executeTranslate(e)
+				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+							"execute":description,"acknowledge":e["acknowledge"], \
+							"owner":e["created_by"],"type":e["type"]})
+			#logger.logs(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
+			eve = json.loads('{}')
+			eve.update({"data":descriptions})
+			events = eve["data"]
 
-	return render_template("Index.html",**viewdata)
-	return render_template("Index.html",events=events,events_due="",user=current_user,menu="today")
+			viewdata = {
+			"events" : events,
+			"user" : current_user,
+			"menu" : "today"
+		}
+
+		return render_template("Index.html",**viewdata)
+	except requests.exceptions.RequestException as e:
+		return render_template("Login.html",error=str(e))
 
 @app.route('/update',methods=['POST'])
 def update():
@@ -277,7 +279,7 @@ def update():
 		
 		return redirect("/")
 	except requests.exceptions.RequestException as e:
-		raise SystemExit(e)
+		return render_template("Login.html",error=str(e))
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
@@ -311,13 +313,22 @@ def login():
 			
 			token = data['access_token']
 			session['Token'] = token
-			user = get_login_user()
-				
-			session['User'] = user
+
+			response = requests.get(f'{config.api_endpoint}/api/user_info',
+						  headers={"accept": "application/json",
+							"Authorization":f"Bearer {token}"})
+			data = response.json()
+
+			if response.status_code != 200:
+				logger.logs(data)
+				session.clear()
+				return None
+
+			session['User'] = data
 			return redirect("/")
 
 		except requests.exceptions.RequestException as e:
-			raise SystemExit(e)
+			return render_template("Login.html",error=str(e))
 		
 @app.route('/logout')
 def logout():
@@ -378,18 +389,21 @@ def deleteItem():
 	except Exception as e:
 		return jsonify({'error':str(e),'message':'Incorect value'}), 400
 
-	response = requests.delete(f'{config.api_endpoint}/api/event?id={delete_id}',
-							headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
+	try:
+		response = requests.delete(f'{config.api_endpoint}/api/event?id={delete_id}',
+								headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
 
-	data = response.json()
+		data = response.json()
 
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
-	
-	return jsonify({'message': delete_id +' was deleted'}), 202
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return render_template("Login.html",error=data['detail'])
+		
+		return jsonify({'message': delete_id +' was deleted'}), 202
+	except requests.exceptions.RequestException as e:
+		return render_template("Login.html",error=str(e))
 
 def add_once(name,text,type,repeat,datetimepicker):
 	#2024-03-19T20:38:43
@@ -485,20 +499,19 @@ def store_event(name,text,type,repeat,parent,execute):
 		logger.logs("event store request fail")
 
 	return None
-
+@app.route("/current_user", methods = ['GET'])
 def get_login_user():
 	token = session.get("Token")
 
 	response = requests.get(f'{config.api_endpoint}/api/user_info',
 						  headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
+							"Authorization":f"Bearer {token}"}, timeout=5)
 	data = response.json()
 
 	if response.status_code != 200:
 		logger.logs(data)
 		session.clear()
 		return None
-
 	return data
 
 
@@ -531,7 +544,7 @@ def add_user():
 
 @app.route('/changepassword', methods=['POST'])
 def change_password():
-	current_user = get_login_user()
+	current_user = session.get("User")
 	try:
 		record = json.loads(request.data)
 	except Exception as e:
@@ -577,25 +590,65 @@ def get_repeat():
 
 	if not token:
 		return redirect("/logout")
-	
-	response = requests.get(f'{config.api_endpoint}/api/event/repeat',
-						 headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
-	data = response.json()
-	if response.status_code != 200:
-		logger.logs(data)
+	try:
+		response = requests.get(f'{config.api_endpoint}/api/event/repeat',
+							headers={"accept": "application/json",
+								"Authorization":f"Bearer {token}"})
+		
+		if response.status_code == 200:
+			data = response.json()
+			return data
+
+	except requests.exceptions.RequestException as e:
+		logger.logs(str(e))
 		session.clear()
-		return jsonify({"message":"fail connect to api service"}), 500
-	
-	return data
+		return jsonify({"message":str(e)}), 500
+
+	return jsonify({"message": data["detail"]}), 500
 
 @app.route('/getmedia', methods=['GET'] )
 def get_media():
-	response = requests.get(f'{config.spoke_endpoint}/audio_list')
-	if response.status_code == 200:
+	try:
+		response = requests.get(f'{config.spoke_endpoint}/audio_list')
+		if response.status_code == 200:
+			data = response.json()
+			return data
+	except requests.exceptions.RequestException as e:
+		logger.logs(str(e))
+		session.clear()
+		return jsonify({"message":str(e)}), 500
+	
+	return jsonify({"message": data["detail"]}), 500
+    
+
+@app.route('/checkeventdue', methods=['GET'])
+def due_event():
+	token = session.get("Token")
+	due_items = []
+	try:
+		response = requests.get(f'{config.api_endpoint}/api/event/user',
+							headers={"accept": "application/json",
+									"Authorization":f"Bearer {token}"})
 		data = response.json()
-		return data
-	return jsonify({"message":"fail connect to spoke service"}), 500
+  
+		if response.status_code != 200:
+			logger.logs(data)
+			session.clear()
+			return jsonify({"message": data["detail"]}),500
+
+		event = data['data']
+		for e in event:
+			event_due = json.loads(common.check_due(e))
+			if event_due['isDue']:
+				due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['duration']})
+		events_due = json.dumps(due_items)
+
+		return jsonify(events_due),200
+
+	except requests.exceptions.RequestException as e:
+		logger.logs(str(e))
+		session.clear()
+		return jsonify({"message":str(e)}), 500
 
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore

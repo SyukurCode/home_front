@@ -109,11 +109,24 @@ def check_due(event):
 		return json.dumps({'isDue': False,'minutes': 0})
     
 	event_datetime = datetime(year=execute["date"]["year"],month=execute["date"]["month"],day=execute["date"]["day"],hour=hour,minute=minute,second=0)
-	time_diff = event_datetime - datetime.now()
-	minutes = time_diff.total_seconds() / 60 
-	if minutes < 1.0 :
-		return json.dumps({'isDue': True,'minutes': abs(int(minutes))})
-	return json.dumps({'isDue': False,'minutes': abs(int(minutes))})
+	time_diff = datetime.now() - event_datetime
+	period = time_diff.total_seconds()
+	if period < 60:
+		duration = f"{int(period)} seconds ago"
+	elif period < 3600:
+		duration = f"{int(period // 60)} minutes ago"
+	elif period < 86400:
+		duration = f"{int(period // 3600)} hours ago"
+	elif period < 2592000:
+		duration = f"{int(period // 86400)} days ago"
+	elif period < 31536000:
+		duration = f"{int(period // 2592000)} months ago"
+	else:
+		duration = f"{int(period // 31536000)} years ago"
+		
+	if period > 1.0 :
+		return json.dumps({'isDue': True,'duration': duration})
+	return json.dumps({'isDue': False,'duration': duration})
 
 def get_next_weekday(weekday_name):
     # Dictionary to map weekday names to their respective numbers

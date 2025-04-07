@@ -1,11 +1,10 @@
-from flask import Blueprint, request, current_app, render_template
-from flask_login import current_user,login_required
-from datetime import datetime, timezone
-import requests, json, config # type: ignore
+from flask import Blueprint, request, render_template
+# from datetime import datetime, timezone
+import requests, config # type: ignore
 import logwriter,os
 
 current_directory = os.getcwd()
-logger = logwriter.writer(current_directory + "/logs/","gui",__name__)
+logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
 
 papar = Blueprint('papar', __name__)
 

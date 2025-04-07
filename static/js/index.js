@@ -317,10 +317,6 @@ window.addEventListener("load", function () {
     var thisdate = new Date().toISOString().split('T')[0];
     document.getElementById("datepicker").setAttribute('min', thisdate);
     document.getElementById("datepicker").setAttribute('value', thisdate);
+});
 
-});
-$(document).ready(function () {
-    $("#eventTable").DataTable({
-        pageLength: 5,
-    });
-});
+

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-<script src="/static/js/index.min.js"></script>
+<script src="/static/js/main.min.js"></script>
 {% block content %}
 <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
     <div>
@@ -23,8 +23,7 @@
                         <i class="fa fa-plus"></i>
                         Add Event
                     </button>
-                    <button class="btn btn-danger btn-round m-1" id="btnDeleteGroup" onclick="delete_group()"
-                        hidden>
+                    <button class="btn btn-danger btn-round m-1" id="btnDeleteGroup" onclick="delete_group()" hidden>
                         <i class="fa fa-trash"></i>
                         Delete
                     </button>
@@ -232,8 +231,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="eventTable" class="display table table-striped table-hover" data-pagination="true"
-                        data-search="true" data-advanced-search="true">
+                    <table id="eventTable" class="display table table-striped table-hover">
                         <thead>
                             <tr>
                                 <!---Checkbox------>
@@ -323,4 +321,15 @@
         </div>
     </div>
 </div>
+<script src="/static/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/js/index.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#eventTable").DataTable({
+            pageLength: 5,
+        });
+    });
+</script>
 {% endblock %}

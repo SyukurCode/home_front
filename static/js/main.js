@@ -28,6 +28,26 @@ function validatePassword() {
     }
     return true;
 }
+
+// function get_login_user() {
+//     $.ajax({
+//         url: "/current_user",  // Endpoint Flask
+//         type: "GET",
+//         contentType: "application/json; charset=utf-8",
+//         success: function(data) {
+//             if (data) {
+//                 document.getElementById("currentUser").innerHTML = data.username
+//                 document.getElementById("profileName").innerHTML = data.username
+//                 document.getElementById("currentEmail").innerHTML = data.email
+//             } else {
+//                 user = null
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             user = null
+//         }
+//     });
+// }
 function changePassword() {
     var current_password = document.getElementById("oldPassword").value;
     var new_password = document.getElementById("password").value;
@@ -77,8 +97,47 @@ function account(type) {
     }
     $("#account").modal("show");
 }
-
+function notification() {
+    $.ajax({
+        url: "/checkeventdue",
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        traditional: true,
+        success: function (data) {
+            var items = JSON.parse(data)
+            if(items.length > 0)
+            {
+                document.getElementById("noticount").style.display = "inline";
+                document.getElementById("noticount").innerHTML = items.length;
+                document.getElementById("notitotal").innerHTML =  items.length;
+                document.getElementById("notiitems").style.display = "inline";
+                items.forEach(element => {
+                    const notificationItem = `
+                        <a href="/detail?id=${element.id}">
+                            <div class="notif-icon notif-primary">
+                                <i class="fas fa-hand-point-right"></i>
+                            </div>
+                            <div class="notif-content">
+                                <span class="block">${element.Name}</span>
+                                <span class="time">${element.Due}</span>
+                            </div>
+                        </a>`;
+                    document.getElementById("notiitem").innerHTML += notificationItem;
+                });
+            }
+            else{
+                document.getElementById("noticount").style.display = "none";
+                document.getElementById("notiitems").style.display = "none";
+            }
+            
+        },
+        error: function (xhr, status, data) {
+            console.log("error");
+        }
+    });
+}
 $(document).ready(function () {
+    notification()
     $("#btnAccount").click(function () {
         $("#account").modal("toggle");
         document.getElementById("accountTitle").innerHTML = "Account";
