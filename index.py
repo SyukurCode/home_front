@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, jsonify, session
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
-from apirequest import get_response
+from apirequest import get_response, put_response, delete_response, post_response
 import common,requests, json, config,logwriter,os
 
 current_directory = os.getcwd()
@@ -32,6 +32,11 @@ def index():
 	descriptions = []
 	current_user = session.get('User')
 	response = get_response('/api/event/user')
+ 
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return render_template("Login.html", error=error_msg)
+    
 	event = response['data']
 	for e in event:
 		description = common.executeTranslate(e)
@@ -52,23 +57,14 @@ def index():
 @app.route('/all')
 def all():
 	descriptions = []
-	token = session.get("Token")
 	current_user = session.get("User")
-
-	if not token:
-		return redirect("/logout")
-
-	response = requests.get(f'{config.api_endpoint}/api/event',
-						headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-	data = response.json()
-
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
-
-	event = data['data']
+	response = get_response('/api/event')
+ 
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return render_template("Login.html", error=error_msg)
+ 
+	event = response['data']
 	for e in event:
 		description = common.executeTranslate(e)
 		descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
@@ -85,140 +81,102 @@ def all():
 	}
 	return render_template("Index.html",**viewdata)
 	
-
-
 @app.route('/detail')
 def detail():
 	id = request.args.get('id')
-	token = session.get("Token")
 	current_user = session.get("User")
+	response = get_response(f'/api/event/id?id={id}')
+	
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return render_template("Login.html", error=error_msg)
+ 
+	event = response['data']
+	description = common.executeTranslate(event)
 
-	if not token:
-		return redirect("/logout")
+	viewdata = {
+		"event" : event,
+		"execute" : description,
+		"user" : current_user
+	}
 
-	try:
-		response = requests.get(f'{config.api_endpoint}/api/event/id?id={id}',
-							headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
-		data = response.json()
-		
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
-		
-		if response.status_code == 204:
-			return render_template("Detail.html",event='',execute='', \
-			type='',repeat='',created_by='',error=data['detail'])
-		
-		event = data
-		created_by = event["created_by_user"]["username"]
-		description = common.executeTranslate(event)
-
-		viewdata = {
-			"event" : event,
-			"execute" : description,
-			"user" : current_user
-		}
-
-		return render_template("Detail.html", **viewdata)
-	except requests.exceptions.RequestException as e:
-		return render_template("Login.html",error=str(e))
+	return render_template("Detail.html", **viewdata)
 
 
 @app.route('/today')
 def todayEvent():
 	descriptions = []
-	token = session.get("Token")
 	current_user = session.get("User")
-
-	if not token:
-		return redirect("/logout")
-	
 	weekdayName = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	today = datetime.now()
 	weekday = weekdayName[today.weekday()]
-	try:
-		response = requests.get(f'{config.api_endpoint}/api/event',
-							headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
-		
-		data = response.json()
+	response = get_response('/api/event')
+ 
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return render_template("Login.html", error=error_msg)
+ 
+	event = response['data']
+	for e in event:
+		try:
+			ex = json.loads(e["execute"])
+		except Exception as e:
+			logger.logs(f'Error: {e}')
+			continue
 
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
-		
-			
-		event = data['data']
-		for e in event:
-			try:
-				ex = json.loads(e["execute"])
-			except Exception as e:
-				logger.logs(f'Error: {e}')
-				continue
+		if e["repeat"] == 'Once' \
+			and today.day == ex["date"]["day"] \
+			and today.month == ex["date"]["month"] \
+			and today.year == ex["date"]["year"]:
 
-			if e["repeat"] == 'Once' \
-				and today.day == ex["date"]["day"] \
-				and today.month == ex["date"]["month"] \
-				and today.year == ex["date"]["year"]:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+						"execute":description,"acknowledge":e["acknowledge"], \
+						"owner":e["created_by"],"type":e["type"]})
 
-				description = common.executeTranslate(e)
-				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-							"execute":description,"acknowledge":e["acknowledge"], \
-							"owner":e["created_by"],"type":e["type"]})
+		if e["repeat"] == 'Allday' \
+			and today.day == ex["date"]["day"] \
+			and today.month == ex["date"]["month"] \
+			and today.year == ex["date"]["year"]:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+												"execute":description,"acknowledge":e["acknowledge"], \
+						"owner":e["created_by"],"type":e["type"]})
+		if e["repeat"] == 'Daily' \
+		and ex["date"]["weekday"] == weekday:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+						"execute":description,"acknowledge":e["acknowledge"], \
+						"owner":e["created_by"],"type":e["type"]})
+		if e["repeat"] == 'Monthly' \
+		and ex["date"]["day"] == today.day:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+						"execute":description,"acknowledge":e["acknowledge"], \
+						"owner":e["created_by"],"type":e["type"]})
+		if e["repeat"] == 'Yearly' \
+		and ex["date"]["day"] == today.day \
+		and ex["date"]["month"] == today.month:
+			description = common.executeTranslate(e)
+			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+						"execute":description,"acknowledge":e["acknowledge"], \
+						"owner":e["created_by"],"type":e["type"]})
+		#logger.logs(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
+		eve = json.loads('{}')
+		eve.update({"data":descriptions})
+		events = eve["data"]
 
-			if e["repeat"] == 'Allday' \
-				and today.day == ex["date"]["day"] \
-				and today.month == ex["date"]["month"] \
-				and today.year == ex["date"]["year"]:
-				description = common.executeTranslate(e)
-				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-													"execute":description,"acknowledge":e["acknowledge"], \
-							"owner":e["created_by"],"type":e["type"]})
-			if e["repeat"] == 'Daily' \
-			and ex["date"]["weekday"] == weekday:
-				description = common.executeTranslate(e)
-				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-							"execute":description,"acknowledge":e["acknowledge"], \
-							"owner":e["created_by"],"type":e["type"]})
-			if e["repeat"] == 'Monthly' \
-			and ex["date"]["day"] == today.day:
-				description = common.executeTranslate(e)
-				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-							"execute":description,"acknowledge":e["acknowledge"], \
-							"owner":e["created_by"],"type":e["type"]})
-			if e["repeat"] == 'Yearly' \
-			and ex["date"]["day"] == today.day \
-			and ex["date"]["month"] == today.month:
-				description = common.executeTranslate(e)
-				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-							"execute":description,"acknowledge":e["acknowledge"], \
-							"owner":e["created_by"],"type":e["type"]})
-			#logger.logs(f'{ex["date"]["day"}:{today.day},{ex["date"]["month"]}:{today.month}')
-			eve = json.loads('{}')
-			eve.update({"data":descriptions})
-			events = eve["data"]
+		viewdata = {
+		"events" : events,
+		"user" : current_user,
+		"menu" : "today"
+	}
 
-			viewdata = {
-			"events" : events,
-			"user" : current_user,
-			"menu" : "today"
-		}
-
-		return render_template("Index.html",**viewdata)
-	except requests.exceptions.RequestException as e:
-		return render_template("Login.html",error=str(e))
+	return render_template("Index.html",**viewdata)
 
 @app.route('/update',methods=['POST'])
 def update():
-	token = session.get("Token")
 	current_user = session.get("User")
-
-	if not token:
-		return redirect("/logout")
-
 	id = request.form.get('id')
 	name = request.form.get('name')
 	text = request.form.get('text')
@@ -228,37 +186,35 @@ def update():
 	parent = request.form.get('parent')
 	int_type = int(type)
 	int_repeat = int(repeat)
-	#----Update change---#
-	try:
-		response = requests.put(f'{config.api_endpoint}/api/event', \
-									json={"id": int(id), "name": name,"text": text, \
-									"type": int_type,"repeat": int_repeat, \
-									"parent": int(parent),"execute": execute },
-									headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
-		data = response.json()
 
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
-		
-		return redirect("/")
-	except requests.exceptions.RequestException as e:
-		return render_template("Login.html",error=str(e))
+	response = put_response(f'/api/event', \
+							{"id": int(id), "name": name,"text": text, \
+							"type": int_type,"repeat": int_repeat, \
+							"parent": int(parent),"execute": execute })
+	
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return render_template("Login.html", error=error_msg)
+	
+	return redirect("/")
+
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
-	token = session.get("Token")
 	if request.method == 'GET':
 		if token:
 			return redirect("/")
-		return render_template("Login.html",error='',login_url=config.api_endpoint)
+		return render_template("Login.html",error='')
 
 	if request.method == 'POST':
 		username = request.form.get('username')
 		password = request.form.get('password')
 		isRemember = request.form.get('remember_me')
+
+		if isRemember:
+			session.permanent = True  # Makes the session permanent
+		else:
+			session.permanent = False  # Makes the session temporary
 		
 		payload = {
 			'grant_type': 'password',
@@ -280,15 +236,11 @@ def login():
 			token = data['access_token']
 			session['Token'] = token
 
-			response = requests.get(f'{config.api_endpoint}/api/user_info',
-						  headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
-			data = response.json()
+			response = get_response('/api/user_info')
 
-			if response.status_code != 200:
-				logger.logs(data)
-				session.clear()
-				return None
+			if not isinstance(response, dict) or response.get('status_code') != 200:
+				error_msg = response.get('error', 'Unknown error')
+				return render_template("Login.html", error=error_msg)
 
 			session['User'] = data
 			return redirect("/")
@@ -298,16 +250,12 @@ def login():
 		
 @app.route('/logout')
 def logout():
-	# common.clean_up(current_user.username,current_user.publicId)
 	session.clear()
-	# logout_user()
 	return redirect('/login')
 
 @app.route('/', methods=['POST'])
 def addItem():
 	token = session.get("Token")
-	current_user = session.get("User")
-
 	if not token:
 		return redirect("/logout")
 	
@@ -322,8 +270,7 @@ def addItem():
 	datetimepicker = request.form.get('datetimepicker')
 	timepicker = request.form.get('timepicker')
 	weekday = request.form.getlist('weekday')
-	# logger.logs(f'Name:{name}\nText:{text}\nType:{type}\nRepeat:{repeat}\nMonth:{month}\nDay:{day}\n' \
-	# 		+ f'DPicker:{datepicker}\nDTPicker:{datetimepicker}\nTPicker:{timepicker}\nWeekday:{weekday}')
+ 
 	if type == '3': text = media
 	if repeat == '1':
 		add_once(name,text,type,repeat,datetimepicker)
@@ -355,55 +302,31 @@ def deleteItem():
 	except Exception as e:
 		return jsonify({'error':str(e),'message':'Incorect value'}), 400
 
-	try:
-		response = requests.delete(f'{config.api_endpoint}/api/event?id={delete_id}',
-								headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
+	response = delete_response(f'/api/event?id={delete_id}')
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return jsonify({"error": error_msg})
+	
+	return jsonify({'message': delete_id +' was deleted'}), 202
 
-		data = response.json()
-
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
-		
-		return jsonify({'message': delete_id +' was deleted'}), 202
-	except requests.exceptions.RequestException as e:
-		return render_template("Login.html",error=str(e))
 
 def add_once(name,text,type,repeat,datetimepicker):
-	#2024-03-19T20:38:43
-	#strDateTime = parse(datetimepicker)
-	#logger.logs(type(strDateTime).toString())
-	#format = '%Y-%m-%d %H:%M:%S'
-	#dt = datetime.strptime(strDateTime,format)
 	dt = parse(datetimepicker)
 	execute = '{"date":{"day":' + str(dt.day) + ',"month":' + str(dt.month) + ',"year":' + str(dt.year) + '}' \
 			+ ',"time":{"hour":' + str(dt.hour) + ',"minute":' + str(dt.minute) + ',"second":' + str(dt.second) + '}}'
-	# logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_allday(name,text,type,repeat,datepicker):
-	#2024-04-06
-	#strDateTime = parse(datepicker)
-	#logger.logs(strDateTime)
-	#format = '%Y-%m-%d %H:%M:%S'
 	d = parse(datepicker)
 	execute = '{"date":{"day":' + str(d.day) + ',"month":' + str(d.month) + ',"year":' + str(d.year) + '}}'
-	logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_daily(name,text,type,repeat,timepicker,weekday):
-	#13:44:06
-	#strDateTime = parse(timepicker)
-	#logger.logs(strDateTime)
 	isFirst = True
 	parent = 0
-	#format = '%Y-%m-%d %H:%M:%S'
 	t = parse(timepicker)
 	for w in weekday:
 		execute = '{"date":{"weekday":"' + w + '"},"time":{"hour":' + str(t.hour) + ',"minute":' + str(t.minute) + ',"second":' + str(t.second) + '}}'
-		logger.logs(execute)
 		if isFirst:
 			isFirst = False
 			parent = store_event(name,text,type,repeat,0,execute)
@@ -414,12 +337,10 @@ def add_daily(name,text,type,repeat,timepicker,weekday):
 				logger.logs("daily store fail")
 def add_monthly(name,text,type,repeat,day):
 	execute = '{"date":{"day":' + day + '}}'
-	logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def add_yearly(name,text,type,repeat,day,month):
 	execute = '{"date":{"day":' + day + ',"month":' + month + '}}'
-	logger.logs(execute)
 	store_event(name,text,type,repeat,0,execute)
 
 def store_event(name,text,type,repeat,parent,execute):
