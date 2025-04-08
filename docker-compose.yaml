@@ -26,12 +26,12 @@ services:
     depends_on:
         - redis
 
-  redis:
-    image: redis:7.4.0-alpine
-    restart: always
-    volumes:
-      - ./cache:/data
-    environment:
-      - REDIS_PASSWORD=syukur123***
-      - REDIS_PORT=6379
-      - REDIS_DATABASES=16
+  # redis:
+  #   image: redis:7.4.0-alpine
+  #   restart: always
+  #   volumes:
+  #     - ./cache:/data
+  #   environment:
+  #     - REDIS_PASSWORD=syukur123***
+  #     - REDIS_PORT=6379
+  #     - REDIS_DATABASES=16

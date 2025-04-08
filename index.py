@@ -137,8 +137,8 @@ def detail():
 			return render_template("Detail.html",event='',execute='', \
 			type='',repeat='',created_by='',error=data['detail'])
 		
-		event = data["data"]
-		createdBy = event["created_by"]
+		event = data
+		createdBy = event["created_by_user"]["username"]
 		for t in get_type()["data"]:
 			if t["name"] == event["type"]:
 				type = t["name"]
@@ -151,8 +151,8 @@ def detail():
 		viewdata = {
 			"event" : event,
 			"execute" : description,
-			"type" : type,
-			"repeat" : repeat,
+			"type" : event["event_type"]["name"],
+			"repeat" : event["event_repeat"]["name"],
 			"created_by" : created_by,
 			"error" : "",
 			"user" : current_user
