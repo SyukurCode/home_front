@@ -1,15 +1,11 @@
 from flask_login import current_user
 import config
 import requests, json # type: ignore
-import logging
 from datetime import datetime, date, timedelta
-# import redis
 
-
-# redis_client = redis.Redis(host=config.redis_host, port=config.redis_port, db=0)
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+import logwriter,os
+current_directory = os.getcwd()
+logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
 
 def get_token(username,password):
 	payload = {
@@ -39,58 +35,63 @@ def executeTranslate(e):
 	try:
 		ex = json.loads(e['execute'])
 	except Exception as er:
-		logger.error(f"Wrong format {str(er)}")
-		logger.info(f"execute:{e}")
+		logger.logs(f"Wrong format {str(er)}")
+		logger.logs(f"execute:{e}")
+		return None
+	try:
+		if e["repeat"] == 'Once' or e["repeat"] == 1:
+			monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
+			ampm = "AM"
+			if e["type"] == "Prayer" or e["type"] == 2:
+				time = datetime.strptime(ex["time"],'%H:%M')
+				Hour12 = time.hour
+				Minute = f'{time.minute}'
+				if time.minute < 10:
+					Minute = f'0{time.minute}'
+				if time.hour > 12:
+					Hour12 = time.hour - 12
+					ampm = "PM"
+				description = f'{ex["date"]["day"]} {monthName} {ex["date"]["year"]} '\
+											+ f'{Hour12}:{Minute} {ampm}'
+			else:
+				Hour12 = ex["time"]["hour"]
+				Minute = f'{ex["time"]["minute"]}'
+				if ex["time"]["minute"] < 10:
+					Minute = f'0{Minute}'
+				if ex["time"]["hour"] > 12:
+					Hour12 = ex["time"]["hour"] - 12
+					ampm = "PM"
 
-	if e["repeat"] == 'Once' or e["repeat"] == 1:
-		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
-		ampm = "AM"
-		if e["type"] == "Prayer" or e["type"] == 2:
-			time = datetime.strptime(ex["time"],'%H:%M')
-			Hour12 = time.hour
-			Minute = f'{time.minute}'
-			if time.minute < 10:
-				Minute = f'0{time.minute}'
-			if time.hour > 12:
-				Hour12 = time.hour - 12
-				ampm = "PM"
-			description = f'{ex["date"]["day"]} {monthName} {ex["date"]["year"]} '\
-                                        + f'{Hour12}:{Minute} {ampm}'
-		else:
-			Hour12 = ex["time"]["hour"]
+				description = f'{ex["date"]["day"]} {monthName} {ex["date"]["year"]} '\
+						+ f'{Hour12}:{Minute} {ampm}'
+
+		if e["repeat"] == 'Allday' or e["repeat"] == 2:
+			monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
+			description = f'{ex["date"]["day"]} {monthName} {ex["date"]["year"]} Every hours'
+
+		if e["repeat"] == 'Daily' or e["repeat"] == 3:
+			ampm = "AM"
+			Hour12 = int(ex["time"]["hour"])
 			Minute = f'{ex["time"]["minute"]}'
 			if ex["time"]["minute"] < 10:
 				Minute = f'0{Minute}'
 			if ex["time"]["hour"] > 12:
 				Hour12 = ex["time"]["hour"] - 12
 				ampm = "PM"
+			description = f'{ex["date"]["weekday"]}, {Hour12}:{Minute} {ampm}'
 
-			description = f'{ex["date"]["day"]} {monthName} {ex["date"]["year"]} '\
-					+ f'{Hour12}:{Minute} {ampm}'
+		if e["repeat"] == 'Monthly' or e["repeat"] == 4:
+			description = f'Every {ex["date"]["day"]}'
 
-	if e["repeat"] == 'Allday' or e["repeat"] == 2:
-		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
-		description = f'{ex["date"]["day"]} {monthName} {ex["date"]["year"]} Every hours'
+		if e["repeat"] == 'Yearly' or e["repeat"] == 5:
+			monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
+			description = f'Every {ex["date"]["day"]} {monthName}'
 
-	if e["repeat"] == 'Daily' or e["repeat"] == 3:
-		ampm = "AM"
-		Hour12 = int(ex["time"]["hour"])
-		Minute = f'{ex["time"]["minute"]}'
-		if ex["time"]["minute"] < 10:
-			Minute = f'0{Minute}'
-		if ex["time"]["hour"] > 12:
-			Hour12 = ex["time"]["hour"] - 12
-			ampm = "PM"
-		description = f'{ex["date"]["weekday"]}, {Hour12}:{Minute} {ampm}'
-
-	if e["repeat"] == 'Monthly' or e["repeat"] == 4:
-		description = f'Every {ex["date"]["day"]}'
-
-	if e["repeat"] == 'Yearly' or e["repeat"] == 5:
-		monthName = date(1900, int(ex["date"]["month"]), 1).strftime('%B')
-		description = f'Every {ex["date"]["day"]} {monthName}'
-
-	return description
+		return description
+	except Exception as er:
+		logger.logs(f"Wrong format {str(er)}")
+		logger.logs(f"execute:{e}")
+		return None
 
 def check_due(event):
 	execute = json.loads(event['execute'])
@@ -162,27 +163,3 @@ def get_next_weekday(weekday_name):
     next_weekday_date = today + timedelta(days=days_ahead)
 
     return next_weekday_date
-
-def get_type_id(name: str):
-	token = get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.get(f'{config.api_endpoint}/api/event/type', headers={"x-access-tokens": token})
-	if response.status_code == 200:
-		all_data = response.json()
-		for d in all_data["data"]:
-			if d['name'] == name :
-				return d['id']
-		logger.error(f"Name of type {name} not found")
-	logger.error(f"request no success")
-	return None
-
-def get_repeat_id(name: str):
-	token = get_token(username=current_user.username,publicId=current_user.publicId)
-	response = requests.get(f'{config.api_endpoint}/api/event/repeat', headers={"x-access-tokens": token})
-	if response.status_code == 200:
-		all_data = response.json()
-		for d in all_data["data"]:
-			if d['name'] == name :
-				return d['id']
-		logger.error(f"Name of repeat {name} not found")
-	logger.error(f"request no success")
-	return None

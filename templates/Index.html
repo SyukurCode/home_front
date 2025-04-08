@@ -21,12 +21,12 @@
                     <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
                         data-bs-target="#addRowModal">
                         <i class="fa fa-plus"></i>
-                        Add Event
+                        Add
                     </button>
-                    <form action="/upload_csv" method="post" enctype="multipart/form-data" class="d-inline">
+                    <form action="/upload_csv" method="post" enctype="multipart/form-data">
                         <label for="csvFile" class="btn btn-primary btn-round m-1">
                             <i class="fa fa-upload"></i>
-                            Upload Event
+                            Upload
                         </label>
                         <input type="file" id="csvFile" name="csvFile" accept=".csv" style="display: none;" onchange="this.form.submit()">
                     </form>

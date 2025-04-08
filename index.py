@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, request, redirect, jsonify, session
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
-import common
-import requests, json # type: ignore
-import config
-
-import logwriter,os
+from apirequest import get_response
+import common,requests, json, config,logwriter,os
 
 current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
@@ -33,45 +30,24 @@ app.register_blueprint(maps_blueprint)
 @app.route('/')
 def index():
 	descriptions = []
-	token = session.get('Token')
 	current_user = session.get('User')
-	if not token:
-		return redirect("/logout")
-	
-	try:
-		response = requests.get(f'{config.api_endpoint}/api/event/user',
-							headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
-		data = response.json()
-		
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
+	response = get_response('/api/event/user')
+	event = response['data']
+	for e in event:
+		description = common.executeTranslate(e)
+		descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+							"execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
 
-		event = data['data']
-		for e in event:
-			try:
-				description = common.executeTranslate(e)
-				descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-									"execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
-			except Exception as e:
-				logger.logs("broken data at {}".format(e["id"]))
-				pass
-		eve = json.loads('{}')
-		eve.update({"data":descriptions})
-		events = eve["data"]
-		# events_due = json.dumps(due_items)
-		
-		viewdata = {
-			"events" : events,
-			"user" : current_user,
-			"menu" : "own"
-		}
+	eve = json.loads('{}')
+	eve.update({"data":descriptions})
+	events = eve["data"]
 
-		return render_template("Index.html",**viewdata)
-	except requests.exceptions.RequestException as e:
-		return render_template("Login.html",error=str(e))
+	viewdata = {
+		"events" : events,
+		"user" : current_user,
+		"menu" : "own"
+	}
+	return render_template("Index.html",**viewdata)
 
 @app.route('/all')
 def all():
@@ -82,35 +58,33 @@ def all():
 	if not token:
 		return redirect("/logout")
 
-	try:
-		response = requests.get(f'{config.api_endpoint}/api/event',
-							headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
-		data = response.json()
+	response = requests.get(f'{config.api_endpoint}/api/event',
+						headers={"accept": "application/json",
+								"Authorization":f"Bearer {token}"})
+	data = response.json()
 
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
+	if response.status_code != 200:
+		logger.logs(data)
+		session.clear()
+		return render_template("Login.html",error=data['detail'])
 
-		event = data['data']
-		for e in event:
-			description = common.executeTranslate(e)
-			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
-						"execute":description,"acknowledge":e["acknowledge"],"owner":e["created_by"],'type':e['type']})
-		eve = json.loads('{}')
-		eve.update({"data":descriptions})
-		events = eve["data"]
-		logger.logs(f"User:{current_user}")
+	event = data['data']
+	for e in event:
+		description = common.executeTranslate(e)
+		descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
+					"execute":description,"acknowledge":e["acknowledge"],"owner":e["created_by"],'type':e['type']})
+	eve = json.loads('{}')
+	eve.update({"data":descriptions})
+	events = eve["data"]
+	logger.logs(f"User:{current_user}")
 
-		viewdata = {
-			"events" : events,
-			"user" : current_user,
-			"menu" : "all"
-		}
-		return render_template("Index.html",**viewdata)
-	except requests.exceptions.RequestException as e:
-		return render_template("Login.html",error=str(e))
+	viewdata = {
+		"events" : events,
+		"user" : current_user,
+		"menu" : "all"
+	}
+	return render_template("Index.html",**viewdata)
+	
 
 
 @app.route('/detail')
@@ -138,23 +112,12 @@ def detail():
 			type='',repeat='',created_by='',error=data['detail'])
 		
 		event = data
-		createdBy = event["created_by_user"]["username"]
-		for t in get_type()["data"]:
-			if t["name"] == event["type"]:
-				type = t["name"]
-		for r in get_repeat()["data"]:
-			if r["name"] == event["repeat"]:
-				repeat = r["name"]
-		created_by = createdBy
+		created_by = event["created_by_user"]["username"]
 		description = common.executeTranslate(event)
 
 		viewdata = {
 			"event" : event,
 			"execute" : description,
-			"type" : event["event_type"]["name"],
-			"repeat" : event["event_repeat"]["name"],
-			"created_by" : created_by,
-			"error" : "",
 			"user" : current_user
 		}
 
@@ -263,8 +226,8 @@ def update():
 	repeat = request.form.get('repeat')
 	execute = request.form.get('execute')
 	parent = request.form.get('parent')
-	int_type = common.get_type_id(type)
-	int_repeat = common.get_repeat_id(repeat)
+	int_type = int(type)
+	int_repeat = int(repeat)
 	#----Update change---#
 	try:
 		response = requests.put(f'{config.api_endpoint}/api/event', \
