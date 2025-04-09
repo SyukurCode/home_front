@@ -124,7 +124,7 @@ def todayEvent():
 			logger.logs(f'Error: {e}')
 			continue
 
-		if e["repeat"] == 'Once' \
+		if e["event_repeat"]["name"] == 'Once' \
 			and today.day == ex["date"]["day"] \
 			and today.month == ex["date"]["month"] \
 			and today.year == ex["date"]["year"]:
@@ -134,7 +134,7 @@ def todayEvent():
 						"execute":description,"acknowledge":e["acknowledge"], \
 						"owner":e["created_by"],"type":e["type"]})
 
-		if e["repeat"] == 'Allday' \
+		if e["event_repeat"]["name"] == 'Allday' \
 			and today.day == ex["date"]["day"] \
 			and today.month == ex["date"]["month"] \
 			and today.year == ex["date"]["year"]:
@@ -142,19 +142,19 @@ def todayEvent():
 			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
 												"execute":description,"acknowledge":e["acknowledge"], \
 						"owner":e["created_by"],"type":e["type"]})
-		if e["repeat"] == 'Daily' \
+		if e["event_repeat"]["name"] == 'Daily' \
 		and ex["date"]["weekday"] == weekday:
 			description = common.executeTranslate(e)
 			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
 						"execute":description,"acknowledge":e["acknowledge"], \
 						"owner":e["created_by"],"type":e["type"]})
-		if e["repeat"] == 'Monthly' \
+		if e["event_repeat"]["name"] == 'Monthly' \
 		and ex["date"]["day"] == today.day:
 			description = common.executeTranslate(e)
 			descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
 						"execute":description,"acknowledge":e["acknowledge"], \
 						"owner":e["created_by"],"type":e["type"]})
-		if e["repeat"] == 'Yearly' \
+		if e["event_repeat"]["name"] == 'Yearly' \
 		and ex["date"]["day"] == today.day \
 		and ex["date"]["month"] == today.month:
 			description = common.executeTranslate(e)
@@ -344,20 +344,6 @@ def add_yearly(name,text,type,repeat,day,month):
 	store_event(name,text,type,repeat,0,execute)
 
 def store_event(name,text,type,repeat,parent,execute):
-	# token = session.get("Token")
-	#--start send data to store--
-
-	# url = f'{config.api_endpoint}/api/event'
-
-	# headers={"accept": "application/json",
-	# 		"Authorization":f"Bearer {token}"}
-
-	# response = requests.post(url, json={"name": name,"text": text, \
-    #             		"type": type,"repeat": repeat, \
-    #             		"parent": parent,"execute": execute },
-	# 			headers=headers)
-	
-	# data = response.json()
 	response = post_response('/api/event', \
 							{"name": name,"text": text, \
 							"type": type,"repeat": repeat, \
@@ -372,10 +358,6 @@ def store_event(name,text,type,repeat,parent,execute):
 	#--update parent if not have parent--
 
 	if data["data"]["parent"] == 0:
-		# update = requests.put(f'{config.api_endpoint}/api/event/parent', \
-		# 		json={"id":id,"parent": id},
-		# 		headers={"accept": "application/json",
-		# 					"Authorization":f"Bearer {token}"})
 		update = put_response(f'/api/event/parent', \
 							{"id":id,"parent": id})
   
@@ -456,8 +438,7 @@ def get_repeat():
 
 @app.route('/getmedia', methods=['GET'] )
 def get_media():
-    
-	# response = requests.get(f'{config.spoke_endpoint}/audio_list')
+
 	response = get_response_spoke('/audio_list')
 	if not isinstance(response, dict) or response.get('status_code') != 200:
 		error_msg = response.get('error', 'Unknown error')
@@ -490,36 +471,27 @@ def due_event():
 
 @app.route('/notifications', methods=['GET'])
 def notification():
-    token = session.get("Token")
     current_user = session.get("User")
-
-    if not token:
-        return redirect("/logout")
+    response = get_response('/api/event/user')
+    if not isinstance(response, dict) or response.get('status_code') != 200:
+        error_msg = response.get('error', 'Unknown error')
+        return render_template("Login.html", error=error_msg)
     
-    try:
-        response = requests.get(f'{config.api_endpoint}/api/event/user',
-								headers={"accept": "application/json",
-										 "Authorization": f"Bearer {token}"})
-        data = response.json()
-        if response.status_code != 200:
-            logger.logs(data)
-            session.clear()
-            return render_template("Login.html", error=data.get('detail', 'Unknown error'))
-        
-        due_items = []
-        for e in data['data']:
-            event_due = json.loads(common.check_due(e))
-            if event_due['isDue']:
-                due_items.append({"id": e['id'], "Name": e['name'], "Due": event_due['duration']})
-                
-            viewdata = {
-			"events": due_items,
-			"user": current_user
-			}
-        return render_template("Notification.html", **viewdata)
+    data = response['data']
+    
+    due_items = []
+    for e in data['data']:
+        event_due = json.loads(common.check_due(e))
+        if event_due['isDue']:
+            due_items.append({"id": e['id'], "Name": e['name'], "Due": event_due['duration']})
+            
+    viewdata = {
+		"events": due_items,
+		"user": current_user
+	}
+    
+    return render_template("Notification.html", **viewdata)
 
-    except requests.exceptions.RequestException as e:
-        return render_template("Login.html", error=str(e))
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
