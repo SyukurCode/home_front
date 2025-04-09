@@ -137,3 +137,13 @@
 04-08-2025 16:29:59 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
 04-08-2025 16:30:21 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
 04-08-2025 16:35:34 PM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-09-2025 08:45:43 AM:apirequest - {'detail': 'Not Found'}
+04-09-2025 08:46:38 AM:apirequest - {'detail': 'Not Found'}
+04-09-2025 08:47:11 AM:apirequest - {'detail': 'Not Found'}
+04-09-2025 08:52:08 AM:apirequest - {'detail': 'Not Found'}
+04-09-2025 08:54:42 AM:apirequest - {'detail': 'Not Found'}
+04-09-2025 08:56:41 AM:__main__ - User:{'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ0MTYxOTM0fQ.K-PkcEJCwwWSbBqrEMAMDei2D_XhzPSxgFY8U0iHlM8', 'token_type': 'Bearer'}
+04-09-2025 08:57:19 AM:__main__ - User:{'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ0MTYxOTM0fQ.K-PkcEJCwwWSbBqrEMAMDei2D_XhzPSxgFY8U0iHlM8', 'token_type': 'Bearer'}
+04-09-2025 08:59:46 AM:__main__ - User:{'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ0MTYxOTM0fQ.K-PkcEJCwwWSbBqrEMAMDei2D_XhzPSxgFY8U0iHlM8', 'token_type': 'Bearer'}
+04-09-2025 09:00:28 AM:__main__ - User:{'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ0MTYxOTM0fQ.K-PkcEJCwwWSbBqrEMAMDei2D_XhzPSxgFY8U0iHlM8', 'token_type': 'Bearer'}
+04-09-2025 09:19:40 AM:__main__ - User:{'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ0MTYxOTM0fQ.K-PkcEJCwwWSbBqrEMAMDei2D_XhzPSxgFY8U0iHlM8', 'token_type': 'Bearer'}

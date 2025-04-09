@@ -102,3 +102,25 @@ def post_response(url: str, payload: dict):
     except requests.exceptions.RequestException as e:
         logger.logs(str(e))
         return {'status_code': 500, 'error': str(e)}
+    
+def get_response_spoke(url: str):
+    token = session.get('Token')
+    if not token:
+        return {'status_code': 401, 'error': 'Unauthorized'}
+    
+    try:
+        response = requests.get(f'{config.spoke_endpoint}{url}',
+                            headers={"accept": "application/json"})
+        data = response.json()
+        
+        if response.status_code != 200:
+            logger.logs(data)
+            session.clear()
+            return {'status_code': response.status_code, 'error': data['detail']}
+        
+        response_data = data['data'] if 'data' in data else data
+        return {'status_code': response.status_code, 'data': response_data}
+        
+    except requests.exceptions.RequestException as e:
+        logger.logs(str(e))
+        return {'status_code': 500, 'error': str(e)}

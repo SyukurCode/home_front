@@ -141,6 +141,7 @@ function getMedia() {
             }
             catch (error) {
                 alert(error.toString);
+                
             }
         }
     }).fail(function (jqxhr, textStatus, error) {
@@ -158,10 +159,10 @@ function getTypenRepeat() {
             option.value = "";
             select.add(option);
             try {
-                for (let t = 0; t < data.data.length; t++) {
+                for (let t = 0; t < data.length; t++) {
                     var option = document.createElement("option");
-                    option.text = data.data[t].name;
-                    option.value = data.data[t].id;
+                    option.text = data[t].name;
+                    option.value = data[t].id;
                     select.add(option);
                 }
             }
@@ -184,11 +185,11 @@ function getTypenType() {
             option.value = "";
             select.add(option);
             try {
-                for (let t = 0; t < data.data.length; t++) {
+                for (let t = 0; t < data.length; t++) {
                     var option = document.createElement("option");
-                    if (data.data[t].id != 2) {
-                        option.text = data.data[t].name;
-                        option.value = data.data[t].id;
+                    if (data[t].id != 2) {
+                        option.text = data[t].name;
+                        option.value = data[t].id;
                         select.add(option);
                     }
                 }

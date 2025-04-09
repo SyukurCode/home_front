@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, jsonify, session
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
-from apirequest import get_response, put_response, delete_response, post_response
+from apirequest import get_response, put_response, delete_response, post_response, get_response_spoke
 import common,requests, json, config,logwriter,os
 
 current_directory = os.getcwd()
@@ -344,88 +344,69 @@ def add_yearly(name,text,type,repeat,day,month):
 	store_event(name,text,type,repeat,0,execute)
 
 def store_event(name,text,type,repeat,parent,execute):
-	token = session.get("Token")
+	# token = session.get("Token")
 	#--start send data to store--
 
-	url = f'{config.api_endpoint}/api/event'
+	# url = f'{config.api_endpoint}/api/event'
 
-	headers={"accept": "application/json",
-			"Authorization":f"Bearer {token}"}
+	# headers={"accept": "application/json",
+	# 		"Authorization":f"Bearer {token}"}
 
-	response = requests.post(url, json={"name": name,"text": text, \
-                		"type": type,"repeat": repeat, \
-                		"parent": parent,"execute": execute },
-				headers=headers)
+	# response = requests.post(url, json={"name": name,"text": text, \
+    #             		"type": type,"repeat": repeat, \
+    #             		"parent": parent,"execute": execute },
+	# 			headers=headers)
 	
-	data = response.json()
-
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
-
+	# data = response.json()
+	response = post_response('/api/event', \
+							{"name": name,"text": text, \
+							"type": type,"repeat": repeat, \
+							"parent": parent,"execute": execute })
+ 
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+				error_msg = response.get('error', 'Unknown error')
+				return render_template("Login.html", error=error_msg)
+	
+	data = response['data']
 	id = data['data']['id']
 	#--update parent if not have parent--
 
 	if data["data"]["parent"] == 0:
-		update = requests.put(f'{config.api_endpoint}/api/event/parent', \
-				json={"id":id,"parent": id},
-				headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
+		# update = requests.put(f'{config.api_endpoint}/api/event/parent', \
+		# 		json={"id":id,"parent": id},
+		# 		headers={"accept": "application/json",
+		# 					"Authorization":f"Bearer {token}"})
+		update = put_response(f'/api/event/parent', \
+							{"id":id,"parent": id})
+  
+		if not isinstance(response, dict) or response.get('status_code') != 200:
+				error_msg = response.get('error', 'Unknown error')
+				return render_template("Login.html", error=error_msg)
 		
-		update_data = update.json()
-		if response.status_code != 200:
-			logger.logs(update_data)
-			session.clear()
-			return None
+		update_data = update
 
 		logger.logs("event store success")
 		return update_data['data']['id']
 
 	else:
 		logger.logs("event store request fail")
-
 	return None
-@app.route("/current_user", methods = ['GET'])
-def get_login_user():
-	token = session.get("Token")
-
-	response = requests.get(f'{config.api_endpoint}/api/user_info',
-						  headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"}, timeout=5)
-	data = response.json()
-
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return None
-	return data
-
 
 @app.route('/account', methods=['POST'])
 def add_user():
-	token = session.get("Token")
-	current_user = session.get("User")
-
-	if not token:
-		return redirect("/logout")
-	
 	username = request.form.get("username")
 	email = request.form.get("email")
 	password = request.form.get("password")
 
 	logger.logs(f'Username: {username}, Email: {email}, Password: {password}')
 
-	response = requests.post(f'{config.api_endpoint}/api/users', \
-				json={"username": username,"password": password,"email": email, 'isAdmin': False},
-				headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
-	data = response.json()
+	response = post_response('/api/users', \
+							{"username": username,"password": password,"email": email, 'isAdmin': False})
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return render_template("Login.html", error=error_msg)
 
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
+	data = response['data']
 	
 	return redirect("/")
 
@@ -440,110 +421,72 @@ def change_password():
 	isValid = common.get_token(record['username'],record['password'])
 	if not isValid == None:
 		userId = current_user['id']
-		token = session.get("Token")
-		response = requests.put(f'{config.api_endpoint}/api/user/{userId}',
-							json={"password": record['new-password'], \
-							"email": current_user['email'],"isAdmin": current_user['isAdmin']},
-							headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
-		data = response.json()
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return render_template("Login.html",error=data['detail'])
-		# # Update the password in the database
+		response = put_response(f'/api/user/{userId}', \
+							{"password": record['new-password'], \
+							"email": current_user['email'],"isAdmin": current_user['isAdmin']})
+		if not isinstance(response, dict) or response.get('status_code') != 200:
+			error_msg = response.get('error', 'Unknown error')
+			return render_template("Login.html", error=error_msg)
+		data = response['data']
             
 		return jsonify({'message':'password updated!'}), 202
 	return jsonify({'message':'Wrong password!','error': None}), 403
 
 @app.route('/gettype', methods=['GET'] )
 def get_type():
-	token = session.get("Token")
-	current_user = session.get("User")
-
-	if not token:
-		return redirect("/logout")
-	
-	response = requests.get(f'{config.api_endpoint}/api/event/type',
-						 headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
-	
-	data = response.json()
-
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return jsonify({"message":"fail connect to api service"}), 500
+	response = get_response('/api/event/type')
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return jsonify({"error":error_msg})
+	data = response['data']	
 	
 	return data
 	
 
 @app.route('/getrepeat', methods=['GET'] )
 def get_repeat():
-	token = session.get("Token")
-	current_user = session.get("User")
+	response = get_response('/api/event/repeat')
+	
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return jsonify({"error":error_msg}), 500
 
-	if not token:
-		return redirect("/logout")
-	try:
-		response = requests.get(f'{config.api_endpoint}/api/event/repeat',
-							headers={"accept": "application/json",
-								"Authorization":f"Bearer {token}"})
-		
-		if response.status_code == 200:
-			data = response.json()
-			return data
-
-	except requests.exceptions.RequestException as e:
-		logger.logs(str(e))
-		session.clear()
-		return jsonify({"message":str(e)}), 500
-
-	return jsonify({"message": data["detail"]}), 500
+	data = response['data']
+	return data
 
 @app.route('/getmedia', methods=['GET'] )
 def get_media():
-	try:
-		response = requests.get(f'{config.spoke_endpoint}/audio_list')
-		if response.status_code == 200:
-			data = response.json()
-			return data
-	except requests.exceptions.RequestException as e:
-		logger.logs(str(e))
-		session.clear()
-		return jsonify({"message":str(e)}), 500
-	
-	return jsonify({"message": data["detail"]}), 500
     
+	# response = requests.get(f'{config.spoke_endpoint}/audio_list')
+	response = get_response_spoke('/audio_list')
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return jsonify({"message":error_msg}), 500
+
+	data = response['data']
+	return data
 
 @app.route('/checkeventdue', methods=['GET'])
 def due_event():
 	token = session.get("Token")
 	due_items = []
-	try:
-		response = requests.get(f'{config.api_endpoint}/api/event/user',
-							headers={"accept": "application/json",
-									"Authorization":f"Bearer {token}"})
-		data = response.json()
-  
-		if response.status_code != 200:
-			logger.logs(data)
-			session.clear()
-			return jsonify({"message": data["detail"]}),500
 
-		event = data['data']
-		for e in event:
-			event_due = json.loads(common.check_due(e))
-			if event_due['isDue']:
-				due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['duration']})
-		events_due = json.dumps(due_items)
+	response = get_response('/api/event/user')
+	if not isinstance(response, dict) or response.get('status_code') != 200:
+		error_msg = response.get('error', 'Unknown error')
+		return jsonify({"message":error_msg}), 500
 
-		return jsonify(events_due),200
+	data = response['data']
+	event = data
+	for e in event:
+		event_due = json.loads(common.check_due(e))
+		if event_due['isDue']:
+			due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['duration']})
+	events_due = json.dumps(due_items)
 
-	except requests.exceptions.RequestException as e:
-		logger.logs(str(e))
-		session.clear()
-		return jsonify({"message":str(e)}), 500
+	return jsonify(events_due),200
+
+
 
 @app.route('/notifications', methods=['GET'])
 def notification():
