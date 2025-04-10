@@ -109,7 +109,7 @@
                     <a href="/maps">
                       <span class="sub-item">Maps</span>
                     </a>
-                  <!-- </li>
+                    <!-- </li>
                   <li>
                     <a href="components/panels.html">
                       <span class="sub-item">Panels</span>
@@ -195,7 +195,8 @@
                     </div>
                   </li>
                   <li>
-                    <a id="see-all" class="see-all" href="/notifications" >See all notifications<i class="fa fa-angle-right"></i>
+                    <a id="see-all" class="see-all" href="/notifications">See all notifications<i
+                        class="fa fa-angle-right"></i>
                     </a>
                   </li>
                 </ul>
@@ -237,7 +238,11 @@
               <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
-                    <img src="/static/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    {% if avatar is none %}
+                    <img src="/static/img/avatar.svg" alt="..." class="avatar-img rounded-circle" />
+                    {% else %}
+                    <img src="data:image/jpeg;base64,{{ avatar }}" alt="..." class="avatar-img rounded-circle" />
+                    {% endif %}
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
@@ -249,7 +254,12 @@
                     <li>
                       <div class="user-box">
                         <div class="avatar-lg">
-                          <img src="/static/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          {% if avatar is none %}
+                          <img src="/static/img/avatar.svg" alt="image profile" class="avatar-img rounded" />
+                          {% else %}
+                          <img src="data:image/jpeg;base64,{{ avatar }}" alt="image profile"
+                            class="avatar-img rounded" />
+                          {% endif %}
                         </div>
                         <div class="u-text">
                           <h4 id="profileName">{{user.username}}</h4>
@@ -292,6 +302,23 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
+
+                  <!--User Avatar-->
+                  <div id="frmAvatar" class="mt-3 align-items-center text-center">
+                    <div class="avatar avatar-xxl">
+                      {% if avatar is none %}
+                      <img id="avatar_img" src="/static/img/avatar.svg" alt="..." class="avatar-img rounded-circle">
+                      {% else %}
+                      <img src="data:image/jpeg;base64,{{ avatar }}" alt="..." class="avatar-img rounded-circle">
+                      {% endif %}
+                    </div>
+                    <div class="mt-2">
+                      <input id="avatar" name="avatar" type="file" accept="image/*" onchange="ValidateAvatar()"
+                        class="form-control" required>
+                      <div id="avatarFeedback" class="text-danger">
+                      </div>
+                    </div>
+                  </div>
 
                   <!--Username-->
                   <div id="frmUsername" class="mt-3">

@@ -3,6 +3,7 @@ from flask_login import current_user,login_required
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
+from apirequest import get_user_avatar
 import os,config
 import requests, json # type: ignore
 
@@ -23,7 +24,8 @@ def index():
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 
 	viewdata = {
-		"user" : current_user
+		"user" : current_user,
+		"avatar" : get_user_avatar(),
 	}
 
 	return render_template("Calendar.html", **viewdata)

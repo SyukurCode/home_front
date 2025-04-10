@@ -1,4 +1,5 @@
 from flask import Blueprint, request, render_template, session
+from apirequest import get_user_avatar
 # from datetime import datetime, timezone
 import requests, config # type: ignore
 import logwriter,os
@@ -14,6 +15,7 @@ def index():
     current_user = session.get('User')
     
     viewdata = {
-        "user": current_user
+        "user": current_user,
+        "avatar" : get_user_avatar(),
     }
     return render_template("Maps.html", **viewdata)

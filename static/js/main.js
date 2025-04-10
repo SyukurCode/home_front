@@ -176,3 +176,37 @@ $(document).ready(function () {
 
     });
 });
+async function ValidateAvatar(){
+    const fileInput = document.getElementById("avatar");
+    const filePath = fileInput.value;
+    const formData = new FormData();
+    // Allowing file type
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+        alert('Please upload file having extensions .jpeg/.jpg/.png/.gif only.');
+        fileInput.value = '';
+        return false;
+    } else {
+        formData.append('avatar', fileInput.files[0]);
+        try {
+            const response = await fetch('/upload-avatar', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response
+
+            if (response.ok) {
+                document.getElementById('avatarFeedback').innerText = "Uploaded successfully!";
+                document.getElementById('avatarPreview').src = "data:image/jpeg;base64," + result.data;
+            } else {
+                document.getElementById('avatarFeedback').innerText = result.detail || 'Upload failed!';
+            }
+        } catch (error) {
+            document.getElementById('avatarFeedback').innerText = error || 'Error uploading file!';
+        }
+
+        
+    }
+    return true;
+}

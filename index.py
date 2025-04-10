@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, redirect, jsonify, session
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from dateutil.parser import parse # type: ignore
-from apirequest import get_response, put_response, delete_response, post_response, get_response_spoke
+from apirequest import get_response, put_response, \
+	delete_response, post_response, get_response_spoke, get_user_avatar
 import common,requests, json, config,logwriter,os
 
 current_directory = os.getcwd()
@@ -46,10 +47,10 @@ def index():
 	eve = json.loads('{}')
 	eve.update({"data":descriptions})
 	events = eve["data"]
-
 	viewdata = {
 		"events" : events,
 		"user" : current_user,
+        "avatar" : get_user_avatar(),
 		"menu" : "own"
 	}
 	return render_template("Index.html",**viewdata)
@@ -77,6 +78,7 @@ def all():
 	viewdata = {
 		"events" : events,
 		"user" : current_user,
+		"avatar" : get_user_avatar(),
 		"menu" : "all"
 	}
 	return render_template("Index.html",**viewdata)
@@ -97,7 +99,8 @@ def detail():
 	viewdata = {
 		"event" : event,
 		"execute" : description,
-		"user" : current_user
+		"user" : current_user,
+		"avatar" : get_user_avatar(),
 	}
 
 	return render_template("Detail.html", **viewdata)
@@ -169,7 +172,8 @@ def todayEvent():
 		viewdata = {
 		"events" : events,
 		"user" : current_user,
-		"menu" : "today"
+		"menu" : "today",
+		"avatar" : get_user_avatar(),
 	}
 
 	return render_template("Index.html",**viewdata)
@@ -201,16 +205,16 @@ def update():
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
+	token = session.get("Token")
 	if request.method == 'GET':
 		if token:
 			return redirect("/")
 		return render_template("Login.html",error='')
-
 	if request.method == 'POST':
 		username = request.form.get('username')
 		password = request.form.get('password')
 		isRemember = request.form.get('remember_me')
-
+		
 		if isRemember:
 			session.permanent = True  # Makes the session permanent
 		else:
@@ -242,7 +246,7 @@ def login():
 				error_msg = response.get('error', 'Unknown error')
 				return render_template("Login.html", error=error_msg)
 
-			session['User'] = data
+			session['User'] = response['data']
 			return redirect("/")
 
 		except requests.exceptions.RequestException as e:
@@ -530,6 +534,26 @@ def upload_csv():
 		return jsonify({'error': 'No selected file'}), 400
 
 	return redirect('/')
+
+@app.route('/upload-avatar', methods=['POST'])
+def upload_avatar():
+    token = session.get("Token")
+    file = request.files.get('avatar')
+    if not file:
+        return jsonify({"detail": "No file uploaded"}), 400
+    
+    headers={"Authorization":f"Bearer {token}",
+             	"Content-Type":"multipart/form-data"}
+
+    response = requests.post(f'{config.api_endpoint}/api/avatar', files=file, headers=headers)
+    
+    if not isinstance(response, dict) or response.get('status_code') != 200:
+        error_msg = response.get('error', 'Unknown error')
+        return jsonify({"detail": error_msg}), 500
+    
+    if response.status_code == 200:
+        avatar = get_user_avatar()
+        return jsonify({'data': avatar}), 200
 
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore
