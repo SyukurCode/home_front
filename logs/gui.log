@@ -325,3 +325,26 @@
 04-28-2025 14:16:46 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
 04-28-2025 14:16:58 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
 04-28-2025 14:17:00 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:03:14 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:03:15 PM:apirequest - Gagal ambil avatar: 403
+04-28-2025 15:03:17 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:03:17 PM:kalendar - {'detail': 'Signature has expired'}
+04-28-2025 15:03:17 PM:apirequest - {'detail': 'Signature has expired'}
+04-28-2025 15:03:27 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:03:29 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:07:32 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:07:35 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:08:07 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:08:09 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:11:19 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:11:21 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:11:27 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:11:29 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:14:47 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:14:49 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:16:36 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:16:38 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:19:08 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:19:10 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 15:19:47 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 15:19:49 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all

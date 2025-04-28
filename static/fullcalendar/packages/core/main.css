@@ -660,6 +660,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  color: inherit;
 }
 
 .fc-button:focus {
@@ -719,12 +720,14 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   color: #fff;
   background-color: #f67280;
   border-color: #f67280;
+  color: blue;
 }
 
 .fc-button-primary:hover {
   color: #fff;
   background-color: #f67280;
   border-color: #f67280;
+  color: blue;
 }
 
 
@@ -820,6 +823,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: blue;
 }
 
 .fc-toolbar.fc-header-toolbar {
