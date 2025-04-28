@@ -63,8 +63,8 @@ def allevent():
 		except Exception as e:
 			logger.logs("Wrong format")
 
-		if event['repeat'] == 'Once' or event['repeat'] == 1:
-			if event['type'] == 'Prayer' or event['type'] == 2:
+		if event['event_repeat']["name"] == 'Once' or event['repeat'] == 1:
+			if event['event_type']["name"] == 'Prayer' or event['type'] == 2:
 				time = datetime.strptime(dateTimeJson["time"],'%H:%M')
 				Hour = time.hour
 				Minute = time.minute
@@ -111,7 +111,7 @@ def allevent():
 
 			_start = f"{Year}-{Month:02d}-{Day:02d}"
 
-		if event['repeat'] == 'Yearly' or event['repeat'] == 6:
+		if event['event_repeat']["name"] == 'Yearly' or event['repeat'] == 6:
 			Year = datetime.now().year
 							#Hour = dateTimeJson['time']['hour']
 							#Minute = dateTimeJson['time']['minute']

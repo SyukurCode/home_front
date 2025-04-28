@@ -310,3 +310,18 @@
 04-09-2025 16:40:55 PM:apirequest - Gagal ambil avatar: 404
 04-09-2025 16:41:42 PM:apirequest - Gagal ambil avatar: 404
 04-09-2025 16:43:42 PM:apirequest - Gagal ambil avatar: 404
+04-28-2025 12:37:12 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 12:37:14 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 12:46:08 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 12:46:10 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 12:51:19 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 12:51:21 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 14:16:29 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 14:16:29 PM:apirequest - Gagal ambil avatar: 403
+04-28-2025 14:16:31 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 14:16:31 PM:kalendar - {'detail': 'Signature has expired'}
+04-28-2025 14:16:31 PM:apirequest - {'detail': 'Signature has expired'}
+04-28-2025 14:16:44 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 14:16:46 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-28-2025 14:16:58 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-28-2025 14:17:00 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all

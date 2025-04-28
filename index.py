@@ -36,7 +36,7 @@ def index():
  
 	if not isinstance(response, dict) or response.get('status_code') != 200:
 		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error=error_msg)
+		return render_template("Login.html", error="")
     
 	event = response['data']
 	for e in event:
