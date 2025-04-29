@@ -358,7 +358,7 @@ def store_event(name,text,type,repeat,parent,execute):
 				return render_template("Login.html", error=error_msg)
 	
 	data = response['data']
-	id = data['data']['id']
+	id = data['id']
 	#--update parent if not have parent--
 
 	if data["data"]["parent"] == 0:
