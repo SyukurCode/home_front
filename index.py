@@ -422,7 +422,8 @@ def notification():
             
     viewdata = {
 		"events": due_items,
-		"user": current_user
+		"user": current_user,
+		"avatar": get_user_avatar()
 	}
     
     return render_template("Notification.html", **viewdata)

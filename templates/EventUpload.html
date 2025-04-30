@@ -50,7 +50,15 @@
                             <tr>
                                 <td class="col-sm-2">{{loop.index}}</td>
                                 <td class="col-sm-6">{{item.event}}</td>
-                                <td class="col-sm-3">{{item.status}}</td>
+                                {% if item.status == 'fail'}
+                                    <td class="col-sm-3">
+                                        <span class="badge badge-danger">{{item.status}}</span>
+                                    </td>
+                                {% else %}
+                                    <td class="col-sm-3">
+                                        <span class="badge badge-success">{{item.status}}</span>
+                                    </td>
+                                {% endif %}
                                 <td class="col-sm-1">{{item.error}}</td>
                             </tr>
                             {% endfor %}

@@ -869,3 +869,7 @@
 04-30-2025 12:21:40 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen bahasa Melayu ganti malam ni Pukul 9:30 malam di Block D, 1, 1, 0
 04-30-2025 12:21:41 PM:common - event store success
 04-30-2025 12:21:41 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen bahasa Melayu ganti malam ni Pukul 9:30 malam di Block D, 1, 1, 0
+04-30-2025 12:33:06 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 12:33:08 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 12:33:09 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 12:33:12 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
