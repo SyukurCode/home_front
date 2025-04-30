@@ -124,7 +124,8 @@ def check_due(event):
 		duration = f"{int(period // 2592000)} months ago"
 	else:
 		duration = f"{int(period // 31536000)} years ago"
-		
+	
+	logger.logs(f'event:{event["name"]}, due:{duration}')
 	if period > 1.0 :
 		return json.dumps({'isDue': True,'duration': duration})
 	return json.dumps({'isDue': False,'duration': duration})

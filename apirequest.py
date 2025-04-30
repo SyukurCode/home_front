@@ -52,8 +52,7 @@ def get_user_avatar():
             image_base64 = base64.b64encode(response.content).decode('utf-8')
             return image_base64
         else:
-            # return f"Gagal ambil avatar: {response.status_code}", 400
-            logger.logs(f"Gagal ambil avatar: {response.status_code}")
+            logger.logs(f"fail to retrive avatar: {response.status_code}")
             return None
     except Exception as e:
         logger.logs(f"Exception: {str(e)}")
