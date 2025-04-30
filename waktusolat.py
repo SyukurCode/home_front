@@ -10,7 +10,7 @@ waktu_solat = Blueprint('wakto_solat', __name__)
 
 @waktu_solat.route("/waktu_solat", methods = ["GET"])
 def index():
-    current_user = session.get("user")
+    current_user = session.get("User")
     waktu = []
 
     response = get_response('/api/event')
@@ -28,7 +28,7 @@ def index():
 
     viewdata = {
 		"user" : current_user,
-		# "avatar" : get_user_avatar(),
+		"avatar" : get_user_avatar(),
         "waktu_solat" : waktu
 	}
     # return jsonify({**viewdata}),200
