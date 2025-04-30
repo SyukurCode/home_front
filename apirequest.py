@@ -1,4 +1,4 @@
-import common,config
+import config
 import requests, json # type: ignore
 from flask import Flask, session, render_template
 import base64

@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+<script src="/static/js/main.min.js"></script>
+{% block content %}
+<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <div>
+        <h3 class="fw-bold mb-3">Event Uploads</h3>
+        <h6 class="op-7 mb-2">All event upload status</h6>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+        <a href="javascript:history.back()" class="btn btn-label-info btn-round me-2">Back</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title">List of event upload</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="uploadEventTable" class="display table table-striped table-hover"> 
+                        <thead>
+                            <tr>
+                                <!---No------>
+                                <th scope="col">No.</th>
+                                <!---Event--->
+                                <th scope="col">Event</th>
+                                <!---status---------->
+                                <th scope="col">status</th>
+                                <!---error------->
+                                <th scope="col">Error</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <!---No------>
+                                <th scope="col">No.</th>
+                                <!---Event--->
+                                <th scope="col">Event</th>
+                                <!---status---------->
+                                <th scope="col">status</th>
+                                <!---error------->
+                                <th scope="col">Error</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td class="col-sm-2">{{loop.index}}</td>
+                                <td class="col-sm-6">{{item.event}}</td>
+                                <td class="col-sm-3">{{item.status}}</td>
+                                <td class="col-sm-1">{{item.error}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script src="/static/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/js/notification.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#uploadEventTable").DataTable({
+            pageLength: 5,
+        });
+    });
+</script>
+{% endblock %}

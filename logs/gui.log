@@ -506,3 +506,366 @@
 04-30-2025 09:11:53 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
 04-30-2025 09:26:15 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
 04-30-2025 09:27:02 AM:__main__ - User:{'createdBy': -1, 'createdDate': '2024-04-01T00:57:11.279954', 'email': 'syukurz87@gmail.com', 'id': 4, 'isAdmin': True, 'publicId': '266b140c-f5c9-4beb-9a7a-07dc894dfdcc', 'username': 'admin'}
+04-30-2025 09:31:32 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 09:31:34 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 09:39:33 AM:apirequest - {'detail': 'Signature has expired'}
+04-30-2025 10:12:18 AM:apirequest - {'detail': 'Signature has expired'}
+04-30-2025 10:15:40 AM:common - event:Tusyen Adelia, due:14 hours ago
+04-30-2025 10:15:40 AM:common - event:Hari Wesak, due:-999859 seconds ago
+04-30-2025 10:15:40 AM:common - event:Maulidul Rasul, due:-11022259 seconds ago
+04-30-2025 10:15:40 AM:common - event:Agong's Birthday, due:-2814259 seconds ago
+04-30-2025 10:15:40 AM:common - event:Tusyen Adelia, due:-551659 seconds ago
+04-30-2025 10:15:40 AM:common - event:Tusyen Adelia, due:-1156459 seconds ago
+04-30-2025 10:15:40 AM:common - event:Tusyen Adelia, due:-1761259 seconds ago
+04-30-2025 10:15:40 AM:common - event:Tusyen Adelia, due:-2366059 seconds ago
+04-30-2025 10:15:40 AM:common - event:Raya Haji, due:-3246259 seconds ago
+04-30-2025 10:15:40 AM:common - event:Awal muharam, due:-4974259 seconds ago
+04-30-2025 10:15:40 AM:common - event:Sultan of Selangor's Birthday, due:-19403059 seconds ago
+04-30-2025 10:15:40 AM:common - event:Depavali, due:-14910259 seconds ago
+04-30-2025 10:15:53 AM:common - event:Tusyen Adelia, due:14 hours ago
+04-30-2025 10:15:53 AM:common - event:Hari Wesak, due:-999846 seconds ago
+04-30-2025 10:15:53 AM:common - event:Maulidul Rasul, due:-11022246 seconds ago
+04-30-2025 10:15:53 AM:common - event:Agong's Birthday, due:-2814246 seconds ago
+04-30-2025 10:15:53 AM:common - event:Tusyen Adelia, due:-551646 seconds ago
+04-30-2025 10:15:53 AM:common - event:Tusyen Adelia, due:-1156446 seconds ago
+04-30-2025 10:15:53 AM:common - event:Tusyen Adelia, due:-1761246 seconds ago
+04-30-2025 10:15:53 AM:common - event:Tusyen Adelia, due:-2366046 seconds ago
+04-30-2025 10:15:53 AM:common - event:Raya Haji, due:-3246246 seconds ago
+04-30-2025 10:15:53 AM:common - event:Awal muharam, due:-4974246 seconds ago
+04-30-2025 10:15:53 AM:common - event:Sultan of Selangor's Birthday, due:-19403046 seconds ago
+04-30-2025 10:15:53 AM:common - event:Depavali, due:-14910246 seconds ago
+04-30-2025 10:41:14 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 10:41:14 AM:common - event:Hari Wesak, due:-998325 seconds ago
+04-30-2025 10:41:14 AM:common - event:Maulidul Rasul, due:-11020725 seconds ago
+04-30-2025 10:41:14 AM:common - event:Agong's Birthday, due:-2812725 seconds ago
+04-30-2025 10:41:14 AM:common - event:Tusyen Adelia, due:-550125 seconds ago
+04-30-2025 10:41:14 AM:common - event:Tusyen Adelia, due:-1154925 seconds ago
+04-30-2025 10:41:14 AM:common - event:Tusyen Adelia, due:-1759725 seconds ago
+04-30-2025 10:41:14 AM:common - event:Tusyen Adelia, due:-2364525 seconds ago
+04-30-2025 10:41:14 AM:common - event:Raya Haji, due:-3244725 seconds ago
+04-30-2025 10:41:14 AM:common - event:Awal muharam, due:-4972725 seconds ago
+04-30-2025 10:41:14 AM:common - event:Sultan of Selangor's Birthday, due:-19401525 seconds ago
+04-30-2025 10:41:14 AM:common - event:Depavali, due:-14908725 seconds ago
+04-30-2025 10:41:53 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 10:41:53 AM:common - event:Hari Wesak, due:-998286 seconds ago
+04-30-2025 10:41:53 AM:common - event:Maulidul Rasul, due:-11020686 seconds ago
+04-30-2025 10:41:53 AM:common - event:Agong's Birthday, due:-2812686 seconds ago
+04-30-2025 10:41:53 AM:common - event:Tusyen Adelia, due:-550086 seconds ago
+04-30-2025 10:41:53 AM:common - event:Tusyen Adelia, due:-1154886 seconds ago
+04-30-2025 10:41:53 AM:common - event:Tusyen Adelia, due:-1759686 seconds ago
+04-30-2025 10:41:53 AM:common - event:Tusyen Adelia, due:-2364486 seconds ago
+04-30-2025 10:41:53 AM:common - event:Raya Haji, due:-3244686 seconds ago
+04-30-2025 10:41:53 AM:common - event:Awal muharam, due:-4972686 seconds ago
+04-30-2025 10:41:53 AM:common - event:Sultan of Selangor's Birthday, due:-19401486 seconds ago
+04-30-2025 10:41:53 AM:common - event:Depavali, due:-14908686 seconds ago
+04-30-2025 11:11:41 AM:apirequest - {'detail': 'Signature has expired'}
+04-30-2025 11:11:47 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:11:47 AM:common - event:Hari Wesak, due:-996492 seconds ago
+04-30-2025 11:11:47 AM:common - event:Maulidul Rasul, due:-11018892 seconds ago
+04-30-2025 11:11:47 AM:common - event:Agong's Birthday, due:-2810892 seconds ago
+04-30-2025 11:11:47 AM:common - event:Tusyen Adelia, due:-548292 seconds ago
+04-30-2025 11:11:47 AM:common - event:Tusyen Adelia, due:-1153092 seconds ago
+04-30-2025 11:11:47 AM:common - event:Tusyen Adelia, due:-1757892 seconds ago
+04-30-2025 11:11:47 AM:common - event:Tusyen Adelia, due:-2362692 seconds ago
+04-30-2025 11:11:47 AM:common - event:Raya Haji, due:-3242892 seconds ago
+04-30-2025 11:11:47 AM:common - event:Awal muharam, due:-4970892 seconds ago
+04-30-2025 11:11:47 AM:common - event:Sultan of Selangor's Birthday, due:-19399692 seconds ago
+04-30-2025 11:11:47 AM:common - event:Depavali, due:-14906892 seconds ago
+04-30-2025 11:22:44 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:22:44 AM:common - event:Hari Wesak, due:-995835 seconds ago
+04-30-2025 11:22:44 AM:common - event:Maulidul Rasul, due:-11018235 seconds ago
+04-30-2025 11:22:44 AM:common - event:Agong's Birthday, due:-2810235 seconds ago
+04-30-2025 11:22:44 AM:common - event:Tusyen Adelia, due:-547635 seconds ago
+04-30-2025 11:22:44 AM:common - event:Tusyen Adelia, due:-1152435 seconds ago
+04-30-2025 11:22:44 AM:common - event:Tusyen Adelia, due:-1757235 seconds ago
+04-30-2025 11:22:44 AM:common - event:Tusyen Adelia, due:-2362035 seconds ago
+04-30-2025 11:22:44 AM:common - event:Raya Haji, due:-3242235 seconds ago
+04-30-2025 11:22:44 AM:common - event:Awal muharam, due:-4970235 seconds ago
+04-30-2025 11:22:44 AM:common - event:Sultan of Selangor's Birthday, due:-19399035 seconds ago
+04-30-2025 11:22:44 AM:common - event:Depavali, due:-14906235 seconds ago
+04-30-2025 11:22:46 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:22:46 AM:common - event:Hari Wesak, due:-995833 seconds ago
+04-30-2025 11:22:46 AM:common - event:Maulidul Rasul, due:-11018233 seconds ago
+04-30-2025 11:22:46 AM:common - event:Agong's Birthday, due:-2810233 seconds ago
+04-30-2025 11:22:46 AM:common - event:Tusyen Adelia, due:-547633 seconds ago
+04-30-2025 11:22:46 AM:common - event:Tusyen Adelia, due:-1152433 seconds ago
+04-30-2025 11:22:46 AM:common - event:Tusyen Adelia, due:-1757233 seconds ago
+04-30-2025 11:22:46 AM:common - event:Tusyen Adelia, due:-2362033 seconds ago
+04-30-2025 11:22:46 AM:common - event:Raya Haji, due:-3242233 seconds ago
+04-30-2025 11:22:46 AM:common - event:Awal muharam, due:-4970233 seconds ago
+04-30-2025 11:22:46 AM:common - event:Sultan of Selangor's Birthday, due:-19399033 seconds ago
+04-30-2025 11:22:46 AM:common - event:Depavali, due:-14906233 seconds ago
+04-30-2025 11:23:18 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:23:18 AM:common - event:Hari Wesak, due:-995801 seconds ago
+04-30-2025 11:23:18 AM:common - event:Maulidul Rasul, due:-11018201 seconds ago
+04-30-2025 11:23:18 AM:common - event:Agong's Birthday, due:-2810201 seconds ago
+04-30-2025 11:23:18 AM:common - event:Tusyen Adelia, due:-547601 seconds ago
+04-30-2025 11:23:18 AM:common - event:Tusyen Adelia, due:-1152401 seconds ago
+04-30-2025 11:23:18 AM:common - event:Tusyen Adelia, due:-1757201 seconds ago
+04-30-2025 11:23:18 AM:common - event:Tusyen Adelia, due:-2362001 seconds ago
+04-30-2025 11:23:18 AM:common - event:Raya Haji, due:-3242201 seconds ago
+04-30-2025 11:23:18 AM:common - event:Awal muharam, due:-4970201 seconds ago
+04-30-2025 11:23:18 AM:common - event:Sultan of Selangor's Birthday, due:-19399001 seconds ago
+04-30-2025 11:23:18 AM:common - event:Depavali, due:-14906201 seconds ago
+04-30-2025 11:23:20 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:23:20 AM:common - event:Hari Wesak, due:-995799 seconds ago
+04-30-2025 11:23:20 AM:common - event:Maulidul Rasul, due:-11018199 seconds ago
+04-30-2025 11:23:20 AM:common - event:Agong's Birthday, due:-2810199 seconds ago
+04-30-2025 11:23:20 AM:common - event:Tusyen Adelia, due:-547599 seconds ago
+04-30-2025 11:23:20 AM:common - event:Tusyen Adelia, due:-1152399 seconds ago
+04-30-2025 11:23:20 AM:common - event:Tusyen Adelia, due:-1757199 seconds ago
+04-30-2025 11:23:20 AM:common - event:Tusyen Adelia, due:-2361999 seconds ago
+04-30-2025 11:23:20 AM:common - event:Raya Haji, due:-3242199 seconds ago
+04-30-2025 11:23:20 AM:common - event:Awal muharam, due:-4970199 seconds ago
+04-30-2025 11:23:20 AM:common - event:Sultan of Selangor's Birthday, due:-19398999 seconds ago
+04-30-2025 11:23:20 AM:common - event:Depavali, due:-14906199 seconds ago
+04-30-2025 11:23:22 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:23:22 AM:common - event:Hari Wesak, due:-995797 seconds ago
+04-30-2025 11:23:22 AM:common - event:Maulidul Rasul, due:-11018197 seconds ago
+04-30-2025 11:23:22 AM:common - event:Agong's Birthday, due:-2810197 seconds ago
+04-30-2025 11:23:22 AM:common - event:Tusyen Adelia, due:-547597 seconds ago
+04-30-2025 11:23:22 AM:common - event:Tusyen Adelia, due:-1152397 seconds ago
+04-30-2025 11:23:22 AM:common - event:Tusyen Adelia, due:-1757197 seconds ago
+04-30-2025 11:23:22 AM:common - event:Tusyen Adelia, due:-2361997 seconds ago
+04-30-2025 11:23:22 AM:common - event:Raya Haji, due:-3242197 seconds ago
+04-30-2025 11:23:22 AM:common - event:Awal muharam, due:-4970197 seconds ago
+04-30-2025 11:23:22 AM:common - event:Sultan of Selangor's Birthday, due:-19398997 seconds ago
+04-30-2025 11:23:22 AM:common - event:Depavali, due:-14906197 seconds ago
+04-30-2025 11:26:46 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:26:48 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:26:48 AM:common - event:Tusyen Adelia, due:15 hours ago
+04-30-2025 11:26:48 AM:common - event:Hari Wesak, due:-995591 seconds ago
+04-30-2025 11:26:48 AM:common - event:Maulidul Rasul, due:-11017991 seconds ago
+04-30-2025 11:26:48 AM:common - event:Agong's Birthday, due:-2809991 seconds ago
+04-30-2025 11:26:48 AM:common - event:Tusyen Adelia, due:-547391 seconds ago
+04-30-2025 11:26:48 AM:common - event:Tusyen Adelia, due:-1152191 seconds ago
+04-30-2025 11:26:48 AM:common - event:Tusyen Adelia, due:-1756991 seconds ago
+04-30-2025 11:26:48 AM:common - event:Tusyen Adelia, due:-2361791 seconds ago
+04-30-2025 11:26:48 AM:common - event:Raya Haji, due:-3241991 seconds ago
+04-30-2025 11:26:48 AM:common - event:Awal muharam, due:-4969991 seconds ago
+04-30-2025 11:26:48 AM:common - event:Sultan of Selangor's Birthday, due:-19398791 seconds ago
+04-30-2025 11:26:48 AM:common - event:Depavali, due:-14905991 seconds ago
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:33:58 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:36:45 AM:common - event:Hari Wesak, due:-994994 seconds ago
+04-30-2025 11:36:45 AM:common - event:Maulidul Rasul, due:-11017394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Agong's Birthday, due:-2809394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-546794 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-1151594 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-1756394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-2361194 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-1846394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Raya Haji, due:-3241394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Awal muharam, due:-4969394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-114794 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-719594 seconds ago
+04-30-2025 11:36:45 AM:common - event:Sultan of Selangor's Birthday, due:-19398194 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-1324394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Depavali, due:-14905394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-1929194 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-2533994 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-379394 seconds ago
+04-30-2025 11:36:45 AM:common - event:Tusyen Adelia, due:-1588994 seconds ago
+04-30-2025 11:36:47 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:36:49 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:36:50 AM:common - event:Hari Wesak, due:-994989 seconds ago
+04-30-2025 11:36:50 AM:common - event:Maulidul Rasul, due:-11017389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Agong's Birthday, due:-2809389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-546789 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-1151589 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-1756389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-2361189 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-1846389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Raya Haji, due:-3241389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Awal muharam, due:-4969389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-114789 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-719589 seconds ago
+04-30-2025 11:36:50 AM:common - event:Sultan of Selangor's Birthday, due:-19398189 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-1324389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Depavali, due:-14905389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-1929189 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-2533989 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-379389 seconds ago
+04-30-2025 11:36:50 AM:common - event:Tusyen Adelia, due:-1588989 seconds ago
+04-30-2025 11:38:19 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:38:21 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:38:22 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:38:22 AM:common - event:Hari Wesak, due:-994897 seconds ago
+04-30-2025 11:38:22 AM:common - event:Maulidul Rasul, due:-11017297 seconds ago
+04-30-2025 11:38:22 AM:common - event:Agong's Birthday, due:-2809297 seconds ago
+04-30-2025 11:38:22 AM:common - event:Tusyen Adelia, due:-546697 seconds ago
+04-30-2025 11:38:22 AM:common - event:Tusyen Adelia, due:-1151497 seconds ago
+04-30-2025 11:38:22 AM:common - event:Tusyen Adelia, due:-1756297 seconds ago
+04-30-2025 11:38:22 AM:common - event:Tusyen Adelia, due:-2361097 seconds ago
+04-30-2025 11:38:22 AM:common - event:Raya Haji, due:-3241297 seconds ago
+04-30-2025 11:38:22 AM:common - event:Awal muharam, due:-4969297 seconds ago
+04-30-2025 11:38:22 AM:common - event:Sultan of Selangor's Birthday, due:-19398097 seconds ago
+04-30-2025 11:38:22 AM:common - event:Depavali, due:-14905297 seconds ago
+04-30-2025 11:38:35 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:38:37 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:38:37 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:38:37 AM:common - event:Hari Wesak, due:-994882 seconds ago
+04-30-2025 11:38:37 AM:common - event:Maulidul Rasul, due:-11017282 seconds ago
+04-30-2025 11:38:37 AM:common - event:Agong's Birthday, due:-2809282 seconds ago
+04-30-2025 11:38:37 AM:common - event:Tusyen Adelia, due:-546682 seconds ago
+04-30-2025 11:38:37 AM:common - event:Tusyen Adelia, due:-1151482 seconds ago
+04-30-2025 11:38:37 AM:common - event:Tusyen Adelia, due:-1756282 seconds ago
+04-30-2025 11:38:37 AM:common - event:Tusyen Adelia, due:-2361082 seconds ago
+04-30-2025 11:38:37 AM:common - event:Raya Haji, due:-3241282 seconds ago
+04-30-2025 11:38:37 AM:common - event:Awal muharam, due:-4969282 seconds ago
+04-30-2025 11:38:37 AM:common - event:Sultan of Selangor's Birthday, due:-19398082 seconds ago
+04-30-2025 11:38:37 AM:common - event:Depavali, due:-14905282 seconds ago
+04-30-2025 11:38:44 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:44 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:45 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:45 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:45 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:45 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:45 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:45 AM:__main__ - Error storing event: 'data'
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:38:47 AM:common - event:Hari Wesak, due:-994872 seconds ago
+04-30-2025 11:38:47 AM:common - event:Maulidul Rasul, due:-11017272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Agong's Birthday, due:-2809272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-546672 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-1151472 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-1756272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-2361072 seconds ago
+04-30-2025 11:38:47 AM:common - event:Raya Haji, due:-3241272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Awal muharam, due:-4969272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Sultan of Selangor's Birthday, due:-19398072 seconds ago
+04-30-2025 11:38:47 AM:common - event:Depavali, due:-14905272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-1846272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-114672 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-719472 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-1324272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-1929072 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-2533872 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-379272 seconds ago
+04-30-2025 11:38:47 AM:common - event:Tusyen Adelia, due:-1588872 seconds ago
+04-30-2025 11:41:53 AM:apirequest - {'detail': 'Signature has expired'}
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:42:04 AM:common - event:Hari Wesak, due:-994675 seconds ago
+04-30-2025 11:42:04 AM:common - event:Maulidul Rasul, due:-11017075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Agong's Birthday, due:-2809075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-546475 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-1151275 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-1756075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-2360875 seconds ago
+04-30-2025 11:42:04 AM:common - event:Raya Haji, due:-3241075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Awal muharam, due:-4969075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Sultan of Selangor's Birthday, due:-19397875 seconds ago
+04-30-2025 11:42:04 AM:common - event:Depavali, due:-14905075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-1846075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-114475 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-719275 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-1324075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-1928875 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-2533675 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-379075 seconds ago
+04-30-2025 11:42:04 AM:common - event:Tusyen Adelia, due:-1588675 seconds ago
+04-30-2025 11:42:05 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:42:07 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:16 hours ago
+04-30-2025 11:42:07 AM:common - event:Hari Wesak, due:-994672 seconds ago
+04-30-2025 11:42:07 AM:common - event:Maulidul Rasul, due:-11017072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Agong's Birthday, due:-2809072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-546472 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-1151272 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-1756072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-2360872 seconds ago
+04-30-2025 11:42:07 AM:common - event:Raya Haji, due:-3241072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Awal muharam, due:-4969072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Sultan of Selangor's Birthday, due:-19397872 seconds ago
+04-30-2025 11:42:07 AM:common - event:Depavali, due:-14905072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-1846072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-114472 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-719272 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-1324072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-1928872 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-2533672 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-379072 seconds ago
+04-30-2025 11:42:07 AM:common - event:Tusyen Adelia, due:-1588672 seconds ago
+04-30-2025 11:52:04 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:52:07 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:52:24 AM:common - event store success
+04-30-2025 11:52:24 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:25 AM:common - event store success
+04-30-2025 11:52:25 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:25 AM:common - event store success
+04-30-2025 11:52:25 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:25 AM:common - event store success
+04-30-2025 11:52:25 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:26 AM:common - event store success
+04-30-2025 11:52:26 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:26 AM:common - event store success
+04-30-2025 11:52:26 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:26 AM:common - event store success
+04-30-2025 11:52:26 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:26 AM:common - event store success
+04-30-2025 11:52:26 AM:__main__ - Event stored: Nothing!
+04-30-2025 11:52:40 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:52:42 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:55:11 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:55:13 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:56:24 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 11:56:26 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 11:57:26 AM:common - event store success
+04-30-2025 11:57:26 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:27 AM:common - event store success
+04-30-2025 11:57:27 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:27 AM:common - event store success
+04-30-2025 11:57:27 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:27 AM:common - event store success
+04-30-2025 11:57:27 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:27 AM:common - event store success
+04-30-2025 11:57:27 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:28 AM:common - event store success
+04-30-2025 11:57:28 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:28 AM:common - event store success
+04-30-2025 11:57:28 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 11:57:28 AM:common - event store success
+04-30-2025 11:57:28 AM:__main__ - Error storing event: 'NoneType' object has no attribute 'json'
+04-30-2025 12:16:20 PM:apirequest - {'detail': 'Signature has expired'}
+04-30-2025 12:16:51 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+04-30-2025 12:16:54 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+04-30-2025 12:17:05 PM:common - event store success
+04-30-2025 12:17:05 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:06 PM:common - event store success
+04-30-2025 12:17:06 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:06 PM:common - event store success
+04-30-2025 12:17:06 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:06 PM:common - event store success
+04-30-2025 12:17:06 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:07 PM:common - event store success
+04-30-2025 12:17:07 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:07 PM:common - event store success
+04-30-2025 12:17:07 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:07 PM:common - event store success
+04-30-2025 12:17:07 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:17:07 PM:common - event store success
+04-30-2025 12:17:07 PM:__main__ - Error storing event: 'NoneType' object is not subscriptable
+04-30-2025 12:21:39 PM:common - event store success
+04-30-2025 12:21:39 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen english ganti malam ni Pukul 9 di Block D, 1, 1, 0
+04-30-2025 12:21:39 PM:common - event store success
+04-30-2025 12:21:39 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen Bahasa Melayu malam ni Pukul 8 di Block D, 1, 1, 0
+04-30-2025 12:21:39 PM:common - event store success
+04-30-2025 12:21:39 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen Bahasa Melayu malam ni Pukul 8 di Block D, 1, 1, 0
+04-30-2025 12:21:40 PM:common - event store success
+04-30-2025 12:21:40 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen Bahasa Melayu malam ni Pukul 8 di Block D, 1, 1, 0
+04-30-2025 12:21:40 PM:common - event store success
+04-30-2025 12:21:40 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen Bahasa Melayu malam ni Pukul 8 di Block D, 1, 1, 0
+04-30-2025 12:21:40 PM:common - event store success
+04-30-2025 12:21:40 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen Bahasa Melayu malam ni Pukul 8 di Block D, 1, 1, 0
+04-30-2025 12:21:40 PM:common - event store success
+04-30-2025 12:21:40 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen bahasa Melayu ganti malam ni Pukul 9:30 malam di Block D, 1, 1, 0
+04-30-2025 12:21:41 PM:common - event store success
+04-30-2025 12:21:41 PM:__main__ - Event stored: Tusyen Adelia, Perhatian! perhatian! perhatian!. Adelia ade tusyen bahasa Melayu ganti malam ni Pukul 9:30 malam di Block D, 1, 1, 0

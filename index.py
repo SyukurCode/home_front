@@ -2,10 +2,11 @@
 from flask import Flask, render_template, request, redirect, jsonify, session
 from datetime import datetime
 from flask_bcrypt import Bcrypt
-from dateutil.parser import parse # type: ignore
 from apirequest import get_response, put_response, \
 	delete_response, post_response, get_response_spoke, get_user_avatar
-import common,requests, json, config,logwriter,os
+import requests, json, config,logwriter,os,common
+# from common import common.executeTranslate, add_allday,add_monthly,common.add_once, \
+# 	add_yearly,add_daily,get_token,check_due
 
 current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
@@ -73,7 +74,6 @@ def all():
 	eve = json.loads('{}')
 	eve.update({"data":descriptions})
 	events = eve["data"]
-	logger.logs(f"User:{current_user}")
 
 	viewdata = {
 		"events" : events,
@@ -277,19 +277,19 @@ def addItem():
  
 	if type == '3': text = media
 	if repeat == '1':
-		add_once(name,text,type,repeat,datetimepicker)
+		common.add_once(name,text,type,repeat,datetimepicker)
 
 	if repeat == '2':
-		add_allday(name,text,type,repeat,datepicker)
+		common.add_allday(name,text,type,repeat,datepicker)
 
 	if repeat == '3':
-		add_daily(name,text,type,repeat,timepicker,weekday)
+		common.add_daily(name,text,type,repeat,timepicker,weekday)
 
 	if repeat == '4':
-		add_monthly(name,text,type,repeat,day)
+		common.add_monthly(name,text,type,repeat,day)
 
 	if repeat == '5':
-		add_yearly(name,text,type,repeat,day,month)
+		common.add_yearly(name,text,type,repeat,day,month)
 
 	return redirect('/')
 
@@ -312,71 +312,6 @@ def deleteItem():
 		return jsonify({"error": error_msg})
 	
 	return jsonify({'message': delete_id +' was deleted'}), 202
-
-
-def add_once(name,text,type,repeat,datetimepicker):
-	dt = parse(datetimepicker)
-	execute = '{"date":{"day":' + str(dt.day) + ',"month":' + str(dt.month) + ',"year":' + str(dt.year) + '}' \
-			+ ',"time":{"hour":' + str(dt.hour) + ',"minute":' + str(dt.minute) + ',"second":' + str(dt.second) + '}}'
-	store_event(name,text,type,repeat,0,execute)
-
-def add_allday(name,text,type,repeat,datepicker):
-	d = parse(datepicker)
-	execute = '{"date":{"day":' + str(d.day) + ',"month":' + str(d.month) + ',"year":' + str(d.year) + '}}'
-	store_event(name,text,type,repeat,0,execute)
-
-def add_daily(name,text,type,repeat,timepicker,weekday):
-	isFirst = True
-	parent = 0
-	t = parse(timepicker)
-	for w in weekday:
-		execute = '{"date":{"weekday":"' + w + '"},"time":{"hour":' + str(t.hour) + ',"minute":' + str(t.minute) + ',"second":' + str(t.second) + '}}'
-		if isFirst:
-			isFirst = False
-			parent = store_event(name,text,type,repeat,0,execute)
-		else:
-			if not parent == 0:
-				store_event(name,text,type,repeat,parent,execute)
-			else:
-				logger.logs("daily store fail")
-def add_monthly(name,text,type,repeat,day):
-	execute = '{"date":{"day":' + day + '}}'
-	store_event(name,text,type,repeat,0,execute)
-
-def add_yearly(name,text,type,repeat,day,month):
-	execute = '{"date":{"day":' + day + ',"month":' + month + '}}'
-	store_event(name,text,type,repeat,0,execute)
-
-def store_event(name,text,type,repeat,parent,execute):
-	response = post_response('/api/event', \
-							{"name": name,"text": text, \
-							"type": type,"repeat": repeat, \
-							"parent": parent,"execute": execute })
- 
-	if not isinstance(response, dict) or response.get('status_code') != 200:
-				error_msg = response.get('error', 'Unknown error')
-				return jsonify({"error":error_msg}),400
-	
-	data = response['data']
-	id = data['id']
-	#--update parent if not have parent--
-
-	if data["data"]["parent"] == 0:
-		update = put_response(f'/api/event/parent', \
-							{"id":id,"parent": id})
-  
-		if not isinstance(response, dict) or response.get('status_code') != 200:
-				error_msg = response.get('error', 'Unknown error')
-				return jsonify({"error":error_msg}),400
-		
-		update_data = update
-
-		logger.logs("event store success")
-		return jsonify({"message": update_data['data']['id']}),200
-
-	else:
-		logger.logs("event store request fail")
-	return jsonify({"error": "Fail"}),400
 
 @app.route('/account', methods=['POST'])
 def add_user():
@@ -468,10 +403,7 @@ def due_event():
 		if event_due['isDue']:
 			due_items.append({"id":e['id'], "Name":e['name'], "Due":event_due['duration']})
 	events_due = json.dumps(due_items)
-
 	return jsonify(events_due),200
-
-
 
 @app.route('/notifications', methods=['GET'])
 def notification():
@@ -482,9 +414,8 @@ def notification():
         return render_template("Login.html", error=error_msg)
     
     data = response['data']
-    
     due_items = []
-    for e in data['data']:
+    for e in data:
         event_due = json.loads(common.check_due(e))
         if event_due['isDue']:
             due_items.append({"id": e['id'], "Name": e['name'], "Due": event_due['duration']})
@@ -496,11 +427,10 @@ def notification():
     
     return render_template("Notification.html", **viewdata)
 
-
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
+	current_user = session.get("User")
 	error = ''
-	event_items = []
 	if 'csvFile' not in request.files:
 		return jsonify({'error': 'No file part'}), 400
 		 
@@ -508,18 +438,18 @@ def upload_csv():
 
 	if file and file.filename.endswith('.csv'):
 		csv_data = []
-		response = ""
 		stream = file.stream.read().decode("utf-8").splitlines()
 		reader = csv.reader(stream)
 		next(reader, None)  # Skip the header row
 		for row in reader:
-			csv_data.append(row)
+			
 			try:
 				event_date = datetime.strptime(row[0], '%d/%m/%Y')
 				event_time = datetime.strptime(row[1], '%H:%M')
 				event_datetime = datetime.strptime(f"{row[0]} {row[1]}", "%d/%m/%Y %H:%M")
 			except ValueError as e:
 				logger.logs(f"Error parsing date: {e}")
+				csv_data.append({"event" : row, "error": e, "status": "Fail" })
 				continue
 				
 			name = row[2]
@@ -530,33 +460,35 @@ def upload_csv():
 			
 			try:
 				if repeat == '1' and type == '1': #once and wish
-					response = add_once(name=name,text=text,type=type,repeat=repeat,datetimepicker=event_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+					response = common.add_once(name=name,text=text,type=type,repeat=repeat,datetimepicker=event_datetime.strftime('%Y-%m-%d %H:%M:%S'))
 				if repeat == '2' and type == '1': #allday and wish
-					response = add_allday(name=name,text=text,type=type,repeat=repeat,datepicker=event_date)
+					response = common.add_allday(name=name,text=text,type=type,repeat=repeat,datepicker=event_date.strftime('%Y-%m-%d'))
 				
-				if response :
-					data = response.json()
-					if response.status_code != 200:
-						logger.logs(f'Error: {data["error"]}')
-						return jsonify({"error": data["error"]}),400
-					
-					logger.logs(f"Event stored: {name}, {text}, {type}, {repeat}, {parent}")
-					return jsonify({"message":"Successfully add"}),200
-				logger.logs(f"Event stored: Nothing!")
+				if response["status"] != "success":
+					logger.logs(f'Error: {response["message"]}')
+					csv_data.append({"event" : row, "error": response["message"], "status": "fail" })
+				
+				csv_data.append({"event" : row, "error": "", "status": "Pass" })
+				logger.logs(f"Event stored: {name}, {text}, {type}, {repeat}, {parent}")
 
 			except Exception as e:
 				logger.logs(f"Error storing event: {e}")
+				csv_data.append({"event" : row, "error": e, "status": "Fail" })
 				continue
 		
-
 	else:
 		return jsonify({'error': 'Invalid file format'}), 400
 		
 	if file.filename == '':
 		return jsonify({'error': 'No selected file'}), 400
-		
+	
+	viewdata = {
+		"items" : csv_data,
+		"user" : current_user,
+        "avatar" : get_user_avatar(),
+	}
 
-	return redirect('/')
+	return render_template("EventUpload.html", **viewdata)
 
 
 @app.route('/upload-avatar', methods=['POST'])
