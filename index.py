@@ -4,9 +4,7 @@ from datetime import datetime
 from flask_bcrypt import Bcrypt
 from apirequest import get_response, put_response, \
 	delete_response, post_response, get_response_spoke, get_user_avatar
-import requests, json, config,logwriter,os,common
-# from common import common.executeTranslate, add_allday,add_monthly,common.add_once, \
-# 	add_yearly,add_daily,get_token,check_due
+import requests, json, config,logwriter,os,common,csv
 
 current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
@@ -25,9 +23,9 @@ app.register_blueprint(kalendar_blueprint)
 from papar import papar as papar_blueprint
 app.register_blueprint(papar_blueprint)
 from maps import maps as maps_blueprint
-import csv
 app.register_blueprint(maps_blueprint)
-
+from waktusolat import waktu_solat as waktusolat_blueprint
+app.register_blueprint(waktusolat_blueprint)
 
 @app.route('/')
 def index():
@@ -511,7 +509,7 @@ def upload_avatar():
     if response.status_code == 200:
         avatar = get_user_avatar()
         return jsonify({'data': avatar}), 200
-
+	
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore
 	# serve(app, host="0.0.0.0", port=5000)

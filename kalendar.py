@@ -1,8 +1,5 @@
-from flask import Blueprint, request, current_app, render_template, session, redirect
-from flask_login import current_user,login_required
+from flask import Blueprint, request, render_template, session, redirect
 from datetime import datetime
-from flask_bcrypt import Bcrypt
-from dateutil.parser import parse # type: ignore
 from apirequest import get_user_avatar
 import os,config
 import requests, json # type: ignore
@@ -13,7 +10,6 @@ current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
 
 kalendar = Blueprint('kalendar', __name__)
-@login_required
 @kalendar.route('/calendar', methods=['GET'])
 def index():
 	token = session.get('Token')

@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+<script src="/static/js/main.min.js"></script>
+{% block content %}
+<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <div>
+        <h3 class="fw-bold mb-3">Waktu solat</h3>
+        <h6 class="op-7 mb-2">Waktu solat bagi zone hulu langat</h6>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+        <a href="javascript:history.back()" class="btn btn-label-info btn-round me-2">Back</a>
+    </div>
+</div>
+<div class="row text-center">
+    <!-- <div class="w-50 p-3"> -->
+        <div class="card">
+            <div class="card-body p-3 text-center">
+                <div class="text-center text-success">
+                <!-- <i class="fa fa-chevron-up"></i> -->
+                </div>
+                <div id="time_now" class="h1 m-0">00:00:00 PM</div>
+                <div class="text-muted mb-3"></div>
+            </div>
+        </div>
+    <!-- </div> -->
+</div>
+<div class="row">
+    {% for item in waktu_solat %}
+    {% if item.name != 'syuruk' and item.name != 'dhuha' %}
+    <div class="col-6 col-sm-4 col-lg-2">
+        <div class="card">
+            <div class="card-body p-3 text-center">
+                <div id="status-{{item.name}}" class="text-center text-success">
+                <!-- <i class="fa fa-chevron-up"></i> -->
+                </div>
+                <div id="time-{{item.name}}" class="h1 m-0">{{item.time}}</div>
+                <div class="text-muted mb-3">{{item.name}}</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<script src="/static/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/js/waktusolat.min.js"></script>
+<script>
+    document.getElementById("status-asar").innerHTML = "Sekarang"
+</script>
+{% endblock %}
