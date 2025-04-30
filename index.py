@@ -355,7 +355,7 @@ def store_event(name,text,type,repeat,parent,execute):
  
 	if not isinstance(response, dict) or response.get('status_code') != 200:
 				error_msg = response.get('error', 'Unknown error')
-				return render_template("Login.html", error=error_msg)
+				return jsonify({"error":error_msg}),400
 	
 	data = response['data']
 	id = data['id']
@@ -367,16 +367,16 @@ def store_event(name,text,type,repeat,parent,execute):
   
 		if not isinstance(response, dict) or response.get('status_code') != 200:
 				error_msg = response.get('error', 'Unknown error')
-				return render_template("Login.html", error=error_msg)
+				return jsonify({"error":error_msg}),400
 		
 		update_data = update
 
 		logger.logs("event store success")
-		return update_data['data']['id']
+		return jsonify({"message": update_data['data']['id']}),200
 
 	else:
 		logger.logs("event store request fail")
-	return None
+	return jsonify({"error": "Fail"}),400
 
 @app.route('/account', methods=['POST'])
 def add_user():
@@ -499,12 +499,16 @@ def notification():
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
+	error = ''
+	event_items = []
 	if 'csvFile' not in request.files:
 		return jsonify({'error': 'No file part'}), 400
-
+		 
 	file = request.files['csvFile']
+
 	if file and file.filename.endswith('.csv'):
 		csv_data = []
+		response = ""
 		stream = file.stream.read().decode("utf-8").splitlines()
 		reader = csv.reader(stream)
 		next(reader, None)  # Skip the header row
@@ -512,28 +516,48 @@ def upload_csv():
 			csv_data.append(row)
 			try:
 				event_date = datetime.strptime(row[0], '%d/%m/%Y')
+				event_time = datetime.strptime(row[1], '%H:%M')
+				event_datetime = datetime.strptime(f"{row[0]} {row[1]}", "%d/%m/%Y %H:%M")
 			except ValueError as e:
 				logger.logs(f"Error parsing date: {e}")
 				continue
-			execute = '{"date":{"day":' + str(event_date.day) + ',"month":' + str(event_date.month) + ',"year":' + str(event_date.year) + '}}'	
-			name = row[1]
-			text = row[2]
-			type = 1 #wish
-			repeat = 2 #allday
+				
+			name = row[2]
+			text = row[3]
+			type = row[4] #wish
+			repeat = row[5] #allday
 			parent = 0 #individual
+			
 			try:
-				store_event(name,text,type,repeat,parent,execute)
-				logger.logs(f"Event stored: {name}, {text}, {type}, {repeat}, {parent}, {execute}")
+				if repeat == '1' and type == '1': #once and wish
+					response = add_once(name=name,text=text,type=type,repeat=repeat,datetimepicker=event_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+				if repeat == '2' and type == '1': #allday and wish
+					response = add_allday(name=name,text=text,type=type,repeat=repeat,datepicker=event_date)
+				
+				if response :
+					data = response.json()
+					if response.status_code != 200:
+						logger.logs(f'Error: {data["error"]}')
+						return jsonify({"error": data["error"]}),400
+					
+					logger.logs(f"Event stored: {name}, {text}, {type}, {repeat}, {parent}")
+					return jsonify({"message":"Successfully add"}),200
+				logger.logs(f"Event stored: Nothing!")
+
 			except Exception as e:
 				logger.logs(f"Error storing event: {e}")
 				continue
+		
+
 	else:
 		return jsonify({'error': 'Invalid file format'}), 400
-	
+		
 	if file.filename == '':
 		return jsonify({'error': 'No selected file'}), 400
+		
 
 	return redirect('/')
+
 
 @app.route('/upload-avatar', methods=['POST'])
 def upload_avatar():
