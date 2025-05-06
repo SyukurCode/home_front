@@ -1,6 +1,6 @@
 from flask import Blueprint, session, render_template, redirect
 from datetime import datetime
-import logwriter,os,json
+import logwriter,os,json, common
 from apirequest import get_user_avatar, get_response
 
 current_directory = os.getcwd()
@@ -10,9 +10,7 @@ waktu_solat = Blueprint('wakto_solat', __name__)
 
 @waktu_solat.route("/waktu_solat", methods = ["GET"])
 def index():
-    current_user = session.get("User")
-    if not current_user:
-        return redirect("/logout")
+    current_user = common.session_get("User")
     waktu = []
     response = get_response('/api/event')
 

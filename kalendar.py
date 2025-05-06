@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, session, redirect
 from datetime import datetime
 from apirequest import get_user_avatar
-import os,config
+import os,config, common
 import requests, json # type: ignore
 
 import logwriter,os
@@ -12,10 +12,8 @@ logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
 kalendar = Blueprint('kalendar', __name__)
 @kalendar.route('/calendar', methods=['GET'])
 def index():
-	token = session.get('Token')
-	current_user = session.get('User')
-	if not token:
-		return redirect("/logout")
+	token = common.session_get('Token')
+	current_user = common.session_get('User')
 	
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 
@@ -29,11 +27,7 @@ def index():
 
 @kalendar.route('/calendar/api/all',methods=['GET'])
 def allevent():
-	token = session.get('Token')
-	current_user = session.get('User')
-	if not token:
-		return redirect("/logout")
-	
+	token = common.session_get('Token')	
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 	allEvents = []
 

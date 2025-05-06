@@ -30,7 +30,7 @@ app.register_blueprint(waktusolat_blueprint)
 @app.route('/')
 def index():
 	descriptions = []
-	current_user = session.get('User')
+	current_user = common.session_get('User')
 	response = get_response('/api/event/user')
  
 	if not isinstance(response, dict) or response.get('status_code') != 200:
@@ -57,7 +57,7 @@ def index():
 @app.route('/all')
 def all():
 	descriptions = []
-	current_user = session.get("User")
+	current_user = common.session_get("User")
 	response = get_response('/api/event')
  
 	if not isinstance(response, dict) or response.get('status_code') != 200:
@@ -84,7 +84,7 @@ def all():
 @app.route('/detail')
 def detail():
 	id = request.args.get('id')
-	current_user = session.get("User")
+	current_user = common.session_get("User")
 	response = get_response(f'/api/event/id?id={id}')
 	
 	if not isinstance(response, dict) or response.get('status_code') != 200:
@@ -107,7 +107,7 @@ def detail():
 @app.route('/today')
 def todayEvent():
 	descriptions = []
-	current_user = session.get("User")
+	current_user = common.session_get("User")
 	weekdayName = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 	today = datetime.now()
 	weekday = weekdayName[today.weekday()]
@@ -178,7 +178,7 @@ def todayEvent():
 
 @app.route('/update',methods=['POST'])
 def update():
-	current_user = session.get("User")
+	current_user = common.session_get("User")
 	id = request.form.get('id')
 	name = request.form.get('name')
 	text = request.form.get('text')
@@ -203,7 +203,7 @@ def update():
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
-	token = session.get("Token")
+	token = common.session_get("Token")
 	if request.method == 'GET':
 		if token:
 			return redirect("/")
@@ -257,7 +257,7 @@ def logout():
 
 @app.route('/', methods=['POST'])
 def addItem():
-	token = session.get("Token")
+	token = common.session_get("Token")
 	if not token:
 		return redirect("/logout")
 	
@@ -293,8 +293,8 @@ def addItem():
 
 @app.route('/', methods=['DELETE'] )
 def deleteItem():
-	token = session.get("Token")
-	current_user = session.get("User")
+	token = common.session_get("Token")
+	current_user = common.session_get("User")
 
 	if not token:
 		return redirect("/logout")
@@ -331,7 +331,7 @@ def add_user():
 
 @app.route('/changepassword', methods=['POST'])
 def change_password():
-	current_user = session.get("User")
+	current_user = common.session_get("User")
 	try:
 		record = json.loads(request.data)
 	except Exception as e:
@@ -386,7 +386,7 @@ def get_media():
 
 @app.route('/checkeventdue', methods=['GET'])
 def due_event():
-	token = session.get("Token")
+	token = common.session_get("Token")
 	due_items = []
 
 	response = get_response('/api/event/user')
@@ -405,7 +405,7 @@ def due_event():
 
 @app.route('/notifications', methods=['GET'])
 def notification():
-    current_user = session.get("User")
+    current_user = common.session_get("User")
     response = get_response('/api/event/user')
     if not isinstance(response, dict) or response.get('status_code') != 200:
         error_msg = response.get('error', 'Unknown error')
@@ -428,7 +428,7 @@ def notification():
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
-	current_user = session.get("User")
+	current_user = common.session_get("User")
 	error = ''
 	if 'csvFile' not in request.files:
 		return jsonify({'error': 'No file part'}), 400
@@ -492,7 +492,7 @@ def upload_csv():
 
 @app.route('/upload-avatar', methods=['POST'])
 def upload_avatar():
-    token = session.get("Token")
+    token = common.session_get("Token")
     file = request.files.get('avatar')
     if not file:
         return jsonify({"detail": "No file uploaded"}), 400

@@ -910,3 +910,7 @@
 05-06-2025 14:57:13 PM:apirequest - No token found in session
 05-06-2025 15:35:17 PM:apirequest - fail to retrive avatar: 403
 05-06-2025 15:35:18 PM:apirequest - {'detail': 'Signature has expired'}
+05-06-2025 15:58:24 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-06-2025 15:58:26 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-06-2025 16:23:27 PM:apirequest - {'detail': 'Signature has expired'}
+05-06-2025 16:38:45 PM:apirequest - HTTPConnectionPool(host='192.168.0.88', port=5002): Max retries exceeded with url: /api/event (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001825E66B310>: Failed to establish a new connection: [WinError 10065] A socket operation was attempted to an unreachable host'))

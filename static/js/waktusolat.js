@@ -3,6 +3,7 @@ function updateClock() {
     const now = new Date();
     const timeString = now.toLocaleTimeString();
     document.getElementById('time_now').innerHTML = timeString;
+    check()
 }
 
 function check()
@@ -35,106 +36,125 @@ function check()
     const date_syuruk = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_syuruk.split(":")[0], waktu_syuruk.split(":")[1], 0);
     const date_dhuha = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_dhuha.split(":")[0], waktu_dhuha.split(":")[1], 0);
    
-    const _Imsak = Math.abs(date_current - date_imsak);
+    const _Imsak = (date_current - date_imsak);
     const isImsak = Math.floor(_Imsak / 1000 / 60);
 
-    const _Subuh = Math.abs(date_current - date_subuh);
+    const _Subuh = (date_current - date_subuh);
     const isSubuh = Math.floor(_Subuh / 1000 / 60);
 
-    const _Zohor = Math.abs(date_current - date_zohor);
+    const _Zohor = (date_current - date_zohor);
     const isZohor = Math.floor(_Zohor / 1000 / 60);
 
-    const _Asar = Math.abs(date_current - date_asar);
+    const _Asar = (date_current - date_asar);
     const isAsar = Math.floor(_Asar / 1000 / 60);
 
-    const _Maghrib = Math.abs(date_current - date_maghrib);
+    const _Maghrib = (date_current - date_maghrib);
     const isMaghrib = Math.floor(_Maghrib / 1000 / 60);
 
-    const _Isyak = Math.abs(date_current - date_isyak);
+    const _Isyak = (date_current - date_isyak);
     const isIsyak = Math.floor(_Isyak / 1000 / 60);
 
-    const _Syuruk = Math.abs(date_current - date_syuruk);
+    const _Syuruk = (date_current - date_syuruk);
     const isSyuruk = Math.floor(_Syuruk / 1000 / 60);
 
-    const _Dhuha = Math.abs(date_current - date_dhuha);
+    const _Dhuha = (date_current - date_dhuha);
     const isDhuha = Math.floor(_Dhuha / 1000 / 60);
 
     document.getElementById("date_now").innerHTML = now.toLocaleDateString('ms-MY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById("ago").innerHTML = hijriDateMs
+    document.getElementById("ago").innerHTML = hijriDateMs;
 
-    const sekarang_text =  "<i class='far fa-bell'></i> Sekarang!"
-
-    if( isImsak <= 5){
-        document.getElementById("status-imsak").innerHTML = sekarang_text
-        document.getElementById("card-imsak").classList.add("solat-time-card")
+    const sekarang_text =  "<i class='far fa-bell'></i> Sekarang!";
+    const akan_text =  "<i class='far fa-bell'></i> @{minute_text} minit lagi";
+    
+    if( isImsak >= 0 && isImsak <= 5){
+        document.getElementById("status-imsak").innerHTML = sekarang_text;
+        document.getElementById("card-imsak").classList.add("solat-time-card");
     }
     else{
-        document.getElementById("status-imsak").innerHTML = ""
-        document.getElementById("card-imsak").classList.remove("solat-time-card")
+        document.getElementById("status-imsak").innerHTML = "";
+        document.getElementById("card-imsak").classList.remove("solat-time-card");
     }
 
-    if( isSubuh <= 30){
-        document.getElementById("status-subuh").innerHTML = sekarang_text
-        document.getElementById("card-subuh").classList.add("solat-time-card")
+    if( isSubuh >= 0 && isSubuh <= 10){
+        document.getElementById("status-subuh").innerHTML = sekarang_text;
+        document.getElementById("card-subuh").classList.add("solat-time-card");
+    }
+    else if( isSubuh < 0 && isSubuh > -10){
+        document.getElementById("status-subuh").innerHTML = akan_text.replace("@{minute_text}", Math.abs(isSubuh));
+        document.getElementById("card-subuh").classList.add("solat-time-card");
     }
     else{
-        document.getElementById("status-subuh").innerHTML = ""
-        document.getElementById("card-subuh").classList.remove("solat-time-card")
+        document.getElementById("status-subuh").innerHTML = "";
+        document.getElementById("card-subuh").classList.remove("solat-time-card");
     }
 
-    if( isZohor <= 30){
-        document.getElementById("status-zohor").innerHTML = sekarang_text
+    if( isZohor >= 0 && isZohor <= 10){
+        document.getElementById("status-zohor").innerHTML = sekarang_text;
+        document.getElementById("card-zohor").classList.add("solat-time-card");
+    }
+    else if( isZohor < -10 && isZohor > 0){
+        document.getElementById("status-zohor").innerHTML = akan_text.replace("@{minute_text}", Math.abs(isZohor));
         document.getElementById("card-zohor").classList.add("solat-time-card")
     }
     else{
-        document.getElementById("status-zohor").innerHTML = ""
-        document.getElementById("card-zohor").classList.remove("solat-time-card")
+        document.getElementById("status-zohor").innerHTML = "";
+        document.getElementById("card-zohor").classList.remove("solat-time-card");
     }
 
-
-    if( isAsar <= 30){
+    if( isAsar >= 0 && isAsar <= 10){
         document.getElementById("status-asar").innerHTML = sekarang_text
-        document.getElementById("card-asar").classList.add("solat-time-card")
+        document.getElementById("card-asar").classList.add("solat-time-card");
+    }
+    else if( isAsar < 0 && isAsar > -10){
+        document.getElementById("status-asar").innerHTML = akan_text.replace("@{minute_text}", Math.abs(isAsar));
+        document.getElementById("card-asar").classList.add("solat-time-card");
     }
     else{
-        document.getElementById("status-asar").innerHTML = ""
-        document.getElementById("card-asar").classList.remove("solat-time-card")
+        document.getElementById("status-asar").innerHTML = "";
+        document.getElementById("card-asar").classList.remove("solat-time-card");
     }
-
-    if( isMaghrib <= 30){
-        document.getElementById("status-maghrib").innerHTML = sekarang_text
-        document.getElementById("card-maghrib").classList.add("solat-time-card")
+    if( isMaghrib >= 0 && isMaghrib <= 10){
+        document.getElementById("status-maghrib").innerHTML = sekarang_text;
+        document.getElementById("card-maghrib").classList.add("solat-time-card");
+    }
+    else if( isMaghrib < 0 && isMaghrib > -10){
+        document.getElementById("status-maghrib").innerHTML = akan_text.replace("@{minute_text}", Math.abs(isMaghrib))
+        document.getElementById("card-maghrib").classList.add("solat-time-card");
     }
     else{
-        document.getElementById("status-maghrib").innerHTML = ""
-        document.getElementById("card-maghrib").classList.remove("solat-time-card")
+        document.getElementById("status-maghrib").innerHTML = "";
+        document.getElementById("card-maghrib").classList.remove("solat-time-card");
     }
 
-    if( isIsyak <= 30){
-        document.getElementById("status-isyak").innerHTML = sekarang_text
-        document.getElementById("card-isyak").classList.add("solat-time-card")
+    if( isIsyak >= 0 && isIsyak <= 10){
+        document.getElementById("status-isyak").innerHTML = sekarang_text;
+        document.getElementById("card-isyak").classList.add("solat-time-card");
+    }
+    else if( isIsyak < 0 && isIsyak > -10){
+        document.getElementById("status-isyak").innerHTML = akan_text.replace("@{minute_text}", Math.abs(isIsyak));
+        document.getElementById("card-isyak").classList.add("solat-time-card");
     }
     else{
         document.getElementById("status-isyak").innerHTML = ""
-        document.getElementById("card-isyak").classList.remove("solat-time-card")
+        document.getElementById("card-isyak").classList.remove("solat-time-card");
     }
 
-    if( isSyuruk <= 5){
-        document.getElementById("status-syuruk").innerHTML = sekarang_text
-        document.getElementById("card-syuruk").classList.add("solat-time-card")
+    if( isSyuruk >= 0 && isSyuruk <= 5){
+        document.getElementById("status-syuruk").innerHTML = sekarang_text;
+        document.getElementById("card-syuruk").classList.add("solat-time-card");
     }
     else{
-        document.getElementById("status-syuruk").innerHTML = ""
-        document.getElementById("card-syuruk").classList.remove("solat-time-card")
+        document.getElementById("status-syuruk").innerHTML = "";
+        document.getElementById("card-syuruk").classList.remove("solat-time-card");
     }   
 
-    if( isDhuha <= 5){
-        document.getElementById("status-dhuha").innerHTML = sekarang_text
+    if( isDhuha >= 0 && isDhuha <= 5){
+        document.getElementById("status-dhuha").innerHTML = sekarang_text;
         document.getElementById("card-dhuha").classList.add("solat-time-card")
     }
     else{
-        document.getElementById("status-dhuha").innerHTML = ""
-        document.getElementById("card-dhuha").classList.remove("solat-time-card")
+        document.getElementById("status-dhuha").innerHTML = "";
+        document.getElementById("card-dhuha").classList.remove("solat-time-card");
     }   
 
     
@@ -158,4 +178,4 @@ function convertTo24Hour(time12h) {
 
 setInterval(updateClock, 1000);
 updateClock(); // Initial call
-check()
+

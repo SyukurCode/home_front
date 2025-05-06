@@ -1,5 +1,5 @@
-from flask_login import current_user
-from flask import jsonify
+
+from flask import jsonify, session, redirect
 import config
 import requests, json 
 from datetime import datetime, date, timedelta
@@ -231,3 +231,9 @@ def store_event(name,text,type,repeat,parent,execute):
 	else:
 		logger.logs("event store request fail")
 	return {"status": "fail", "message": "fail to store"}
+
+def session_get(property:str):
+	if property in session:
+		return session[property]
+	else:
+		return redirect("/logout")
