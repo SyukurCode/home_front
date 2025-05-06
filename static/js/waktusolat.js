@@ -8,22 +8,32 @@ function updateClock() {
 function check()
 {
     const now = new Date()
-    const current = document.getElementById('time_now').innerHTML
-    const waktu_imsak = document.getElementById("time-imsak").innerHTML
-    const waktu_subuh = document.getElementById("time-subuh").innerHTML
-    const waktu_zohor = document.getElementById("time-zohor").innerHTML
-    const waktu_asar = document.getElementById("time-asar").innerHTML
-    const waktu_maghrib = document.getElementById("time-maghrib").innerHTML
-    const waktu_isyak = document.getElementById("time-isyak").innerHTML
+    const hijriDateMs = new Intl.DateTimeFormat('ms-MY-u-ca-islamic', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }).format(new Date());
+    const current = convertTo24Hour(document.getElementById('time_now').innerHTML)
+    const waktu_imsak = convertTo24Hour(document.getElementById("time-imsak").innerHTML)
+    const waktu_subuh = convertTo24Hour(document.getElementById("time-subuh").innerHTML)
+    const waktu_zohor = convertTo24Hour(document.getElementById("time-zohor").innerHTML)
+    const waktu_asar = convertTo24Hour(document.getElementById("time-asar").innerHTML)
+    const waktu_maghrib = convertTo24Hour(document.getElementById("time-maghrib").innerHTML)
+    const waktu_isyak = convertTo24Hour(document.getElementById("time-isyak").innerHTML)
+    const waktu_syuruk = convertTo24Hour(document.getElementById("time-syuruk").innerHTML)
+    const waktu_dhuha = convertTo24Hour(document.getElementById("time-dhuha").innerHTML)
 
-
-    const date_current = new Date(now.getFullYear,now.getMonth,now.getDay,current.split(":")[0],current.split(":")[1]);
-    const date_imsak = new Date("1970-01-01T" + waktu_imsak + ":00");
-    const date_zohor = new Date("1970-01-01T" + waktu_zohor + ":00");
-    const date_subuh = new Date("1970-01-01T" + waktu_subuh + ":00");
-    const date_asar = new Date("1970-01-01T" + waktu_asar + ":00");
-    const date_maghrib = new Date("1970-01-01T" + waktu_maghrib + ":00");
-    const date_isyak = new Date("1970-01-01T" + waktu_isyak + ":00");
+    const [hours, minutes, seconds] = current.split(":").map(Number);
+    const date_current = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, seconds);
+    // const date_current = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 5, 52, seconds);
+    const date_imsak = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_imsak.split(":")[0], waktu_imsak.split(":")[1], 0);
+    const date_zohor = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_zohor.split(":")[0], waktu_zohor.split(":")[1], 0);
+    const date_subuh = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_subuh.split(":")[0], waktu_subuh.split(":")[1], 0);
+    const date_asar = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_asar.split(":")[0], waktu_asar.split(":")[1], 0);
+    const date_maghrib = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_maghrib.split(":")[0], waktu_maghrib.split(":")[1], 0);
+    const date_isyak = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_isyak.split(":")[0], waktu_isyak.split(":")[1], 0);
+    const date_syuruk = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_syuruk.split(":")[0], waktu_syuruk.split(":")[1], 0);
+    const date_dhuha = new Date(now.getFullYear(), now.getMonth(), now.getDate(), waktu_dhuha.split(":")[0], waktu_dhuha.split(":")[1], 0);
    
     const _Imsak = Math.abs(date_current - date_imsak);
     const isImsak = Math.floor(_Imsak / 1000 / 60);
@@ -43,26 +53,107 @@ function check()
     const _Isyak = Math.abs(date_current - date_isyak);
     const isIsyak = Math.floor(_Isyak / 1000 / 60);
 
+    const _Syuruk = Math.abs(date_current - date_syuruk);
+    const isSyuruk = Math.floor(_Syuruk / 1000 / 60);
+
+    const _Dhuha = Math.abs(date_current - date_dhuha);
+    const isDhuha = Math.floor(_Dhuha / 1000 / 60);
+
+    document.getElementById("date_now").innerHTML = now.toLocaleDateString('ms-MY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById("ago").innerHTML = hijriDateMs
+
+    const sekarang_text =  "<i class='far fa-bell'></i> Sekarang!"
+
     if( isImsak <= 5){
-        document.getElementById("status-imsak").innerHTML = "Sekarang"
+        document.getElementById("status-imsak").innerHTML = sekarang_text
+        document.getElementById("card-imsak").classList.add("solat-time-card")
     }
-    if( isSubuh <= 5){
-        document.getElementById("status-subuh").innerHTML = "Sekarang"
+    else{
+        document.getElementById("status-imsak").innerHTML = ""
+        document.getElementById("card-imsak").classList.remove("solat-time-card")
     }
-    if( isZohor <= 5){
-        document.getElementById("status-zohor").innerHTML = "Sekarang"
+
+    if( isSubuh <= 30){
+        document.getElementById("status-subuh").innerHTML = sekarang_text
+        document.getElementById("card-subuh").classList.add("solat-time-card")
     }
-    if( isAsar <= 50){
-        document.getElementById("status-asar").innerHTML = "Sekarang"
+    else{
+        document.getElementById("status-subuh").innerHTML = ""
+        document.getElementById("card-subuh").classList.remove("solat-time-card")
     }
-    if( isMaghrib <= 5){
-        document.getElementById("status-maghrib").innerHTML = "Sekarang"
+
+    if( isZohor <= 30){
+        document.getElementById("status-zohor").innerHTML = sekarang_text
+        document.getElementById("card-zohor").classList.add("solat-time-card")
     }
-    if( isIsyak <= 5){
-        document.getElementById("status-isyak").innerHTML = "Sekarang"
+    else{
+        document.getElementById("status-zohor").innerHTML = ""
+        document.getElementById("card-zohor").classList.remove("solat-time-card")
     }
-    document.getElementById("ago").innerHTML = date_current
+
+
+    if( isAsar <= 30){
+        document.getElementById("status-asar").innerHTML = sekarang_text
+        document.getElementById("card-asar").classList.add("solat-time-card")
+    }
+    else{
+        document.getElementById("status-asar").innerHTML = ""
+        document.getElementById("card-asar").classList.remove("solat-time-card")
+    }
+
+    if( isMaghrib <= 30){
+        document.getElementById("status-maghrib").innerHTML = sekarang_text
+        document.getElementById("card-maghrib").classList.add("solat-time-card")
+    }
+    else{
+        document.getElementById("status-maghrib").innerHTML = ""
+        document.getElementById("card-maghrib").classList.remove("solat-time-card")
+    }
+
+    if( isIsyak <= 30){
+        document.getElementById("status-isyak").innerHTML = sekarang_text
+        document.getElementById("card-isyak").classList.add("solat-time-card")
+    }
+    else{
+        document.getElementById("status-isyak").innerHTML = ""
+        document.getElementById("card-isyak").classList.remove("solat-time-card")
+    }
+
+    if( isSyuruk <= 5){
+        document.getElementById("status-syuruk").innerHTML = sekarang_text
+        document.getElementById("card-syuruk").classList.add("solat-time-card")
+    }
+    else{
+        document.getElementById("status-syuruk").innerHTML = ""
+        document.getElementById("card-syuruk").classList.remove("solat-time-card")
+    }   
+
+    if( isDhuha <= 5){
+        document.getElementById("status-dhuha").innerHTML = sekarang_text
+        document.getElementById("card-dhuha").classList.add("solat-time-card")
+    }
+    else{
+        document.getElementById("status-dhuha").innerHTML = ""
+        document.getElementById("card-dhuha").classList.remove("solat-time-card")
+    }   
+
+    
 }
+function convertTo24Hour(time12h) {
+    const [time, modifier] = time12h.split(" ");
+    let [hours, minutes, seconds] = time.split(":");
+  
+    hours = parseInt(hours, 10);
+  
+    if (modifier === "PM" && hours !== 12) {
+      hours += 12;
+    }
+    if (modifier === "AM" && hours === 12) {
+      hours = 0;
+    }
+  
+    return `${hours.toString().padStart(2, '0')}:${minutes}:${seconds}`;
+  }
 
 
 setInterval(updateClock, 1000);

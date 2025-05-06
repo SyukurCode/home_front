@@ -29,7 +29,7 @@ def index():
     viewdata = {
 		"user" : current_user,
 		"avatar" : get_user_avatar(),
-        "waktu_solat" : waktu
+        "waktu_solat" : waktu,
 	}
     # return jsonify({**viewdata}),200
     return render_template("WaktuSolat.html", **viewdata)

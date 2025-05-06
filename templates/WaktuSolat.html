@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 <script src="/static/js/main.min.js"></script>
 {% block content %}
+<link rel="stylesheet" href="/static/css/waktusolat.min.css" />
 <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
     <div>
         <h3 class="fw-bold mb-3">Waktu solat</h3>
@@ -12,32 +13,30 @@
 </div>
 <div class="row text-center">
     <!-- <div class="w-50 p-3"> -->
-        <div class="card">
+        <div class="card current-time-card">
             <div class="card-body p-3 text-center">
-                <div class="text-center text-success">
+                <div id="date_now" class="text-center text-success fs-4">
+                    <!-- <i class="fa fa-chevron-up"></i> -->
                 <!-- <i class="fa fa-chevron-up"></i> -->
                 </div>
                 <div id="time_now" class="h1 m-0">00:00:00 PM</div>
-                <div id="ago" class="text-muted mb-3"></div>
+                <div id="ago" class="text-muted mb-3 text-primary fs-4"></div>
             </div>
         </div>
     <!-- </div> -->
 </div>
 <div class="row">
     {% for item in waktu_solat %}
-    {% if item.name != 'syuruk' and item.name != 'dhuha' %}
     <div class="col-6 col-sm-4 col-lg-2">
-        <div class="card">
+        <div id="card-{{item.name}}" class="card">
             <div class="card-body p-3 text-center">
                 <div id="status-{{item.name}}" class="text-center text-success">
-                <!-- <i class="fa fa-chevron-up"></i> -->
                 </div>
                 <div id="time-{{item.name}}" class="h1 m-0">{{item.time}}</div>
                 <div class="text-muted mb-3">{{item.name}}</div>
             </div>
         </div>
     </div>
-    {% endif %}
     {% endfor %}
 </div>
 <script src="/static/assets/js/core/jquery-3.7.1.min.js"></script>
