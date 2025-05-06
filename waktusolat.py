@@ -1,4 +1,4 @@
-from flask import Blueprint, session, render_template, jsonify
+from flask import Blueprint, session, render_template, redirect
 from datetime import datetime
 import logwriter,os,json
 from apirequest import get_user_avatar, get_response
@@ -11,8 +11,9 @@ waktu_solat = Blueprint('wakto_solat', __name__)
 @waktu_solat.route("/waktu_solat", methods = ["GET"])
 def index():
     current_user = session.get("User")
+    if not current_user:
+        return redirect("/logout")
     waktu = []
-
     response = get_response('/api/event')
 
     if not isinstance(response, dict) or response.get('status_code') != 200:
