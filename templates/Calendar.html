@@ -9,10 +9,210 @@
         <h6 class="op-7 mb-2">All event calendar</h6>
     </div>
     <div class="ms-md-auto py-2 py-md-0">
+		<a id="btnAdd" href="#" class="btn btn-label-info btn-round me-2" data-bs-toggle="modal" data-bs-target="#addRowModal">Add</a>
         <a id="btnBack" href="javascript:history.back()" class="btn btn-label-info btn-round me-2">Back</a>
     </div>
 </div>
 <div class="row">
+	<div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<form action="/" method="post" onsubmit="return Validate()">
+					<div class="modal-header border-0">
+						<h5 class="modal-title">
+							<span class="fw-mediumbold"> New</span>
+							<span class="fw-light"> Event </span>
+						</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="small">
+							Create a new event, make sure you
+							fill them all
+						</p>
+						<div class="row">
+							<div class="col-sm-12">
+								<!--input for name-->
+								<div class="form-group form-group-default">
+									<label for="ename">Name</label>
+									<input type="text" class="form-control" id="ename" maxlength="40"
+										name="ename" placeholder="fill event name" />
+								</div>
+								<!--feedback for name-->
+								<div id="nameFeedback" class="text-danger"></div>
+							</div>
+							<div class="col-md-6 pe-0">
+								<!--input for type-->
+								<div class="form-group form-group-default">
+									<label for="type">Type</label>
+									<select class="form-select" id="type" name="type"
+										onchange="typeSelect(this.value)">
+										<option value="">Choose..</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<!--input for repeat-->
+								<div class="form-group form-group-default">
+									<label for="repeat">Repeat</label>
+									<select class="form-select" id="repeat" name="repeat"
+										onchange="repeatSelect(this.value)">
+										<option value="">Choose..</option>
+									</select>
+								</div>
+								<!--feedback for repeat-->
+								<div id="repeatFeedback" class="text-danger"></div>
+							</div>
+
+							<div class="col-sm-12" id="wish">
+								<!--input for text-->
+								<div class="form-group form-group-default">
+									<label for="etext">Text</label>
+									<textarea type="text" class="form-control" rows='5' id="etext"
+										name="etext" placeholder="Enter event text"></textarea>
+								</div>
+								<!--feedback for text-->
+								<div id="textFeedback" class="text-danger"></div>
+							</div>
+							<div class="col-sm-12" id="play" style="display: none;">
+								<!--input for media-->
+								<div class="form-group form-group-default">
+									<label for="etext">Media</label>
+									<select class="form-select" id="media" name="media">
+										<option value="">Choose..</option>
+									</select>
+								</div>
+								<!--feedback for media-->
+								<div id="mediaFeedback" class="text-danger"></div>
+							</div>
+							<div class="col-sm-12" id="once" style="display: none;">
+								<!--input for once-->
+								<div class="form-group form-group-default">
+									<label for="etext" for="datetimepicker">Execute</label>
+									<input class="form-control text-center" id="datetimepicker"
+										name="datetimepicker" autocomplete='on' type="datetime-local"
+										step="any" />
+								</div>
+							</div>
+							<div class="col-sm-12" id="allday" style="display: none;">
+								<!--input for allday-->
+								<div class="form-group form-group-default">
+									<label for="datepicker">Execute</label>
+									<input class="form-control text-center" id="datepicker"
+										name="datepicker" type="date" step="any" style="width:80%;" />
+								</div>
+							</div>
+							<div class="col-sm-12" id="time" style="display: none;">
+								<!--input for time-->
+								<div class="form-group form-group-default">
+									<label for="timepicker">Time</label>
+									<input class="form-control text-center" id="timepicker"
+										name="timepicker" autocomplete='on' type="time" step="any"
+										pattern="(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)"
+										style="width:80%;" />
+								</div>
+							</div>
+							<div class="col-sm-12" id="daily" style="display: none;">
+								<!--input for weekday-->
+								<div class="form-group form-group-default">
+									<label>Weekday</label>
+									<div class=" form-control">
+										<div class="form-check">
+											<input class="form-check-input " name="weekday" type="checkbox"
+												value="Monday" id="Monday" />
+											<label class="form-check-label" for="Monday">Monday</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" name="weekday" type="checkbox"
+												value="Tuesday" id="Tuesday" />
+											<label class="form-check-label" for="Tuesday">Tuesday</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" name="weekday" type="checkbox"
+												value="Wednesday" id="Wednesday" />
+											<label class="form-check-label"
+												for="Wednesday">Wednesday</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" name="weekday" type="checkbox"
+												value="Thursday" id="Thursday" />
+											<label class="form-check-label" for="Thursday">Thursday</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" name="weekday" type="checkbox"
+												value="Friday" id="Friday" />
+											<label class="form-check-label" for="Friday">Friday</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" name="weekday" type="checkbox"
+												value="Saturday" id="Saturday" />
+											<label class="form-check-label" for="Saturday">Saturday</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" name="weekday" type="checkbox"
+												value="Sunday" id="Sunday" />
+											<label class="form-check-label" for="Sunday">Sunday</label>
+										</div>
+									</div>
+								</div>
+								<!--feedback for weekday-->
+								<div id="weekdayFeedback" class="text-danger"></div>
+							</div>
+							<div class="col-sm-12" id="monthly" style="display: none;">
+								<!--input for month-->
+								<div class="form-group form-group-default">
+									<label for="emonth">Month</label>
+									<select class="form-select" id="emonth" name="emonth"
+										onchange="monthSelect(this.value)">
+										<option value='0'>Choose..</option>
+										<option value='1'>January</option>
+										<option value='2'>February</option>
+										<option value='3'>March</option>
+										<option value='4'>April</option>
+										<option value='5'>May</option>
+										<option value='6'>June</option>
+										<option value='7'>July</option>
+										<option value='8'>August</option>
+										<option value='9'>September</option>
+										<option value='10'>October</option>
+										<option value='11'>November</option>
+										<option value='12'>December</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-12" id="day" style="display: none;">
+								<!--input for day-->
+								<div class="form-group form-group-default">
+									<label for="eday">Day</label>
+									<select class="form-select" id="eday" name="eday">
+										<option value='0'>Select month first</option>
+									</select>
+								</div>
+							</div>
+							<!--notice-->
+							<div class="col-sm-12" id="notice" style="display: none;">
+								<div class="form-group form-group-default text-center">
+									<p style="width:100%"><strong><i class="fa fa-info-circle"
+												aria-hidden="true"></i> Note: </strong></br><span
+											id="nota"></span></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer border-0">
+						<button type="submit" id="addRowButton" class="btn btn-primary">
+							Add
+						</button>
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+							Close
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
     <div class='container-fluid'>
         <div id='calendar'></div>
     </div>
@@ -27,7 +227,7 @@
 <script src="/static/assets/js/core/jquery-3.7.1.min.js"></script>
 <script src="/static/assets/js/core/popper.min.js"></script>
 <script src="/static/assets/js/core/bootstrap.min.js"></script>
-
+<script src="/static/js/index.min.js"></script>
 <script>
 	let today = new Date();
 	let dd = today.getDate();
@@ -59,7 +259,7 @@
 					navLinks: true, // can click day/week names to navigate views
 					editable: true,
 					eventLimit: true, // allow "more" link when too many events
-					events: data
+					events: data,
 				});
 				calendar.render();
 			}
