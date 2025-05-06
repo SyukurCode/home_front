@@ -895,3 +895,18 @@
 05-06-2025 12:00:31 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
 05-06-2025 12:05:11 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
 05-06-2025 12:05:13 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-06-2025 12:51:04 PM:apirequest - {'detail': 'Signature has expired'}
+05-06-2025 14:06:40 PM:apirequest - fail to retrive avatar: 403
+05-06-2025 14:06:43 PM:apirequest - {'detail': 'Signature has expired'}
+05-06-2025 14:11:08 PM:apirequest - No token found in session
+05-06-2025 14:11:26 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-06-2025 14:11:28 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-06-2025 14:47:23 PM:apirequest - fail to retrive avatar: 403
+05-06-2025 14:47:26 PM:apirequest - {'detail': 'Signature has expired'}
+05-06-2025 14:51:33 PM:apirequest - No token found in session
+05-06-2025 14:54:16 PM:apirequest - No token found in session
+05-06-2025 14:56:07 PM:apirequest - No token found in session
+05-06-2025 14:56:13 PM:apirequest - No token found in session
+05-06-2025 14:57:13 PM:apirequest - No token found in session
+05-06-2025 15:35:17 PM:apirequest - fail to retrive avatar: 403
+05-06-2025 15:35:18 PM:apirequest - {'detail': 'Signature has expired'}

@@ -17,5 +17,6 @@ def index():
     viewdata = {
         "user": current_user,
         "avatar" : get_user_avatar(),
+        "apikey" : 'AIzaSyBrAu0iVt8uqJ_t7YF9q6o1Wj7Jb3ZNkBQ'
     }
     return render_template("Maps.html", **viewdata)
