@@ -1,16 +1,49 @@
 function deleteItem(id) {
-    if (confirm("Are you confirm to delete?")) {
-        $.ajax({
-            url: "/?id=" + id,
-            type: "DELETE",
-            success: function (json) {
-                location.replace("/");
+    swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        buttons: {
+            confirm: {
+                text: "Yes, delete it!",
+                className: "btn btn-success",
             },
-            error: function (error) {
-                alert(JSON.stringify(error.message));
-            }
-        });
-    }
+            cancel: {
+                visible: true,
+                className: "btn btn-danger",
+            },
+        },
+    }).then((Delete) => {
+        if (Delete) {
+            $.ajax({
+                url: "/?id=" + id,
+                type: "DELETE",
+                success: function (json) {
+                    location.replace("/");
+                },
+                error: function (error) {
+                    swal("Error!", JSON.stringify(error.message), {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-danger",
+                            },
+                        },
+                    });
+                }
+            });
+            swal("Event has been deleted!", {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-success",
+                    },
+                },
+            });
+        } else {
+            swal.close();
+        }
+    });
 }
 function typeSelect(value) {
     document.getElementById("wish").style.display = "none";
@@ -140,8 +173,14 @@ function getMedia() {
                 });
             }
             catch (error) {
-                alert(error.toString);
-                
+                swal("Error!", error.toString, {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
             }
         }
     }).fail(function (jqxhr, textStatus, error) {
@@ -167,11 +206,25 @@ function getTypenRepeat() {
                 }
             }
             catch (error) {
-                alert(error.toString());
+                swal("Error!", error.toString, {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
             }
         }
         else {
-            alert(data.message);
+            swal("Error!", data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-danger",
+                    },
+                },
+            });
         }
     })
 }
@@ -197,11 +250,25 @@ function getTypenType() {
                 // select.disabled = true;
             }
             catch (error) {
-                alert(error.toString());
+                swal("Error!", error.toString, {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
             }
         }
         else {
-            alert(data.message);
+            swal("Error!", data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-danger",
+                    },
+                },
+            });
         }
     })
 }
@@ -261,17 +328,52 @@ function Validate() {
     return true;
 }
 function delete_group() {
-    $("input:checkbox[name=eventId]:checked").each(function () {
-        $.ajax({
-            url: "/?id=" + $(this).val(),
-            type: "DELETE",
-            success: function (json) {
-                location.replace("/");
+    swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        buttons: {
+            confirm: {
+                text: "Yes, delete it!",
+                className: "btn btn-success",
             },
-            error: function (error) {
-                alert(JSON.stringify(error.error.message));
-            }
-        });
+            cancel: {
+                visible: true,
+                className: "btn btn-danger",
+            },
+        },
+    }).then((Delete) => {
+        if (Delete) {
+            $("input:checkbox[name=eventId]:checked").each(function () {
+                $.ajax({
+                    url: "/?id=" + $(this).val(),
+                    type: "DELETE",
+                    success: function (json) {
+                        location.replace("/");
+                    },
+                    error: function (error) {
+                        swal("Error!", JSON.stringify(error.error.message), {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    },
+                });
+            });
+            swal("Event has been deleted!", {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-success",
+                    },
+                },
+            });
+        } else {
+            swal.close();
+        }
     });
 }
 function check() {

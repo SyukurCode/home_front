@@ -914,3 +914,26 @@
 05-06-2025 15:58:26 PM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
 05-06-2025 16:23:27 PM:apirequest - {'detail': 'Signature has expired'}
 05-06-2025 16:38:45 PM:apirequest - HTTPConnectionPool(host='192.168.0.88', port=5002): Max retries exceeded with url: /api/event (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001825E66B310>: Failed to establish a new connection: [WinError 10065] A socket operation was attempted to an unreachable host'))
+05-07-2025 09:28:53 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:28:56 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 09:31:47 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:31:49 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 09:32:55 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:32:57 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 09:33:19 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:33:22 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 09:33:33 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:33:35 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 09:36:13 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:36:15 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 09:37:16 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-07-2025 09:37:19 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-07-2025 10:00:18 AM:apirequest - {'detail': 'Signature has expired'}
+05-07-2025 10:31:23 AM:apirequest - {'detail': 'Signature has expired'}
+05-07-2025 10:47:19 AM:apirequest - ("Connection broken: ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)", ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+05-07-2025 11:47:08 AM:apirequest - {'detail': 'Signature has expired'}
+05-07-2025 11:47:39 AM:common - event store success
+05-07-2025 11:48:30 AM:common - event store success
+05-07-2025 12:07:33 PM:apirequest - fail to retrive avatar: 404
+05-07-2025 12:10:43 PM:apirequest - fail to retrive avatar: 404
+05-07-2025 12:13:06 PM:apirequest - fail to retrive avatar: 404

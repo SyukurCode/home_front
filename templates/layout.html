@@ -2,7 +2,7 @@
 
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Events Scheduler</title>
+  <title>Scheduler</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
   <link rel="icon" href="/static/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -102,7 +102,7 @@
                   </li>
                   <li>
                     <a href="/calendar">
-                      <span class="sub-item">Calendars</span>
+                      <span class="sub-item">Calendar</span>
                     </a>
                   </li>
                   <li>
@@ -266,7 +266,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                   <h4 id="accountTitle" class="modal-title">Account</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button id="btnClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="location.reload();"></button>
                 </div>
 
                 <!-- Modal body -->
@@ -278,10 +278,10 @@
                       {% if avatar is none %}
                       <img id="avatar_img" src="/static/img/avatar.svg" alt="..." class="avatar-img rounded-circle">
                       {% else %}
-                      <img src="data:image/jpeg;base64,{{ avatar }}" alt="..." class="avatar-img rounded-circle">
+                      <img id="avatarPreview" src="data:image/jpeg;base64,{{ avatar }}" alt="..." class="avatar-img rounded-circle">
                       {% endif %}
                     </div>
-                    <div class="mt-2">
+                    <div id="btn-upload" class="mt-2" hidden>
                       <input id="avatar" name="avatar" type="file" accept="image/*" onchange="ValidateAvatar()"
                         class="form-control" required>
                       <div id="avatarFeedback" class="text-danger">
@@ -347,7 +347,7 @@
                 <div class="modal-footer">
                   <button id="btnSave" type="submit" class="btn btn-primary btn-custom" value="submit">Save</button>
                   <button id="btnOk" class="btn btn-primary btn-custom" onclick="changePassword()">Ok</button>
-                  <button type="button" class="btn btn-danger btn-custom" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-danger btn-custom" data-bs-dismiss="modal" onclick="location.reload();">Cancel</button>
                 </div>
               </form>
             </div>

@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from apirequest import get_response, put_response, \
 	delete_response, post_response, get_response_spoke, get_user_avatar
 import requests, json, config,logwriter,os,common,csv
+from werkzeug.utils import secure_filename
 
 current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
@@ -492,23 +493,31 @@ def upload_csv():
 
 @app.route('/upload-avatar', methods=['POST'])
 def upload_avatar():
-    token = common.session_get("Token")
-    file = request.files.get('avatar')
-    if not file:
-        return jsonify({"detail": "No file uploaded"}), 400
-    
-    headers={"Authorization":f"Bearer {token}",
-             	"Content-Type":"multipart/form-data"}
+	token = common.session_get("Token")
+	file = request.files.get('avatar')
+	if not file:
+		return jsonify({"detail": "No file uploaded"}), 400
+	
+	filename = secure_filename(file.filename)
 
-    response = requests.post(f'{config.api_endpoint}/api/avatar', files=file, headers=headers)
+	files = {
+        'file': (filename, file.stream, file.mimetype)
+    }
     
-    if not isinstance(response, dict) or response.get('status_code') != 200:
-        error_msg = response.get('error', 'Unknown error')
-        return jsonify({"detail": error_msg}), 500
+	headers={"Authorization":f"Bearer {token}"}
+
+	response = requests.post(f'{config.api_endpoint}/api/avatar', files=files, headers=headers)
     
-    if response.status_code == 200:
-        avatar = get_user_avatar()
-        return jsonify({'data': avatar}), 200
+	if response.status_code != 200:
+		try:
+			error_msg = response.json()['detail']	
+		except ValueError:
+			error_msg = 'Invalid response format'
+		return jsonify({"detail": error_msg}), 500
+    
+	if response.status_code == 200:
+		avatar = get_user_avatar()
+		return jsonify({'data': avatar}), 200
 	
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore

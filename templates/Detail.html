@@ -4,7 +4,7 @@
 <form action="/update" method="post" class="row g-3 needs-validation">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
-            <h3 class="fw-bold mb-3">Details</h3>
+            <h3 class="fw-bold mb-3"><i class="fas fa-info-circle"></i> Details</h3>
             <h6 class="op-7 mb-2">Specific event details</h6>
         </div>
         <div class="ms-md-auto py-2 py-md-0">
@@ -34,7 +34,8 @@
         <div class=" input-group mb-3">
             <label class="input-group-text" for="text">Repeat:</label>
             <input type="hidden" class="form-control" id="repeat" name="repeat" value='{{event.repeat}}'>
-            <input type="text" class="form-control" id="Trepeat" name="Trepeat" value='{{event.event_repeat.name}}' readonly>
+            <input type="text" class="form-control" id="Trepeat" name="Trepeat" value='{{event.event_repeat.name}}'
+                readonly>
             </select>
         </div>
         <div class=" input-group mb-3">
@@ -63,28 +64,62 @@
         </div>
         <div class=" input-group mb-3">
             <label class="input-group-text" for="text">Created by:</label>
-            <input class="form-control" type="Text" name="created_by" id="created_by" value='{{event.created_by_user.username}}' readonly>
+            <input class="form-control" type="Text" name="created_by" id="created_by"
+                value='{{event.created_by_user.username}}' readonly>
         </div>
     </div>
 </form>
 <script type="text/javascript">
     function editEnable() {
-       document.getElementById("btnSave1").hidden = false;
-       document.getElementById("btnDelete").hidden = true;
+        document.getElementById("btnSave1").hidden = false;
+        document.getElementById("btnDelete").hidden = true;
     }
     function deleteItem(id) {
-        if (confirm("Are you confirm to delete?")) {
-            $.ajax({
-                url: "/?id=" + id,
-                type: "DELETE",
-                success: function (json) {
-                    location.replace("/");
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            buttons: {
+                confirm: {
+                    text: "Yes, delete it!",
+                    className: "btn btn-success",
                 },
-                error: function (error) {
-                    alert(JSON.stringify(error.message || "An unknown error occurred."));
-                }
-            });
-        }
+                cancel: {
+                    visible: true,
+                    className: "btn btn-danger",
+                },
+            },
+        }).then((Delete) => {
+            if (Delete) {
+                $.ajax({
+                    url: "/?id=" + id,
+                    type: "DELETE",
+                    success: function (json) {
+                        location.replace("/");
+                    },
+                    error: function (error) {
+                        swal("Error!", JSON.stringify(error.message || "An unknown error occurred."), {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
+                });
+                swal("Event has been deleted!", {
+                    icon: "success",
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-success",
+                        },
+                    },
+                });
+            } else {
+                swal.close();
+            }
+        });
 
     }
 </script>

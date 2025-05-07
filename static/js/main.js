@@ -137,9 +137,11 @@ $(document).ready(function () {
         document.getElementById("frmUsername").hidden = false;
         document.getElementById("frmEmail").hidden = false;
         document.getElementById("frmOldPassword").hidden = true;
+        document.getElementById("btn-upload").hidden = false;
     });
     $("#btnRegister").click(function () {
         $("#account").modal("toggle");
+        document.getElementById("avatarPreview").src = "/static/img/avatar.svg";
         document.getElementById("accountTitle").innerHTML = "Register";
         document.getElementById("frmPassword").hidden = false;
         document.getElementById("frmRePassword").hidden = false;
@@ -183,27 +185,49 @@ async function ValidateAvatar(){
     // Allowing file type
     var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
-        alert('Please upload file having extensions .jpeg/.jpg/.png/.gif only.');
+        swal("Warning", "Please upload file having extensions .jpeg/.jpg/.png/.gif only.", {
+            icon: "warning",
+            buttons: {
+              confirm: {
+                className: "btn btn-warning",
+              },
+            },
+          });
         fileInput.value = '';
         return false;
     } else {
         formData.append('avatar', fileInput.files[0]);
+        document.body.style.cursor = 'wait';
         try {
             const response = await fetch('/upload-avatar', {
                 method: 'POST',
                 body: formData
             });
 
-            const result = await response
+            const result = await response.json();
 
             if (response.ok) {
                 document.getElementById('avatarFeedback').innerText = "Uploaded successfully!";
+                document.getElementById('avatarFeedback').classList.remove('text-danger');
+                document.getElementById('avatarFeedback').classList.add('text-success');
+                try {
                 document.getElementById('avatarPreview').src = "data:image/jpeg;base64," + result.data;
+                }
+                catch (error) {
+                    document.getElementById('avatar_img').src = "data:image/jpeg;base64," + result.data;
+                }
             } else {
+                document.getElementById('avatarFeedback').classList.remove('text-success');
+                document.getElementById('avatarFeedback').classList.add('text-danger');
                 document.getElementById('avatarFeedback').innerText = result.detail || 'Upload failed!';
             }
         } catch (error) {
+            document.getElementById('avatarFeedback').classList.remove('text-success');
+            document.getElementById('avatarFeedback').classList.add('text-danger');
             document.getElementById('avatarFeedback').innerText = error || 'Error uploading file!';
+        }
+        finally {
+            document.body.style.cursor = 'default';
         }
 
         
