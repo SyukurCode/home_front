@@ -984,3 +984,6 @@
 05-08-2025 11:33:24 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
 05-08-2025 11:35:46 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
 05-08-2025 11:35:48 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 15:59:41 PM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 16:00:08 PM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 16:01:45 PM:apirequest - {'detail': 'Signature has expired'}
