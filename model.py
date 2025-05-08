@@ -55,4 +55,16 @@ class notification_model:
             "avatar": self.avatar
         }
 
+class calendar_model:
+    def __init__(self, events, user, avatar):
+        self.events = events
+        self.user = user
+        self.avatar = avatar
+        
+    def to_dict(self):
+        return {
+            "events": self.events,
+            "user": self.user,
+            "avatar": self.avatar
+        }
     

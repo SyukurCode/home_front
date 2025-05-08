@@ -5,6 +5,7 @@ import os,config, common
 import requests, json # type: ignore
 from apirequest import get_response
 import logwriter,os
+from model import calendar_model
 
 current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
@@ -17,11 +18,11 @@ def index():
 	
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 
-	viewdata = {
-		"user" : current_user,
-		"avatar" : get_user_avatar(),
-	}
-
+	viewdata = calendar_model(
+		events = get_response('/api/event'),
+		user = current_user,
+		avatar = get_user_avatar(),
+	).to_dict()
 	return render_template("Calendar.html", **viewdata)
 
 
@@ -31,6 +32,10 @@ def allevent():
 	allEvents = []
 
 	data = get_response('/api/event')
+
+	if not isinstance(data, dict) or data.get('status_code') != 200:
+		error_msg = data.get('data')
+		return render_template("Login.html", **error_msg)
 	
 	events = data['data']
 	for event in events:
