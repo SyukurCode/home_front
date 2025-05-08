@@ -515,6 +515,12 @@ def upload_avatar():
 		avatar = get_user_avatar()
 		return jsonify({'data': avatar}), 200
 	
+
+# on error 404
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html'), 404
+	
 if __name__ == '__main__':
 	# from waitress import serve # type: ignore
 	# serve(app, host="0.0.0.0", port=5000)
