@@ -938,3 +938,43 @@
 05-07-2025 12:10:43 PM:apirequest - fail to retrive avatar: 404
 05-07-2025 12:13:06 PM:apirequest - fail to retrive avatar: 404
 05-07-2025 12:47:40 PM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 08:54:38 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 08:54:41 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 08:54:41 AM:kalendar - {'detail': 'Not authenticated'}
+05-08-2025 08:54:54 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 08:54:56 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 08:54:56 AM:kalendar - {'detail': 'Not authenticated'}
+05-08-2025 08:56:46 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 08:56:49 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 08:57:33 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 08:57:35 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 08:58:42 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 08:58:44 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 08:59:04 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 08:59:06 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 09:01:53 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 09:01:55 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 09:05:19 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 09:05:21 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 09:07:21 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 09:07:23 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 09:07:54 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 09:07:56 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 09:09:23 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar
+05-08-2025 09:09:25 AM:kalendar - from:127.0.0.1,url:http://localhost:5000/calendar/api/all
+05-08-2025 09:34:46 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 09:36:56 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 09:38:57 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 09:42:14 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 09:42:29 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 09:43:45 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 09:43:50 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:16:43 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:18:36 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:18:41 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:18:43 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:25:24 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:26:53 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:32:13 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 10:32:28 AM:apirequest - {'detail': 'Signature has expired'}
+05-08-2025 11:19:00 AM:apirequest - {'detail': 'Signature has expired'}

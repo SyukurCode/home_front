@@ -13,10 +13,6 @@ def index():
     current_user = common.session_get("User")
     waktu = []
     response = get_response('/api/event')
-
-    if not isinstance(response, dict) or response.get('status_code') != 200:
-        error_msg = response.get('error', 'Unknown error')
-        return render_template("Login.html", error=error_msg)
     
     data = response["data"]
     for item in data:

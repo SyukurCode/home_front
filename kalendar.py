@@ -3,7 +3,7 @@ from datetime import datetime
 from apirequest import get_user_avatar
 import os,config, common
 import requests, json # type: ignore
-
+from apirequest import get_response
 import logwriter,os
 
 current_directory = os.getcwd()
@@ -27,20 +27,10 @@ def index():
 
 @kalendar.route('/calendar/api/all',methods=['GET'])
 def allevent():
-	token = common.session_get('Token')	
 	logger.logs("from:{},url:{}".format(request.remote_addr,request.url))
 	allEvents = []
 
-	response = requests.get(f'{config.api_endpoint}/api/event',
-						headers={"accept": "application/json",
-							"Authorization":f"Bearer {token}"})
-	
-	data = response.json()
-	
-	if response.status_code != 200:
-		logger.logs(data)
-		session.clear()
-		return render_template("Login.html",error=data['detail'])
+	data = get_response('/api/event')
 	
 	events = data['data']
 	for event in events:

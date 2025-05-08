@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, request, redirect, jsonify, session
+from flask import Flask, render_template, request, redirect, jsonify, session, url_for
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from apirequest import get_response, put_response, \
 	delete_response, post_response, get_response_spoke, get_user_avatar
 import requests, json, config,logwriter,os,common,csv
 from werkzeug.utils import secure_filename
+from model import index_model, detail_model, login_model, notification_model
 
 current_directory = os.getcwd()
 logger = logwriter.Writer(current_directory + "/logs/","gui",__name__)
@@ -33,37 +34,33 @@ def index():
 	descriptions = []
 	current_user = common.session_get('User')
 	response = get_response('/api/event/user')
- 
+
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error="")
-    
+		error_msg = response.get('data')
+		return render_template("Login.html", **error_msg)
+ 
 	event = response['data']
 	for e in event:
 		description = common.executeTranslate(e)
 		descriptions.append({"id":e["id"],"name":e["name"],"text":e["text"], \
 							"execute":description,"acknowledge":e["acknowledge"],"owner":e['created_by'],"type":e['type']})
-
+		
 	eve = json.loads('{}')
 	eve.update({"data":descriptions})
 	events = eve["data"]
-	viewdata = {
-		"events" : events,
-		"user" : current_user,
-        "avatar" : get_user_avatar(),
-		"menu" : "own"
-	}
-	return render_template("Index.html",**viewdata)
+	viewdata = index_model(events=events, user=current_user, avatar=get_user_avatar() \
+						 if get_user_avatar() else None, menu="own").to_dict()
+	return render_template("Index.html", **viewdata)
 
 @app.route('/all')
 def all():
 	descriptions = []
 	current_user = common.session_get("User")
 	response = get_response('/api/event')
- 
+
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error=error_msg)
+		error_msg = response.get('data')
+		return render_template("Login.html", **error_msg)
  
 	event = response['data']
 	for e in event:
@@ -74,12 +71,8 @@ def all():
 	eve.update({"data":descriptions})
 	events = eve["data"]
 
-	viewdata = {
-		"events" : events,
-		"user" : current_user,
-		"avatar" : get_user_avatar(),
-		"menu" : "all"
-	}
+	viewdata = index_model(events=events, user=current_user, avatar=get_user_avatar() \
+						 if get_user_avatar() else None, menu="all").to_dict()
 	return render_template("Index.html",**viewdata)
 	
 @app.route('/detail')
@@ -87,21 +80,17 @@ def detail():
 	id = request.args.get('id')
 	current_user = common.session_get("User")
 	response = get_response(f'/api/event/id?id={id}')
-	
+
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error=error_msg)
+		error_msg = response.get('data')
+		return render_template("Login.html", **error_msg)
  
 	event = response['data']
 	description = common.executeTranslate(event)
 
-	viewdata = {
-		"event" : event,
-		"execute" : description,
-		"user" : current_user,
-		"avatar" : get_user_avatar(),
-	}
-
+	viewdata = detail_model(event=event, user=current_user, \
+							avatar=get_user_avatar() if get_user_avatar() else None, \
+							execute=description).to_dict()
 	return render_template("Detail.html", **viewdata)
 
 
@@ -113,10 +102,10 @@ def todayEvent():
 	today = datetime.now()
 	weekday = weekdayName[today.weekday()]
 	response = get_response('/api/event')
- 
+
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error=error_msg)
+		error_msg = response.get('data')
+		return render_template("Login.html", **error_msg)
  
 	event = response['data']
 	for e in event:
@@ -168,13 +157,10 @@ def todayEvent():
 		eve.update({"data":descriptions})
 		events = eve["data"]
 
-		viewdata = {
-		"events" : events,
-		"user" : current_user,
-		"menu" : "today",
-		"avatar" : get_user_avatar(),
-	}
-
+	viewdata = index_model(events=events, user=current_user, \
+							avatar=get_user_avatar() if get_user_avatar() else None, \
+							menu="today").to_dict()
+	
 	return render_template("Index.html",**viewdata)
 
 @app.route('/update',methods=['POST'])
@@ -196,8 +182,8 @@ def update():
 							"parent": int(parent),"execute": execute })
 	
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error=error_msg)
+		error_msg = response.get('data')
+		return render_template("Login.html", **error_msg)
 	
 	return redirect("/")
 
@@ -208,7 +194,12 @@ def login():
 	if request.method == 'GET':
 		if token:
 			return redirect("/")
-		return render_template("Login.html",error='')
+		viewdata = {
+			"error": '',
+			"username": session.get('username', ''),
+			"password": session.get('password', ''),
+		}
+		return render_template("Login.html", **viewdata)
 	if request.method == 'POST':
 		username = request.form.get('username')
 		password = request.form.get('password')
@@ -234,7 +225,9 @@ def login():
 
 			if response.status_code != 200:
 				logger.logs(data)
-				return render_template("Login.html",error='Invalid username or password')
+				viewdata = login_model(session_data=session, error=data['detail'])
+				return render_template("Login.html", **viewdata.to_dict())
+			
 			
 			token = data['access_token']
 			session['Token'] = token
@@ -242,14 +235,23 @@ def login():
 			response = get_response('/api/user_info')
 
 			if not isinstance(response, dict) or response.get('status_code') != 200:
-				error_msg = response.get('error', 'Unknown error')
-				return render_template("Login.html", error=error_msg)
+				error_msg = response.get('data')
+				return render_template("Login.html", **error_msg)
 
 			session['User'] = response['data']
+			session['username'] = username
+			session['password'] = password
+			session['remember'] = isRemember
 			return redirect("/")
 
 		except requests.exceptions.RequestException as e:
-			return render_template("Login.html",error=str(e))
+			viewdata = {
+				"error": str(e),
+				"username": session.get('username', ''),
+				"password": session.get('password', ''),
+				"remember": session.get('remember', False),
+			}
+			return render_template("Login.html",**viewdata)
 		
 @app.route('/logout')
 def logout():
@@ -307,7 +309,7 @@ def deleteItem():
 
 	response = delete_response(f'/api/event?id={delete_id}')
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
+		error_msg = response.get('data', 'Unknown error')
 		return jsonify({"error": error_msg})
 	
 	return jsonify({'message': delete_id +' was deleted'}), 202
@@ -322,10 +324,11 @@ def add_user():
 
 	response = post_response('/api/users', \
 							{"username": username,"password": password,"email": email, 'isAdmin': False})
+	
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return render_template("Login.html", error=error_msg)
-
+		error_msg = response.get('data', 'Unknown error')
+		return render_template("Login.html", **error_msg)
+	
 	data = response['data']
 	
 	return redirect("/")
@@ -344,9 +347,11 @@ def change_password():
 		response = put_response(f'/api/user/{userId}', \
 							{"password": record['new-password'], \
 							"email": current_user['email'],"isAdmin": current_user['isAdmin']})
+		
 		if not isinstance(response, dict) or response.get('status_code') != 200:
-			error_msg = response.get('error', 'Unknown error')
-			return render_template("Login.html", error=error_msg)
+			error_msg = response.get('data', 'Unknown error')
+			return jsonify({"error": error_msg}), response.get('status_code', 500)
+
 		data = response['data']
             
 		return jsonify({'message':'password updated!'}), 202
@@ -356,7 +361,7 @@ def change_password():
 def get_type():
 	response = get_response('/api/event/type')
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
+		error_msg = response.get('data', 'Unknown error')
 		return jsonify({"error":error_msg})
 	data = response['data']	
 	
@@ -368,7 +373,7 @@ def get_repeat():
 	response = get_response('/api/event/repeat')
 	
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
+		error_msg = response.get('data', 'Unknown error')
 		return jsonify({"error":error_msg}), 500
 
 	data = response['data']
@@ -379,7 +384,7 @@ def get_media():
 
 	response = get_response_spoke('/audio_list')
 	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
+		error_msg = response.get('data', 'Unknown error')
 		return jsonify({"message":error_msg}), 500
 
 	data = response['data']
@@ -391,9 +396,6 @@ def due_event():
 	due_items = []
 
 	response = get_response('/api/event/user')
-	if not isinstance(response, dict) or response.get('status_code') != 200:
-		error_msg = response.get('error', 'Unknown error')
-		return jsonify({"message":error_msg}), 500
 
 	data = response['data']
 	event = data
@@ -408,9 +410,6 @@ def due_event():
 def notification():
     current_user = common.session_get("User")
     response = get_response('/api/event/user')
-    if not isinstance(response, dict) or response.get('status_code') != 200:
-        error_msg = response.get('error', 'Unknown error')
-        return render_template("Login.html", error=error_msg)
     
     data = response['data']
     due_items = []
@@ -419,12 +418,9 @@ def notification():
         if event_due['isDue']:
             due_items.append({"id": e['id'], "Name": e['name'], "Due": event_due['duration']})
             
-    viewdata = {
-		"events": due_items,
-		"user": current_user,
-		"avatar": get_user_avatar()
-	}
-    
+    viewdata = notification_model(events=due_items,	user=current_user,avatar=get_user_avatar() if get_user_avatar() else None
+	).to_dict()
+	
     return render_template("Notification.html", **viewdata)
 
 @app.route('/upload_csv', methods=['POST'])
@@ -485,7 +481,7 @@ def upload_csv():
 	viewdata = {
 		"items" : csv_data,
 		"user" : current_user,
-        "avatar" : get_user_avatar(),
+        "avatar" : get_user_avatar() if get_user_avatar() else None,
 	}
 
 	return render_template("EventUpload.html", **viewdata)
