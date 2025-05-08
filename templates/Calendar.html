@@ -229,6 +229,7 @@
 <script src="/static/assets/js/core/bootstrap.min.js"></script>
 <script src="/static/js/index.min.js"></script>
 <script>
+	document.body.style.cursor = 'wait';
 	let today = new Date();
 	let dd = today.getDate();
 	let mm = today.getMonth() + 1;
@@ -265,5 +266,6 @@
 			}
 		})
 	});
+	document.body.style.cursor = 'default';
     </script>
 {% endblock %}
