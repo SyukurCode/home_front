@@ -1,2 +1,5 @@
-# home_front
+# Title
 front-end my services
+
+# Deploy
+./buildnpush
