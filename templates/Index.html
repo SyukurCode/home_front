@@ -8,9 +8,9 @@
         <h6 class="op-7 mb-2">All event need to execute by service</h6>
     </div>
     <div class="ms-md-auto py-2 py-md-0">
-        <a id="own" href="/" class="btn btn-label-info btn-round me-2">Own</a>
-        <a id="all" href="/all" class="btn btn-label-info btn-round me-2">All</a>
-        <a id="today" href="/today" class="btn btn-label-info btn-round me-2">Today</a>
+        <a id="own" href="/" class="btn btn-label-info btn-round btn-navbar me-2">Own</a>
+        <a id="all" href="/all" class="btn btn-label-info btn-round btn-navbar me-2">All</a>
+        <a id="today" href="/today" class="btn btn-label-info btn-round btn-navbar me-2">Today</a>
     </div>
 </div>
 <div class="row">
@@ -19,19 +19,19 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title">List of {% if menu %}{{menu}}{% else %}all{% endif %} events</h4>
-                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
+                    <button class="btn btn-primary btn-round ms-auto btn-nav-table" data-bs-toggle="modal"
                         data-bs-target="#addRowModal">
                         <i class="fa fa-plus"></i>
                         Add
                     </button>
                     <form action="/upload_csv" method="post" enctype="multipart/form-data" style="padding-top: 13px;">
-                        <label for="csvFile" class="btn btn-primary btn-round m-1">
+                        <label for="csvFile" class="btn btn-primary btn-round m-1 btn-nav-table">
                             <i class="fa fa-upload"></i>
                             Upload
                         </label>
                         <input type="file" id="csvFile" name="csvFile" accept=".csv" style="display: none;" onchange="this.form.submit()">
                     </form>
-                    <button class="btn btn-danger btn-round m-1" id="btnDeleteGroup" onclick="delete_group()" hidden>
+                    <button class="btn btn-danger btn-round m-1 btn-nav-table" id="btnDeleteGroup" onclick="delete_group()" hidden>
                         <i class="fa fa-trash"></i>
                         Delete
                     </button>

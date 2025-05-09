@@ -86,11 +86,10 @@ function notification() {
         traditional: true,
         success: function (data) {
             var items = JSON.parse(data)
-            if(items.length > 0)
-            {
+            if (items.length > 0) {
                 document.getElementById("noticount").style.display = "inline";
                 document.getElementById("noticount").innerHTML = items.length;
-                document.getElementById("notitotal").innerHTML =  items.length;
+                document.getElementById("notitotal").innerHTML = items.length;
                 document.getElementById("notiitems").style.display = "inline";
                 document.getElementById("see-all").style.display = "inline";
                 items.forEach(element => {
@@ -107,12 +106,12 @@ function notification() {
                     document.getElementById("notiitem").innerHTML += notificationItem;
                 });
             }
-            else{
+            else {
                 document.getElementById("noticount").style.display = "none";
                 document.getElementById("notiitems").style.display = "none";
                 document.getElementById("see-all").style.display = "none";
             }
-            
+
         },
         error: function (xhr, status, data) {
             console.log("error");
@@ -175,10 +174,9 @@ $(document).ready(function () {
         document.getElementById("username").value = '';
         document.getElementById("email").value = '';
         document.getElementById("frmOldPassword").hidden = false;
-
     });
 });
-async function ValidateAvatar(){
+async function ValidateAvatar() {
     const fileInput = document.getElementById("avatar");
     const filePath = fileInput.value;
     const formData = new FormData();
@@ -188,11 +186,11 @@ async function ValidateAvatar(){
         swal("Warning", "Please upload file having extensions .jpeg/.jpg/.png/.gif only.", {
             icon: "warning",
             buttons: {
-              confirm: {
-                className: "btn btn-warning",
-              },
+                confirm: {
+                    className: "btn btn-warning",
+                },
             },
-          });
+        });
         fileInput.value = '';
         return false;
     } else {
@@ -211,7 +209,7 @@ async function ValidateAvatar(){
                 document.getElementById('avatarFeedback').classList.remove('text-danger');
                 document.getElementById('avatarFeedback').classList.add('text-success');
                 try {
-                document.getElementById('avatarPreview').src = "data:image/jpeg;base64," + result.data;
+                    document.getElementById('avatarPreview').src = "data:image/jpeg;base64," + result.data;
                 }
                 catch (error) {
                     document.getElementById('avatar_img').src = "data:image/jpeg;base64," + result.data;
@@ -230,7 +228,23 @@ async function ValidateAvatar(){
             document.body.style.cursor = 'default';
         }
 
-        
+
     }
     return true;
 }
+function showPassword(id, element) {
+    const passwordInput = document.getElementById(id);
+    const icon = document.getElementById(element).querySelector("i");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+

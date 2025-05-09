@@ -4,5 +4,4 @@ $(document).ready(function () {
     apikey = document.getElementById("apikey").value;
     const url = `https://www.google.com/maps/embed/v1/view?key=${apikey}&center=${lat},${lon}&zoom=14&maptype=roadmap`;
     document.getElementById("maps").src = url;
-    getLocation() 
     });
